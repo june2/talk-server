@@ -1,0 +1,24 @@
+*.csv
+*.dat
+*.iml
+*.log
+*.out
+*.pid
+*.seed
+*.sublime-*
+*.swo
+*.swp
+*.tgz
+*.xml
+*.pem
+.DS_Store
+.idea
+.project
+.strong-pm
+.editorconfig
+coverage
+node_modules
+# dist
+npm-debug.log
+*temp-db*
+*logs*
