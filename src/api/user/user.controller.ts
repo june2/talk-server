@@ -71,7 +71,7 @@ export class UserController {
   @UseGuards(AuthGuard('jwt'))
   @Post('/:id/upload')
   @UseInterceptors(FileInterceptor('file', multerOptions))
-  uploadFile(@UploadedFile() file, @Request() req): Promise<User> {        
-    return this.userService.upload(req.user.id, file.filename, file.path);    
+  uploadFile(@UploadedFile() file, @Request() req): Promise<User> {
+    return this.userService.upload(req.user.id, file.filename, file.path);
   }
 }

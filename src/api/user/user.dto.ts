@@ -21,8 +21,8 @@ export class UpdateUserDto {
   @IsString()
   @IsOptional()
   readonly name: string;
-  
-  @ApiModelProperty({ type: Array })  
-  @IsOptional()
-  images: any;
+
+  @ApiModelProperty({ type: Array })
+  @IsOptional()  
+  images: Array<object> = [];
 }
