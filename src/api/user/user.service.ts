@@ -29,6 +29,12 @@ export class UserService {
     return await this.user.findOneAndUpdate(id, newValue, { new: true }).exec();
   }
 
+  async upload(id: string, filename: string, path: string): Promise<User> {
+    let user = await this.user.findById(id).exec();
+    user.images.push({ thumbnail: filename, full: path });
+    return await user.save();
+  }
+
   // async delete(id: number, updateUserDto: UpdateUserDto): Promise<UpdateResult> {
   //   return await this.userRepository.d
   // }

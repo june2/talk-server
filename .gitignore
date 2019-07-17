@@ -18,6 +18,7 @@
 .editorconfig
 coverage
 node_modules
+upload
 # dist
 npm-debug.log
 *temp-db*

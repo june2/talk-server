@@ -12,4 +12,4 @@ import { UserModule } from './api/user/user.module';
     // CategoryModule
   ],
 })
-export class ApplicationModule {}
+export class ApplicationModule { }

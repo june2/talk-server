@@ -3,13 +3,24 @@ import {
   ApiOperation,
   ApiResponse,
   ApiUseTags,
+  ApiImplicitFile,
+  ApiImplicitParam
 } from '@nestjs/swagger';
-import { UseGuards, Controller, Request, Param, Body, Get, Post, Put, UnauthorizedException, BadRequestException, NotFoundException } from '@nestjs/common';
+import {
+  UseGuards, Controller,
+  Request, Param, Body,
+  Get, Post, Put,
+  UnauthorizedException, BadRequestException, NotFoundException,
+  UseInterceptors, UploadedFile
+} from '@nestjs/common';
+import { multerOptions } from '../../common/multer/multer.config';
+import { FileInterceptor } from "@nestjs/platform-express"
 import { AuthGuard } from '@nestjs/passport';
 import * as mongoose from 'mongoose';
 import { UserService } from './user.service';
 import { User } from './user.interface';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 @ApiBearerAuth()
 @ApiUseTags('User')
@@ -34,10 +45,10 @@ export class UserController {
     }
   }
 
-  @Post()
   @ApiOperation({ title: 'Create user' })
   @ApiResponse({ status: 201, description: 'The record has been successfully created.' })
   @ApiResponse({ status: 403, description: 'Forbidden.' })
+  @Post()
   create(@Body() createUserDto: CreateUserDto): Promise<User> {
     return this.userService.create(createUserDto);
   }
@@ -53,5 +64,14 @@ export class UserController {
     // }
     if (!req.user) throw new UnauthorizedException();
     return this.userService.update(req.user.id, updateUserDto);
+  }
+
+  @ApiImplicitFile({ name: 'file', required: true, description: 'files to upload' })
+  @ApiImplicitParam({ name: 'id', type: 'string', required: true, description: 'user id' })
+  @UseGuards(AuthGuard('jwt'))
+  @Post('/:id/upload')
+  @UseInterceptors(FileInterceptor('file', multerOptions))
+  uploadFile(@UploadedFile() file, @Request() req): Promise<User> {        
+    return this.userService.upload(req.user.id, file.filename, file.path);    
   }
 }
