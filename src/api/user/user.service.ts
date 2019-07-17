@@ -21,20 +21,13 @@ export class UserService {
     return this.user.findOne(options).exec();
   }
 
-  async findById(id: object): Promise<User> {
+  async findById(id: string): Promise<User> {
     return await this.user.findById(id).exec();
   }
 
-  // async update(ID: number, newValue: IUser): Promise<IUser> {
-  //   const user = await this.userModel.findById(ID).exec();
-
-  //   if (!user._id) {
-  //     debug('user not found');
-  //   }
-
-  //   await this.userModel.findByIdAndUpdate(ID, newValue).exec();
-  //   return await this.userModel.findById(ID).exec();
-  // }
+  async update(id: string, newValue: UpdateUserDto): Promise<User> {
+    return await this.user.findOneAndUpdate(id, newValue, { new: true }).exec();
+  }
 
   // async delete(id: number, updateUserDto: UpdateUserDto): Promise<UpdateResult> {
   //   return await this.userRepository.d
