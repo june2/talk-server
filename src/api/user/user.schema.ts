@@ -27,6 +27,8 @@ export const UserSchema = new mongoose.Schema({
   point: { type: Number, default: 0 },
   // 마지막 로그인 시간
   lastLoginAt: { type: Date, default: new Date() },
+  // 아바타
+  avatar: { type: String },
   // 이미지
   images: [{
     _id: false,

@@ -5,6 +5,7 @@ import { ConfigService } from './common/config/config.service';
 import { AuthModule } from './api/auth/auth.module';
 import { UserModule } from './api/user/user.module';
 import { RoomModule } from './api/room/room.module';
+import { MessageModule } from './api/message/message.module';
 
 @Module({
   imports: [
@@ -21,7 +22,8 @@ import { RoomModule } from './api/room/room.module';
     }),
     AuthModule,
     UserModule,
-    RoomModule
+    RoomModule,
+    MessageModule
   ]
 })
 export class ApplicationModule { }

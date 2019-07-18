@@ -7,12 +7,15 @@ import {
 import {
   UseGuards, Controller,
   Request, Body, Query, Param,
+  UnauthorizedException,
   Get, Post,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+const { ObjectId } = require('mongodb'); // or ObjectID 
 import { ReqRoomDto, CreateRoomDto } from './room.dto';
 import { RoomService } from './room.service';
 import { Room } from './room.interface';
+import { Message } from './../message/message.interface';
 
 @ApiBearerAuth()
 @ApiUseTags('Room')
@@ -31,13 +34,20 @@ export class RoomController {
     this.RoomService.create(createRoomDto);
   }
 
-  @Get('/:id')
-  async findById(@Param('id') id: string): Promise<Room> {
-    return this.RoomService.findById(id);
+  @UseGuards(AuthGuard('jwt'))
+  @Get()
+  @ApiOperation({ title: 'Get rooms by userId' })
+  async findAll(@Request() req): Promise<Room[]> {
+    let userId = req.user.id;
+    return this.RoomService.findByUserId(userId);
   }
 
-  @Get()
-  async findAll(): Promise<Room[]> {
-    return this.RoomService.findAll();
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/:id/messages')
+  async findById(@Param('id') id: string, @Request() req): Promise<Message[]> {
+    // validation
+    let res = await this.RoomService.checkUserInRoom(id, req.user.id);
+    if (!res) throw new UnauthorizedException();
+    return this.RoomService.findMessageByRoomId(id);
   }
 }
