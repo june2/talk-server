@@ -1,11 +1,12 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateRoomDto } from './room.dto';
 import { Room } from './room.interface';
 
 @Injectable()
 export class RoomService {
-  constructor(@Inject('room') private readonly room: Model<Room>) { }
+  constructor(@InjectModel('room') private readonly room: Model<Room>) { }
 
   async create(createRoomDto: CreateRoomDto): Promise<Room> {
     const created = new this.room(createRoomDto);
