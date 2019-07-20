@@ -37,17 +37,17 @@ export class RoomController {
   @UseGuards(AuthGuard('jwt'))
   @Get()
   @ApiOperation({ title: 'Get rooms by userId' })
-  async findAll(@Request() req): Promise<Room[]> {
+  async findAll(@Query('offset') offset: number, @Query('limit') limit: number, @Request() req): Promise<Room[]> {
     let userId = req.user.id;
-    return this.RoomService.findByUserId(userId);
+    return this.RoomService.findByUserId(userId, offset, limit);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Get('/:id/messages')
-  async findById(@Param('id') id: string, @Request() req): Promise<Message[]> {
+  async findById(@Param('id') id: string, @Query('offset') offset: number, @Query('limit') limit: number, @Request() req): Promise<Message[]> {
     // validation
     let res = await this.RoomService.checkUserInRoom(id, req.user.id);
     if (!res) throw new UnauthorizedException();
-    return this.RoomService.findMessageByRoomId(id);
+    return this.RoomService.findMessageByRoomId(id, offset, limit);
   }
 }

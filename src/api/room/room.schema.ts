@@ -1,7 +1,7 @@
-import * as mongoose from 'mongoose';
-const Schema = mongoose.Schema;
+import { Schema } from 'mongoose';
+import * as mongoosePaginate from 'mongoose-paginate-v2';
 
-export const RoomSchema = new mongoose.Schema({
+export const RoomSchema = new Schema({
   users: [{ type: Schema.Types.ObjectId, ref: 'user' }],
   lastMsg: { type: String }
 }, {
@@ -18,3 +18,4 @@ export const RoomSchema = new mongoose.Schema({
     }
   })
 
+RoomSchema.plugin(mongoosePaginate);

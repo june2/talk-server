@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { PaginateModel } from 'mongoose-paginate-v2';
 import { CreateRoomDto } from './room.dto';
 import { Room } from './room.interface';
 import { Message } from './../message/message.interface';
@@ -8,8 +8,8 @@ import { Message } from './../message/message.interface';
 @Injectable()
 export class RoomService {
   constructor(
-    @InjectModel('room') private readonly room: Model<Room>,
-    @InjectModel('message') private readonly message: Model<Message>
+    @InjectModel('room') private readonly room: PaginateModel<Room>,
+    @InjectModel('message') private readonly message: PaginateModel<Message>
   ) { }
 
   async create(createRoomDto: CreateRoomDto): Promise<Room> {
@@ -25,17 +25,32 @@ export class RoomService {
     return await this.room.findById(id).exec();
   }
 
-  async findByUserId(id: string): Promise<Room[]> {
-    return await this.room.find({
-      users: { $in: [id] }
-    }).populate({
-      path: 'users',
-      match: { _id: { $ne: id } }
-    }).exec();
+  async findByUserId(id: string, offset: number = 0, limit: number = 10): Promise<Room[]> {    
+    let query = { users: { $in: [id] } };
+    let options = {
+      sort: { createdAt: -1 },
+      populate: {
+        path: 'users',
+        match: { _id: { $ne: id } }
+      },
+      lean: true,
+      offset: offset,
+      limit: limit
+    };
+    return await this.room.paginate(query, options);
   }
 
-  async findMessageByRoomId(id: string): Promise<Message[]> {
-    return await this.message.find({ room: id }).populate('user').exec();
+  async findMessageByRoomId(id: string, offset: number = 0, limit: number = 10): Promise<Message[]> {
+    let query = { room: id };
+    let options = {
+      // select: 'title date author',
+      sort: { createdAt: -1 },
+      populate: 'user',
+      lean: true,
+      offset: offset,
+      limit: limit
+    };
+    return await this.message.paginate(query, options);
   }
 
   async checkUserInRoom(id: string, userId: string): Promise<Boolean> {

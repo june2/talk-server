@@ -24,8 +24,8 @@ describe('MessageController (e2e)', () => {
 
     let res = await request(app.getHttpServer())
       .get('/rooms')
-      .set('Authorization', `bearer ${token}`) // Works.
-    room = res.body[0];
+      .set('Authorization', `bearer ${token}`) // Works.    
+    room = res.body.docs[0];
 
     done();
   });
@@ -43,11 +43,12 @@ describe('MessageController (e2e)', () => {
 
   it('/rooms/{id}/messages (GET)', () => {
     return request(app.getHttpServer())
-      .get(`/rooms/${room.id}/messages`)
+      .get(`/rooms/${room.id}/messages?offset=2&limit=2`)
       .set('Authorization', `bearer ${token}`) // Works.
       .expect(200)
       .expect((res) => {
         // console.log(res.body);
+        // console.log(res.body.docs.length);
         expect(typeof res.body).toBe('object')
       })
   });

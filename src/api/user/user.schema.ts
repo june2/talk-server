@@ -1,11 +1,12 @@
-import * as mongoose from 'mongoose';
+import { Schema } from 'mongoose';
+import * as mongoosePaginate from 'mongoose-paginate-v2';
 import * as crypto from 'crypto';
 import { User } from './user.interface';
 
 const genders = ['M', 'F'];
 const states = ['NORMAL', 'REJECT', 'WAITING', 'BLOCK', 'LEAVE']; // 일반, 반려, 심사대기중, 재심사대기중, 블락, 탈퇴
 
-export const UserSchema = new mongoose.Schema({
+export const UserSchema = new Schema({
   email: {
     type: String,
     match: /^\S+@\S+\.\S+$/,
@@ -53,6 +54,8 @@ export const UserSchema = new mongoose.Schema({
       }
     }
   })
+
+UserSchema.plugin(mongoosePaginate);
 
 UserSchema.pre<User>("save", function (next) {
   const user = this;
