@@ -22,7 +22,7 @@ export class MessageController {
 
   @UseGuards(AuthGuard('jwt'))
   @Post()
-  @ApiOperation({ title: 'Create room' })
+  @ApiOperation({ title: 'Send message' })
   async create(@Body() createMessageDto: CreateMessageDto, @Request() req): Promise<Message> {
     createMessageDto.user = req.user.id;
     return this.MessageService.create(createMessageDto);

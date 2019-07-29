@@ -1,14 +1,18 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ApplicationModule } from './app.module';
 import { ConfigService } from './common/config/config.service';
 
 async function bootstrap() {
-  const app = await NestFactory.create(ApplicationModule);
+  const app = await NestFactory.create<NestExpressApplication>(ApplicationModule);
   const configService: ConfigService = app.get(ConfigService);
   // Pipe
   app.useGlobalPipes(new ValidationPipe());
+  // static
+  app.useStaticAssets(join(__dirname, '..', 'upload'));
   // Swagger
   const options = new DocumentBuilder()
     .setTitle('nest.js rest api example')

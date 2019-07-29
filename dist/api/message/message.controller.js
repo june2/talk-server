@@ -45,7 +45,7 @@ let MessageController = class MessageController {
 __decorate([
     common_1.UseGuards(passport_1.AuthGuard('jwt')),
     common_1.Post(),
-    swagger_1.ApiOperation({ title: 'Create room' }),
+    swagger_1.ApiOperation({ title: 'Send message' }),
     __param(0, common_1.Body()), __param(1, common_1.Request()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [message_dto_1.CreateMessageDto, Object]),

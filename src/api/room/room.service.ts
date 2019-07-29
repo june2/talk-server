@@ -25,7 +25,7 @@ export class RoomService {
     return await this.room.findById(id).exec();
   }
 
-  async findByUserId(id: string, offset: number = 0, limit: number = 10): Promise<Room[]> {    
+  async findByUserId(id: string, offset: number = 0, limit: number = 10): Promise<Room[]> {
     let query = { users: { $in: [id] } };
     let options = {
       sort: { createdAt: -1 },
@@ -56,10 +56,12 @@ export class RoomService {
   async checkUserInRoom(id: string, userId: string): Promise<Boolean> {
     let res = false;
     let room = await this.room.findById(id).exec();
-    for (let i = 0; i < room.users.length; i++) {
-      if (room.users[i] == userId) {
-        res = true;
-        break;
+    if (room) {
+      for (let i = 0; i < room.users.length; i++) {
+        if (room.users[i] == userId) {
+          res = true;
+          break;
+        }
       }
     }
     return res;

@@ -78,10 +78,12 @@ let RoomService = class RoomService {
         return __awaiter(this, void 0, void 0, function* () {
             let res = false;
             let room = yield this.room.findById(id).exec();
-            for (let i = 0; i < room.users.length; i++) {
-                if (room.users[i] == userId) {
-                    res = true;
-                    break;
+            if (room) {
+                for (let i = 0; i < room.users.length; i++) {
+                    if (room.users[i] == userId) {
+                        res = true;
+                        break;
+                    }
                 }
             }
             return res;

@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
 const core_1 = require("@nestjs/core");
+const path_1 = require("path");
 const swagger_1 = require("@nestjs/swagger");
 const app_module_1 = require("./app.module");
 const config_service_1 = require("./common/config/config.service");
@@ -18,6 +19,7 @@ function bootstrap() {
         const app = yield core_1.NestFactory.create(app_module_1.ApplicationModule);
         const configService = app.get(config_service_1.ConfigService);
         app.useGlobalPipes(new common_1.ValidationPipe());
+        app.useStaticAssets(path_1.join(__dirname, '..', 'upload'));
         const options = new swagger_1.DocumentBuilder()
             .setTitle('nest.js rest api example')
             .setDescription('nest.js rest API description')
