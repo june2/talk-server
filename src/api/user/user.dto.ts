@@ -25,4 +25,12 @@ export class UpdateUserDto {
   @ApiModelProperty({ type: Array })
   @IsOptional()  
   images: Array<object> = [];
+
+  @ApiModelProperty({ type: String })
+  @IsOptional()  
+  location: string;
+
+  @ApiModelProperty({ type: String })
+  @IsOptional()  
+  intro: string;
 }
