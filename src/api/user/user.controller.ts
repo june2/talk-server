@@ -20,7 +20,6 @@ import * as mongoose from 'mongoose';
 import { UserService } from './user.service';
 import { User } from './user.interface';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 @ApiBearerAuth()
 @ApiUseTags('User')
