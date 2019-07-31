@@ -1,14 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel } from 'mongoose-paginate-v2';
+import { Model } from 'mongoose';
 import { CreateRoomDto } from './room.dto';
 import { Room } from './room.interface';
 import { Message } from './../message/message.interface';
 
 @Injectable()
 export class RoomService {
-  constructor(
-    @InjectModel('room') private readonly room: PaginateModel<Room>,
+  constructor(        
+    @InjectModel('room') private readonly room: Model<Room>,
+    @InjectModel('room') private readonly rooms: PaginateModel<Room>,
     @InjectModel('message') private readonly message: PaginateModel<Message>
   ) { }
 
@@ -18,7 +20,7 @@ export class RoomService {
   }
 
   async findAll(): Promise<Room[]> {
-    return await this.room.find().populate('users').exec();
+    return await this.rooms.find().populate('users').exec();
   }
 
   async findById(id: string): Promise<Room> {
@@ -37,7 +39,7 @@ export class RoomService {
       offset: offset,
       limit: limit
     };
-    return await this.room.paginate(query, options);
+    return await this.rooms.paginate(query, options);
   }
 
   async findMessageByRoomId(id: string, offset: number = 0, limit: number = 10): Promise<Message[]> {
@@ -55,7 +57,7 @@ export class RoomService {
 
   async checkUserInRoom(id: string, userId: string): Promise<Boolean> {
     let res = false;
-    let room = await this.room.findById(id).exec();
+    let room = await this.rooms.findById(id).exec();
     if (room) {
       for (let i = 0; i < room.users.length; i++) {
         if (room.users[i] == userId) {
