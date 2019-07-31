@@ -46,5 +46,15 @@ __decorate([
     class_validator_1.IsOptional(),
     __metadata("design:type", Array)
 ], UpdateUserDto.prototype, "images", void 0);
+__decorate([
+    swagger_1.ApiModelProperty({ type: String }),
+    class_validator_1.IsOptional(),
+    __metadata("design:type", String)
+], UpdateUserDto.prototype, "location", void 0);
+__decorate([
+    swagger_1.ApiModelProperty({ type: String }),
+    class_validator_1.IsOptional(),
+    __metadata("design:type", String)
+], UpdateUserDto.prototype, "intro", void 0);
 exports.UpdateUserDto = UpdateUserDto;
 //# sourceMappingURL=user.dto.js.map

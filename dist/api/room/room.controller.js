@@ -26,9 +26,12 @@ const passport_1 = require("@nestjs/passport");
 const { ObjectId } = require('mongodb');
 const room_dto_1 = require("./room.dto");
 const room_service_1 = require("./room.service");
+const message_service_1 = require("./../message/message.service");
+const message_dto_1 = require("./../message/message.dto");
 let RoomController = class RoomController {
-    constructor(RoomService) {
+    constructor(RoomService, messageService) {
         this.RoomService = RoomService;
+        this.messageService = messageService;
     }
     create(reqRoomDto, req) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -36,7 +39,13 @@ let RoomController = class RoomController {
             createRoomDto.lastMsg = reqRoomDto.lastMsg;
             createRoomDto.users.push(req.user.id);
             createRoomDto.users.push(reqRoomDto.userId);
-            this.RoomService.create(createRoomDto);
+            let res = yield this.RoomService.create(createRoomDto);
+            let createMessageDto = new message_dto_1.CreateMessageDto();
+            createMessageDto.room = res.id;
+            createMessageDto.user = req.user.id;
+            createMessageDto.text = reqRoomDto.lastMsg;
+            this.messageService.create(createMessageDto);
+            return res;
         });
     }
     findAll(offset, limit, req) {
@@ -84,7 +93,7 @@ RoomController = __decorate([
     swagger_1.ApiBearerAuth(),
     swagger_1.ApiUseTags('Room'),
     common_1.Controller('rooms'),
-    __metadata("design:paramtypes", [room_service_1.RoomService])
+    __metadata("design:paramtypes", [room_service_1.RoomService, message_service_1.MessageService])
 ], RoomController);
 exports.RoomController = RoomController;
 //# sourceMappingURL=room.controller.js.map

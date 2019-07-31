@@ -24,9 +24,11 @@ var _a, _b;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_paginate_v2_1 = require("mongoose-paginate-v2");
+const mongoose_2 = require("mongoose");
 let RoomService = class RoomService {
-    constructor(room, message) {
+    constructor(room, rooms, message) {
         this.room = room;
+        this.rooms = rooms;
         this.message = message;
     }
     create(createRoomDto) {
@@ -37,7 +39,7 @@ let RoomService = class RoomService {
     }
     findAll() {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.room.find().populate('users').exec();
+            return yield this.rooms.find().populate('users').exec();
         });
     }
     findById(id) {
@@ -58,7 +60,7 @@ let RoomService = class RoomService {
                 offset: offset,
                 limit: limit
             };
-            return yield this.room.paginate(query, options);
+            return yield this.rooms.paginate(query, options);
         });
     }
     findMessageByRoomId(id, offset = 0, limit = 10) {
@@ -77,7 +79,7 @@ let RoomService = class RoomService {
     checkUserInRoom(id, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             let res = false;
-            let room = yield this.room.findById(id).exec();
+            let room = yield this.rooms.findById(id).exec();
             if (room) {
                 for (let i = 0; i < room.users.length; i++) {
                     if (room.users[i] == userId) {
@@ -93,8 +95,9 @@ let RoomService = class RoomService {
 RoomService = __decorate([
     common_1.Injectable(),
     __param(0, mongoose_1.InjectModel('room')),
-    __param(1, mongoose_1.InjectModel('message')),
-    __metadata("design:paramtypes", [typeof (_a = typeof mongoose_paginate_v2_1.PaginateModel !== "undefined" && mongoose_paginate_v2_1.PaginateModel) === "function" ? _a : Object, typeof (_b = typeof mongoose_paginate_v2_1.PaginateModel !== "undefined" && mongoose_paginate_v2_1.PaginateModel) === "function" ? _b : Object])
+    __param(1, mongoose_1.InjectModel('room')),
+    __param(2, mongoose_1.InjectModel('message')),
+    __metadata("design:paramtypes", [mongoose_2.Model, typeof (_a = typeof mongoose_paginate_v2_1.PaginateModel !== "undefined" && mongoose_paginate_v2_1.PaginateModel) === "function" ? _a : Object, typeof (_b = typeof mongoose_paginate_v2_1.PaginateModel !== "undefined" && mongoose_paginate_v2_1.PaginateModel) === "function" ? _b : Object])
 ], RoomService);
 exports.RoomService = RoomService;
 //# sourceMappingURL=room.service.js.map

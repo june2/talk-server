@@ -6,4 +6,6 @@ export declare class CreateUserDto {
 export declare class UpdateUserDto {
     readonly name: string;
     images: Array<object>;
+    location: string;
+    intro: string;
 }
