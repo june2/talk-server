@@ -8,10 +8,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
-const message_schema_1 = require("./../message/message.schema");
 const room_schema_1 = require("./room.schema");
 const room_controller_1 = require("./room.controller");
 const room_service_1 = require("./room.service");
+const message_schema_1 = require("./../message/message.schema");
 const message_service_1 = require("./../message/message.service");
 let RoomModule = class RoomModule {
 };

@@ -25,20 +25,23 @@ const common_1 = require("@nestjs/common");
 const passport_1 = require("@nestjs/passport");
 const message_dto_1 = require("./message.dto");
 const message_service_1 = require("./message.service");
+const room_service_1 = require("./../room/room.service");
 let MessageController = class MessageController {
-    constructor(MessageService) {
-        this.MessageService = MessageService;
+    constructor(messageService, roomService) {
+        this.messageService = messageService;
+        this.roomService = roomService;
     }
     create(createMessageDto, req) {
         return __awaiter(this, void 0, void 0, function* () {
             createMessageDto.user = req.user.id;
-            return this.MessageService.create(createMessageDto);
+            this.roomService.updatLastMsgByRoomId(createMessageDto.room, createMessageDto.text);
+            return this.messageService.create(createMessageDto);
         });
     }
     findAll(req) {
         return __awaiter(this, void 0, void 0, function* () {
             let userId = req.user.id;
-            return this.MessageService.findByUserId(userId);
+            return this.messageService.findByUserId(userId);
         });
     }
 };
@@ -64,7 +67,7 @@ MessageController = __decorate([
     swagger_1.ApiBearerAuth(),
     swagger_1.ApiUseTags('Message'),
     common_1.Controller('messages'),
-    __metadata("design:paramtypes", [message_service_1.MessageService])
+    __metadata("design:paramtypes", [message_service_1.MessageService, room_service_1.RoomService])
 ], MessageController);
 exports.MessageController = MessageController;
 //# sourceMappingURL=message.controller.js.map

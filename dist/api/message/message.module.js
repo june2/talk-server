@@ -11,13 +11,15 @@ const mongoose_1 = require("@nestjs/mongoose");
 const message_schema_1 = require("./message.schema");
 const message_controller_1 = require("./message.controller");
 const message_service_1 = require("./message.service");
+const room_service_1 = require("./../room/room.service");
+const room_schema_1 = require("./../room/room.schema");
 let MessageModule = class MessageModule {
 };
 MessageModule = __decorate([
     common_1.Module({
-        imports: [mongoose_1.MongooseModule.forFeature([{ name: 'message', schema: message_schema_1.MessageSchema }])],
+        imports: [mongoose_1.MongooseModule.forFeature([{ name: 'message', schema: message_schema_1.MessageSchema }, { name: 'room', schema: room_schema_1.RoomSchema }])],
         controllers: [message_controller_1.MessageController],
-        providers: [message_service_1.MessageService],
+        providers: [message_service_1.MessageService, room_service_1.RoomService],
     })
 ], MessageModule);
 exports.MessageModule = MessageModule;

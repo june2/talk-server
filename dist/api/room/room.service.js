@@ -67,13 +67,18 @@ let RoomService = class RoomService {
         return __awaiter(this, void 0, void 0, function* () {
             let query = { room: id };
             let options = {
-                sort: { createdAt: -1 },
+                sort: { updatedAt: -1 },
                 populate: 'user',
                 lean: true,
                 offset: offset,
                 limit: limit
             };
             return yield this.message.paginate(query, options);
+        });
+    }
+    updatLastMsgByRoomId(id, lastMsg) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.room.findByIdAndUpdate(id, { lastMsg: lastMsg }, { new: true }).exec();
         });
     }
     checkUserInRoom(id, userId) {

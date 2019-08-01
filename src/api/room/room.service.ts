@@ -8,7 +8,7 @@ import { Message } from './../message/message.interface';
 
 @Injectable()
 export class RoomService {
-  constructor(        
+  constructor(
     @InjectModel('room') private readonly room: Model<Room>,
     @InjectModel('room') private readonly rooms: PaginateModel<Room>,
     @InjectModel('message') private readonly message: PaginateModel<Message>
@@ -46,13 +46,17 @@ export class RoomService {
     let query = { room: id };
     let options = {
       // select: 'title date author',
-      sort: { createdAt: -1 },
+      sort: { updatedAt: -1 },
       populate: 'user',
       lean: true,
       offset: offset,
       limit: limit
     };
     return await this.message.paginate(query, options);
+  }
+
+  async updatLastMsgByRoomId(id: string, lastMsg: string): Promise<Room> {
+    return await this.room.findByIdAndUpdate(id, { lastMsg: lastMsg }, { new: true }).exec();
   }
 
   async checkUserInRoom(id: string, userId: string): Promise<Boolean> {
