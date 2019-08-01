@@ -27,7 +27,7 @@ export class UserService {
   }
 
   async update(id: string, newValue: UpdateUserDto): Promise<User> {
-    return await this.user.findOneAndUpdate(id, newValue, { new: true }).exec();
+    return await this.user.findByIdAndUpdate(id, newValue, { new: true }).exec();    
   }
 
   async upload(id: string, filename: string, path: string): Promise<User> {

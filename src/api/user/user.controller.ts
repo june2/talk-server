@@ -55,6 +55,7 @@ export class UserController {
   @UseGuards(AuthGuard('jwt'))
   @Put('/:id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto, @Request() req): Promise<User> {
+    console.log(req.user);
     // if (id === 'me') id = req.user.id;
     // else {
     //   if (!mongoose.Types.ObjectId.isValid(id)) throw new BadRequestException("this is not objectId");
