@@ -50,7 +50,7 @@ let UserService = class UserService {
     }
     update(id, newValue) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.user.findOneAndUpdate(id, newValue, { new: true }).exec();
+            return yield this.user.findByIdAndUpdate(id, newValue, { new: true }).exec();
         });
     }
     upload(id, filename, path) {
