@@ -1,11 +1,13 @@
+import { PaginateModel } from 'mongoose-paginate-v2';
 import { Model } from 'mongoose';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { User } from './user.interface';
 export declare class UserService {
     private readonly user;
-    constructor(user: Model<User>);
+    private readonly users;
+    constructor(user: Model<User>, users: PaginateModel<User>);
     create(createUserDto: CreateUserDto): Promise<User>;
-    findAll(): Promise<User[]>;
+    findAll(id: string, offset?: number, limit?: number): Promise<User[]>;
     findOne(options: object): Promise<User>;
     findById(id: string): Promise<User>;
     update(id: string, newValue: UpdateUserDto): Promise<User>;

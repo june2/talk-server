@@ -20,12 +20,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var _a;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
+const mongoose_paginate_v2_1 = require("mongoose-paginate-v2");
 const mongoose_2 = require("mongoose");
 let UserService = class UserService {
-    constructor(user) {
+    constructor(user, users) {
         this.user = user;
+        this.users = users;
     }
     create(createUserDto) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -33,9 +36,16 @@ let UserService = class UserService {
             return yield created.save();
         });
     }
-    findAll() {
+    findAll(id, offset = 0, limit = 10) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.user.find().exec();
+            let query = { _id: { $ne: id } };
+            let options = {
+                sort: { lastLoginAt: -1 },
+                lean: true,
+                offset: offset,
+                limit: limit
+            };
+            return yield this.users.paginate(query, options);
         });
     }
     findOne(options) {
@@ -64,7 +74,8 @@ let UserService = class UserService {
 UserService = __decorate([
     common_1.Injectable(),
     __param(0, mongoose_1.InjectModel('user')),
-    __metadata("design:paramtypes", [mongoose_2.Model])
+    __param(1, mongoose_1.InjectModel('user')),
+    __metadata("design:paramtypes", [mongoose_2.Model, typeof (_a = typeof mongoose_paginate_v2_1.PaginateModel !== "undefined" && mongoose_paginate_v2_1.PaginateModel) === "function" ? _a : Object])
 ], UserService);
 exports.UserService = UserService;
 //# sourceMappingURL=user.service.js.map

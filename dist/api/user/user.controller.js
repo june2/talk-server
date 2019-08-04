@@ -32,8 +32,9 @@ let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
     }
-    findAll() {
-        return this.userService.findAll();
+    findAll(offset, limit, req) {
+        let userId = req.user.id;
+        return this.userService.findAll(userId, offset, limit);
     }
     findById(id, req) {
         if (id === 'me')
@@ -59,10 +60,12 @@ let UserController = class UserController {
     }
 };
 __decorate([
+    common_1.UseGuards(passport_1.AuthGuard('jwt')),
     common_1.Get(),
     swagger_1.ApiOperation({ title: 'Get user' }),
+    __param(0, common_1.Query('offset')), __param(1, common_1.Query('limit')), __param(2, common_1.Request()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Number, Number, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "findAll", null);
 __decorate([

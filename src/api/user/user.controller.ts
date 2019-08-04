@@ -8,7 +8,7 @@ import {
 } from '@nestjs/swagger';
 import {
   UseGuards, Controller,
-  Request, Param, Body,
+  Request, Param, Body, Query,
   Get, Post, Put,
   UnauthorizedException, BadRequestException, NotFoundException,
   UseInterceptors, UploadedFile
@@ -27,10 +27,12 @@ import { CreateUserDto, UpdateUserDto } from './user.dto';
 export class UserController {
   constructor(private readonly userService: UserService) { }
 
+  @UseGuards(AuthGuard('jwt'))
   @Get()
   @ApiOperation({ title: 'Get user' })
-  findAll(): Promise<User[]> {
-    return this.userService.findAll();
+  findAll(@Query('offset') offset: number, @Query('limit') limit: number, @Request() req): Promise<User[]> {
+    let userId = req.user.id;
+    return this.userService.findAll(userId, offset, limit);
   }
 
   @UseGuards(AuthGuard('jwt'))
@@ -54,7 +56,7 @@ export class UserController {
 
   @UseGuards(AuthGuard('jwt'))
   @Put('/:id')
-  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto, @Request() req): Promise<User> {    
+  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto, @Request() req): Promise<User> {
     // if (id === 'me') id = req.user.id;
     // else {
     //   if (!mongoose.Types.ObjectId.isValid(id)) throw new BadRequestException("this is not objectId");

@@ -11,7 +11,6 @@ import {
   Get, Post,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-const { ObjectId } = require('mongodb'); // or ObjectID 
 import { ReqRoomDto, CreateRoomDto } from './room.dto';
 import { RoomService } from './room.service';
 import { Room } from './room.interface';

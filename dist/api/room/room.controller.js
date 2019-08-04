@@ -23,7 +23,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const swagger_1 = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
 const passport_1 = require("@nestjs/passport");
-const { ObjectId } = require('mongodb');
 const room_dto_1 = require("./room.dto");
 const room_service_1 = require("./room.service");
 const message_service_1 = require("./../message/message.service");
