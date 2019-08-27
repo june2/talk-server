@@ -49,7 +49,7 @@ let RoomService = class RoomService {
     }
     findByUserId(id, offset = 0, limit = 10) {
         return __awaiter(this, void 0, void 0, function* () {
-            let query = { users: { $in: [id] } };
+            let query = { users: { $in: id } };
             let options = {
                 sort: { createdAt: -1 },
                 populate: {
