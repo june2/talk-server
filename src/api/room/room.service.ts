@@ -28,7 +28,7 @@ export class RoomService {
   }
 
   async findByUserId(id: string, offset: number = 0, limit: number = 10): Promise<Room[]> {
-    let query = { users: { $in: [id] } };
+    let query = { users: { $in: id } };
     let options = {
       sort: { createdAt: -1 },
       populate: {
