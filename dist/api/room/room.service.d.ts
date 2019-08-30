@@ -14,5 +14,6 @@ export declare class RoomService {
     findByUserId(id: string, offset?: number, limit?: number): Promise<Room[]>;
     findMessageByRoomId(id: string, offset?: number, limit?: number): Promise<Message[]>;
     updatLastMsgByRoomId(id: string, lastMsg: string): Promise<Room>;
-    checkUserInRoom(id: string, userId: string): Promise<Boolean>;
+    updatLeftByRoomId(id: string, arr: Array<string>): Promise<Room>;
+    checkUserInRoom(id: string, userId: string): Promise<Room>;
 }

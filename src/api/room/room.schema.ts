@@ -3,7 +3,8 @@ import * as mongoosePaginate from 'mongoose-paginate-v2';
 
 export const RoomSchema = new Schema({
   users: [{ type: Schema.Types.ObjectId, ref: 'user' }],
-  lastMsg: { type: String }
+  lefts: [{ type: Schema.Types.ObjectId, ref: 'user' }],
+  lastMsg: { type: String },
 }, {
     versionKey: false,
     timestamps: true,

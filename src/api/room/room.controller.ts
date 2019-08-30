@@ -8,7 +8,7 @@ import {
   UseGuards, Controller,
   Request, Body, Query, Param,
   UnauthorizedException,
-  Get, Post,
+  Get, Post, Delete
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ReqRoomDto, CreateRoomDto } from './room.dto';
@@ -53,8 +53,19 @@ export class RoomController {
   @Get('/:id/messages')
   async findById(@Param('id') id: string, @Query('offset') offset: number, @Query('limit') limit: number, @Request() req): Promise<Message[]> {
     // validation
-    let res = await this.RoomService.checkUserInRoom(id, req.user.id);
-    if (!res) throw new UnauthorizedException();
+    let res: Room = await this.RoomService.checkUserInRoom(id, req.user.id);
+    if (null === res) throw new UnauthorizedException();
     return this.RoomService.findMessageByRoomId(id, offset, limit);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Delete('/:id')
+  async deleteById(@Param('id') id: string, @Request() req): Promise<Room> {
+    // validation
+    let res: Room = await this.RoomService.checkUserInRoom(id, req.user.id);
+    if (null === res) throw new UnauthorizedException();
+    let arr: Array<string> = res.lefts;
+    arr.push(req.user.id);
+    return this.RoomService.updatLeftByRoomId(id, arr);
   }
 }

@@ -4,7 +4,8 @@ const mongoose_1 = require("mongoose");
 const mongoosePaginate = require("mongoose-paginate-v2");
 exports.RoomSchema = new mongoose_1.Schema({
     users: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'user' }],
-    lastMsg: { type: String }
+    lefts: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'user' }],
+    lastMsg: { type: String },
 }, {
     versionKey: false,
     timestamps: true,

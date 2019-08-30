@@ -49,7 +49,12 @@ let RoomService = class RoomService {
     }
     findByUserId(id, offset = 0, limit = 10) {
         return __awaiter(this, void 0, void 0, function* () {
-            let query = { users: { $in: id } };
+            let query = {
+                $and: [
+                    { users: { $in: id } },
+                    { lefts: { $ne: id } },
+                ]
+            };
             let options = {
                 sort: { createdAt: -1 },
                 populate: {
@@ -81,19 +86,22 @@ let RoomService = class RoomService {
             return yield this.room.findByIdAndUpdate(id, { lastMsg: lastMsg }, { new: true }).exec();
         });
     }
+    updatLeftByRoomId(id, arr) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.room.findByIdAndUpdate(id, { lefts: arr }, { new: true });
+        });
+    }
     checkUserInRoom(id, userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            let res = false;
             let room = yield this.rooms.findById(id).exec();
             if (room) {
                 for (let i = 0; i < room.users.length; i++) {
                     if (room.users[i] == userId) {
-                        res = true;
-                        break;
+                        return room;
                     }
                 }
             }
-            return res;
+            return null;
         });
     }
 };

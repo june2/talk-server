@@ -28,7 +28,12 @@ export class RoomService {
   }
 
   async findByUserId(id: string, offset: number = 0, limit: number = 10): Promise<Room[]> {
-    let query = { users: { $in: id } };
+    let query = {
+      $and: [
+        { users: { $in: id } },
+        { lefts: { $ne: id } },
+      ]
+    };
     let options = {
       sort: { createdAt: -1 },
       populate: {
@@ -59,17 +64,19 @@ export class RoomService {
     return await this.room.findByIdAndUpdate(id, { lastMsg: lastMsg }, { new: true }).exec();
   }
 
-  async checkUserInRoom(id: string, userId: string): Promise<Boolean> {
-    let res = false;
+  async updatLeftByRoomId(id: string, arr: Array<string>): Promise<Room> {
+    return await this.room.findByIdAndUpdate(id, { lefts: arr }, { new: true });
+  }
+
+  async checkUserInRoom(id: string, userId: string): Promise<Room> {
     let room = await this.rooms.findById(id).exec();
     if (room) {
       for (let i = 0; i < room.users.length; i++) {
         if (room.users[i] == userId) {
-          res = true;
-          break;
+          return room;
         }
       }
     }
-    return res;
+    return null;
   }
 }

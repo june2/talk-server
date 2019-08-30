@@ -10,4 +10,5 @@ export declare class RoomController {
     create(reqRoomDto: ReqRoomDto, req: any): Promise<Room>;
     findAll(offset: number, limit: number, req: any): Promise<Room[]>;
     findById(id: string, offset: number, limit: number, req: any): Promise<Message[]>;
+    deleteById(id: string, req: any): Promise<Room>;
 }

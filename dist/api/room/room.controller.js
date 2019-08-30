@@ -56,9 +56,19 @@ let RoomController = class RoomController {
     findById(id, offset, limit, req) {
         return __awaiter(this, void 0, void 0, function* () {
             let res = yield this.RoomService.checkUserInRoom(id, req.user.id);
-            if (!res)
+            if (null === res)
                 throw new common_1.UnauthorizedException();
             return this.RoomService.findMessageByRoomId(id, offset, limit);
+        });
+    }
+    deleteById(id, req) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let res = yield this.RoomService.checkUserInRoom(id, req.user.id);
+            if (null === res)
+                throw new common_1.UnauthorizedException();
+            let arr = res.lefts;
+            arr.push(req.user.id);
+            return this.RoomService.updatLeftByRoomId(id, arr);
         });
     }
 };
@@ -88,6 +98,14 @@ __decorate([
     __metadata("design:paramtypes", [String, Number, Number, Object]),
     __metadata("design:returntype", Promise)
 ], RoomController.prototype, "findById", null);
+__decorate([
+    common_1.UseGuards(passport_1.AuthGuard('jwt')),
+    common_1.Delete('/:id'),
+    __param(0, common_1.Param('id')), __param(1, common_1.Request()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], RoomController.prototype, "deleteById", null);
 RoomController = __decorate([
     swagger_1.ApiBearerAuth(),
     swagger_1.ApiUseTags('Room'),
