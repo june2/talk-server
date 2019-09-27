@@ -21,7 +21,7 @@ export const UserSchema = new Schema({
   // 성별
   gender: { type: String, enum: genders, trim: true },
   // 생년월일
-  birthday: { type: Date },
+  birthday: { type: Date },  
   // 폰번호
   phone: { type: String },
   // 포인트

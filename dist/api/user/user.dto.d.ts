@@ -7,5 +7,7 @@ export declare class UpdateUserDto {
     readonly name: string;
     images: Array<object>;
     location: string;
+    gender: string;
+    birthday: Date;
     intro: string;
 }

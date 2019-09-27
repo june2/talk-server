@@ -47,6 +47,10 @@ export class UserService {
     return await user.save();
   }
 
+  async updateLastLogin(id: string): Promise<void> {
+    this.user.findByIdAndUpdate(id, { lastLoginAt: new Date() }, { new: true }).exec();
+  }
+  
   // async delete(id: number, updateUserDto: UpdateUserDto): Promise<UpdateResult> {
   //   return await this.userRepository.d
   // }

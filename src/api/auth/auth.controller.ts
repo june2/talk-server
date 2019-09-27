@@ -30,7 +30,7 @@ export class AuthController {
   @ApiResponse({ status: 201, description: 'Successful Login' })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
-  async login(@Body() authLoginDto: AuthLoginDto): Promise<any> {    
+  async login(@Body() authLoginDto: AuthLoginDto): Promise<any> {
     const user = await this.userService.findOne({
       email: authLoginDto.email,
       password: crypto.createHmac('sha256', authLoginDto.password).digest('hex')

@@ -58,6 +58,9 @@ let UserController = class UserController {
     uploadFile(file, req) {
         return this.userService.upload(req.user.id, file.filename, file.path);
     }
+    updateLastLogin(id, req) {
+        this.userService.updateLastLogin(req.user.id);
+    }
 };
 __decorate([
     common_1.UseGuards(passport_1.AuthGuard('jwt')),
@@ -106,6 +109,14 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "uploadFile", null);
+__decorate([
+    common_1.UseGuards(passport_1.AuthGuard('jwt')),
+    common_1.Put('/:id/updateLastLogin'),
+    __param(0, common_1.Param('id')), __param(1, common_1.Request()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "updateLastLogin", null);
 UserController = __decorate([
     swagger_1.ApiBearerAuth(),
     swagger_1.ApiUseTags('User'),

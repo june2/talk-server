@@ -75,4 +75,10 @@ export class UserController {
   uploadFile(@UploadedFile() file, @Request() req): Promise<User> {
     return this.userService.upload(req.user.id, file.filename, file.path);
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Put('/:id/updateLastLogin')
+  updateLastLogin(@Param('id') id: string, @Request() req) {
+    this.userService.updateLastLogin(req.user.id);
+  }
 }

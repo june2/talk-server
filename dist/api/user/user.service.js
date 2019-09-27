@@ -70,6 +70,11 @@ let UserService = class UserService {
             return yield user.save();
         });
     }
+    updateLastLogin(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.user.findByIdAndUpdate(id, { lastLoginAt: new Date() }, { new: true }).exec();
+        });
+    }
 };
 UserService = __decorate([
     common_1.Injectable(),

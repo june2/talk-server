@@ -12,4 +12,5 @@ export declare class UserService {
     findById(id: string): Promise<User>;
     update(id: string, newValue: UpdateUserDto): Promise<User>;
     upload(id: string, filename: string, path: string): Promise<User>;
+    updateLastLogin(id: string): Promise<void>;
 }

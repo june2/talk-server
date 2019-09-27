@@ -56,7 +56,7 @@ let RoomService = class RoomService {
                 ]
             };
             let options = {
-                sort: { createdAt: -1 },
+                sort: { updatedAt: -1 },
                 populate: {
                     path: 'users',
                     match: { _id: { $ne: id } }
