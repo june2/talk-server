@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel } from 'mongoose-paginate-v2';
 import { Model } from 'mongoose';
-import { CreateUserDto, UpdateUserDto } from './user.dto'
+import { CreateUserDto, UpdateUserDto, UpdateUserPushTokenDto } from './user.dto'
 import { User } from './user.interface';
 
 
@@ -50,7 +50,11 @@ export class UserService {
   async updateLastLogin(id: string): Promise<void> {
     this.user.findByIdAndUpdate(id, { lastLoginAt: new Date() }, { new: true }).exec();
   }
-  
+
+  async registerPushToken(id: string, newValue: UpdateUserPushTokenDto): Promise<void> {
+    this.user.findByIdAndUpdate(id, newValue, { new: true }).exec();
+  }
+
   // async delete(id: number, updateUserDto: UpdateUserDto): Promise<UpdateResult> {
   //   return await this.userRepository.d
   // }

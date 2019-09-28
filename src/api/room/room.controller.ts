@@ -14,30 +14,31 @@ import { AuthGuard } from '@nestjs/passport';
 import { ReqRoomDto, CreateRoomDto } from './room.dto';
 import { RoomService } from './room.service';
 import { Room } from './room.interface';
-import { MessageService } from './../message/message.service';
-import { CreateMessageDto } from './../message/message.dto';
-import { Message } from './../message/message.interface';
+import { MessageService } from '../message/message.service';
+import { CreateMessageDto } from '../message/message.dto';
+import { Message } from '../message/message.interface';
+import { PushService } from '../../common/push/push.service';
 
 @ApiBearerAuth()
 @ApiUseTags('Room')
 @Controller('rooms')
 export class RoomController {
-  constructor(private readonly RoomService: RoomService, private readonly messageService: MessageService) { }
+  constructor(
+    private readonly RoomService: RoomService,
+    private readonly messageService: MessageService,
+    private readonly pushService: PushService
+  ) { }
 
   @UseGuards(AuthGuard('jwt'))
   @Post()
   @ApiOperation({ title: 'Create room' })
   async create(@Body() reqRoomDto: ReqRoomDto, @Request() req): Promise<Room> {
-    let createRoomDto = new CreateRoomDto();
-    createRoomDto.lastMsg = reqRoomDto.lastMsg;
-    createRoomDto.users.push(req.user.id);
-    createRoomDto.users.push(reqRoomDto.userId);
-    let res = await this.RoomService.create(createRoomDto);
-    let createMessageDto = new CreateMessageDto();
-    createMessageDto.room = res.id;
-    createMessageDto.user = req.user.id;
-    createMessageDto.text = reqRoomDto.lastMsg;
-    this.messageService.create(createMessageDto);
+    let res = await this.RoomService.create(new CreateRoomDto(
+      [req.user.id, reqRoomDto.userId],
+      reqRoomDto.lastMsg
+    ));
+    this.messageService.create(new CreateMessageDto(res.id, req.user.id, reqRoomDto.lastMsg));
+    this.pushService.send();
     return res;
   }
 

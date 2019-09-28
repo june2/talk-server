@@ -21,7 +21,7 @@ export const UserSchema = new Schema({
   // 성별
   gender: { type: String, enum: genders, trim: true },
   // 생년월일
-  birthday: { type: Date },  
+  birthday: { type: Date },
   // 폰번호
   phone: { type: String },
   // 포인트
@@ -40,20 +40,21 @@ export const UserSchema = new Schema({
   location: { type: String, default: null },
   // 내소개
   intro: { type: String },
+  pushToken: { type: String },
 }, {
-    versionKey: false,
-    timestamps: true,
-    toObject: {
-      virtuals: true
-    },
-    toJSON: {
-      virtuals: true,
-      transform: (obj, ret) => {
-        delete ret.password
-        delete ret._id
-      }
+  versionKey: false,
+  timestamps: true,
+  toObject: {
+    virtuals: true
+  },
+  toJSON: {
+    virtuals: true,
+    transform: (obj, ret) => {
+      delete ret.password
+      delete ret._id
     }
-  })
+  }
+})
 
 UserSchema.plugin(mongoosePaginate);
 

@@ -11,11 +11,12 @@ export class RoomService {
   constructor(
     @InjectModel('room') private readonly room: Model<Room>,
     @InjectModel('room') private readonly rooms: PaginateModel<Room>,
-    @InjectModel('message') private readonly message: PaginateModel<Message>
+    @InjectModel('message') private readonly message: PaginateModel<Message>,        
   ) { }
 
   async create(createRoomDto: CreateRoomDto): Promise<Room> {
     const created = new this.room(createRoomDto);
+    // this.pushService.send();
     return await created.save();
   }
 

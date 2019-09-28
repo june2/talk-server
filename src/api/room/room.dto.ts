@@ -2,6 +2,11 @@ import { ApiModelProperty } from '@nestjs/swagger';
 import { IsInt, IsString, IsBoolean, IsOptional, IsEmail } from 'class-validator';
 
 export class CreateRoomDto {
+  constructor(users: Array<string>, lastMsg: string) {
+    this.users = users;
+    this.lastMsg = lastMsg;
+  }
+
   @ApiModelProperty({ type: Array })
   @IsOptional()
   users: Array<string> = [];

@@ -19,7 +19,7 @@ import { AuthGuard } from '@nestjs/passport';
 import * as mongoose from 'mongoose';
 import { UserService } from './user.service';
 import { User } from './user.interface';
-import { CreateUserDto, UpdateUserDto } from './user.dto';
+import { CreateUserDto, UpdateUserDto, UpdateUserPushTokenDto } from './user.dto';
 
 @ApiBearerAuth()
 @ApiUseTags('User')
@@ -80,5 +80,11 @@ export class UserController {
   @Put('/:id/updateLastLogin')
   updateLastLogin(@Param('id') id: string, @Request() req) {
     this.userService.updateLastLogin(req.user.id);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Put('/:id/registerPushToken')
+  registerPushToken(@Param('id') id: string, @Request() req, @Body() updateUserPushTokenDto: UpdateUserPushTokenDto) {
+    this.userService.registerPushToken(req.user.id, updateUserPushTokenDto);
   }
 }

@@ -43,3 +43,9 @@ export class UpdateUserDto {
   @IsOptional()  
   intro: string;
 }
+
+export class UpdateUserPushTokenDto {
+  @ApiModelProperty({ type: String })
+  @IsString()
+  pushToken: string;
+}
