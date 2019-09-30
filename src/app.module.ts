@@ -7,6 +7,7 @@ import { AuthModule } from './api/auth/auth.module';
 import { UserModule } from './api/user/user.module';
 import { RoomModule } from './api/room/room.module';
 import { MessageModule } from './api/message/message.module';
+import { ReportModule } from './api/report/report.module';
 
 @Module({
   imports: [
@@ -25,7 +26,8 @@ import { MessageModule } from './api/message/message.module';
     AuthModule,
     UserModule,
     RoomModule,
-    MessageModule
+    MessageModule,
+    ReportModule,
   ]
 })
 export class ApplicationModule { }

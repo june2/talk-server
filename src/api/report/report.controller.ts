@@ -23,7 +23,7 @@ export class ReportController {
   @UseGuards(AuthGuard('jwt'))
   @Post()
   @ApiOperation({ title: 'Create room' })
-  async create(@Body() createReportDto: CreateReportDto, @Request() req): Promise<Report> {    
+  async create(@Body() createReportDto: CreateReportDto): Promise<Report> {      
     return this.reportService.create(createReportDto); 
   }
 }

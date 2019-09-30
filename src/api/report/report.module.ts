@@ -9,4 +9,4 @@ import { ReportService } from './report.service';
   controllers: [ReportController],
   providers: [ReportService],
 })
-export class RoomModule { }
+export class ReportModule { }
