@@ -30,6 +30,7 @@ exports.UserSchema = new mongoose_1.Schema({
         }],
     location: { type: String, default: null },
     intro: { type: String },
+    pushToken: { type: String },
 }, {
     versionKey: false,
     timestamps: true,

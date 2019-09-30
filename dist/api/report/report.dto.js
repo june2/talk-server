@@ -11,35 +11,27 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
-class CreateRoomDto {
-    constructor(users, lastMsg) {
-        this.users = [];
-        this.users = users;
-        this.lastMsg = lastMsg;
-    }
-}
-__decorate([
-    swagger_1.ApiModelProperty({ type: Array }),
-    class_validator_1.IsOptional(),
-    __metadata("design:type", Array)
-], CreateRoomDto.prototype, "users", void 0);
-__decorate([
-    swagger_1.ApiModelProperty({ type: String }),
-    class_validator_1.IsOptional(),
-    __metadata("design:type", String)
-], CreateRoomDto.prototype, "lastMsg", void 0);
-exports.CreateRoomDto = CreateRoomDto;
-class ReqRoomDto {
+class CreateReportDto {
 }
 __decorate([
     swagger_1.ApiModelProperty({ type: String }),
     class_validator_1.IsOptional(),
     __metadata("design:type", String)
-], ReqRoomDto.prototype, "userId", void 0);
+], CreateReportDto.prototype, "to", void 0);
 __decorate([
     swagger_1.ApiModelProperty({ type: String }),
     class_validator_1.IsOptional(),
     __metadata("design:type", String)
-], ReqRoomDto.prototype, "lastMsg", void 0);
-exports.ReqRoomDto = ReqRoomDto;
-//# sourceMappingURL=room.dto.js.map
+], CreateReportDto.prototype, "from", void 0);
+__decorate([
+    swagger_1.ApiModelProperty({ type: String }),
+    class_validator_1.IsOptional(),
+    __metadata("design:type", String)
+], CreateReportDto.prototype, "msg", void 0);
+__decorate([
+    swagger_1.ApiModelProperty({ type: Number }),
+    class_validator_1.IsOptional(),
+    __metadata("design:type", Number)
+], CreateReportDto.prototype, "option", void 0);
+exports.CreateReportDto = CreateReportDto;
+//# sourceMappingURL=report.dto.js.map

@@ -1,4 +1,5 @@
 export declare class CreateMessageDto {
+    constructor(room: string, user: string, text: string);
     room: string;
     user: string;
     text: string;

@@ -11,3 +11,6 @@ export declare class UpdateUserDto {
     birthday: Date;
     intro: string;
 }
+export declare class UpdateUserPushTokenDto {
+    pushToken: string;
+}

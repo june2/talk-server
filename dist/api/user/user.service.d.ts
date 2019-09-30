@@ -1,6 +1,6 @@
 import { PaginateModel } from 'mongoose-paginate-v2';
 import { Model } from 'mongoose';
-import { CreateUserDto, UpdateUserDto } from './user.dto';
+import { CreateUserDto, UpdateUserDto, UpdateUserPushTokenDto } from './user.dto';
 import { User } from './user.interface';
 export declare class UserService {
     private readonly user;
@@ -13,4 +13,5 @@ export declare class UserService {
     update(id: string, newValue: UpdateUserDto): Promise<User>;
     upload(id: string, filename: string, path: string): Promise<User>;
     updateLastLogin(id: string): Promise<void>;
+    registerPushToken(id: string, newValue: UpdateUserPushTokenDto): Promise<void>;
 }

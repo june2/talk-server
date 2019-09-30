@@ -61,6 +61,9 @@ let UserController = class UserController {
     updateLastLogin(id, req) {
         this.userService.updateLastLogin(req.user.id);
     }
+    registerPushToken(id, req, updateUserPushTokenDto) {
+        this.userService.registerPushToken(req.user.id, updateUserPushTokenDto);
+    }
 };
 __decorate([
     common_1.UseGuards(passport_1.AuthGuard('jwt')),
@@ -117,6 +120,14 @@ __decorate([
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "updateLastLogin", null);
+__decorate([
+    common_1.UseGuards(passport_1.AuthGuard('jwt')),
+    common_1.Put('/:id/registerPushToken'),
+    __param(0, common_1.Param('id')), __param(1, common_1.Request()), __param(2, common_1.Body()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object, user_dto_1.UpdateUserPushTokenDto]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "registerPushToken", null);
 UserController = __decorate([
     swagger_1.ApiBearerAuth(),
     swagger_1.ApiUseTags('User'),

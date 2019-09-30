@@ -18,16 +18,19 @@ const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const config_module_1 = require("./common/config/config.module");
 const config_service_1 = require("./common/config/config.service");
+const push_module_1 = require("./common/push/push.module");
 const auth_module_1 = require("./api/auth/auth.module");
 const user_module_1 = require("./api/user/user.module");
 const room_module_1 = require("./api/room/room.module");
 const message_module_1 = require("./api/message/message.module");
+const report_module_1 = require("./api/report/report.module");
 let ApplicationModule = class ApplicationModule {
 };
 ApplicationModule = __decorate([
     common_1.Module({
         imports: [
             config_module_1.ConfigModule,
+            push_module_1.PushModule,
             mongoose_1.MongooseModule.forRootAsync({
                 imports: [config_module_1.ConfigModule],
                 useFactory: (config) => __awaiter(this, void 0, void 0, function* () {
@@ -43,7 +46,8 @@ ApplicationModule = __decorate([
             auth_module_1.AuthModule,
             user_module_1.UserModule,
             room_module_1.RoomModule,
-            message_module_1.MessageModule
+            message_module_1.MessageModule,
+            report_module_1.ReportModule,
         ]
     })
 ], ApplicationModule);

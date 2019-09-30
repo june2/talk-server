@@ -25,25 +25,20 @@ const common_1 = require("@nestjs/common");
 const passport_1 = require("@nestjs/passport");
 const room_dto_1 = require("./room.dto");
 const room_service_1 = require("./room.service");
-const message_service_1 = require("./../message/message.service");
-const message_dto_1 = require("./../message/message.dto");
+const message_service_1 = require("../message/message.service");
+const message_dto_1 = require("../message/message.dto");
+const push_service_1 = require("../../common/push/push.service");
 let RoomController = class RoomController {
-    constructor(RoomService, messageService) {
+    constructor(RoomService, messageService, pushService) {
         this.RoomService = RoomService;
         this.messageService = messageService;
+        this.pushService = pushService;
     }
     create(reqRoomDto, req) {
         return __awaiter(this, void 0, void 0, function* () {
-            let createRoomDto = new room_dto_1.CreateRoomDto();
-            createRoomDto.lastMsg = reqRoomDto.lastMsg;
-            createRoomDto.users.push(req.user.id);
-            createRoomDto.users.push(reqRoomDto.userId);
-            let res = yield this.RoomService.create(createRoomDto);
-            let createMessageDto = new message_dto_1.CreateMessageDto();
-            createMessageDto.room = res.id;
-            createMessageDto.user = req.user.id;
-            createMessageDto.text = reqRoomDto.lastMsg;
-            this.messageService.create(createMessageDto);
+            let res = yield this.RoomService.create(new room_dto_1.CreateRoomDto([req.user.id, reqRoomDto.userId], reqRoomDto.lastMsg));
+            this.messageService.create(new message_dto_1.CreateMessageDto(res.id, req.user.id, reqRoomDto.lastMsg));
+            this.pushService.send();
             return res;
         });
     }
@@ -110,7 +105,9 @@ RoomController = __decorate([
     swagger_1.ApiBearerAuth(),
     swagger_1.ApiUseTags('Room'),
     common_1.Controller('rooms'),
-    __metadata("design:paramtypes", [room_service_1.RoomService, message_service_1.MessageService])
+    __metadata("design:paramtypes", [room_service_1.RoomService,
+        message_service_1.MessageService,
+        push_service_1.PushService])
 ], RoomController);
 exports.RoomController = RoomController;
 //# sourceMappingURL=room.controller.js.map

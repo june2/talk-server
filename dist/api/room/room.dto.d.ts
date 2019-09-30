@@ -1,4 +1,5 @@
 export declare class CreateRoomDto {
+    constructor(users: Array<string>, lastMsg: string);
     users: Array<string>;
     lastMsg: string;
 }

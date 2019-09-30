@@ -12,6 +12,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 class CreateMessageDto {
+    constructor(room, user, text) {
+        this.room = room;
+        this.user = user;
+        this.text = text;
+    }
 }
 __decorate([
     swagger_1.ApiModelProperty({ type: String }),
