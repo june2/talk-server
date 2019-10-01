@@ -18,4 +18,9 @@ export class NotificationService {
   async update(id: string): Promise<void> {
     this.notification.findByIdAndUpdate(id, { isRead: true }, { new: true }).exec();
   }
+
+
+  async deleteByUserAndRoom(roomId: string, userId: string): Promise<void> {
+    this.notification.deleteMany({ room: roomId, user: userId }).exec();
+  }
 }

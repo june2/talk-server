@@ -28,41 +28,23 @@ export class RoomService {
     return await this.room.findById(id).exec();
   }
 
-  async findByUserId(id: string, offset: number = 1, limit: number = 10): Promise<Room[]> {
-    let query = {
-      $and: [
-        { users: { $in: id } },
-        { lefts: { $ne: id } },
-      ]
-    };
+  async findByUserId(id: string, page: number = 1, limit: number = 10): Promise<Room[]> {
     let options = {
       sort: { updatedAt: -1 },
-      // populate: {
-      //   path: 'users',
-      //   match: { _id: { $ne: id } }
-      // },
-      // lean: true,
-      page: offset,
+      page: page,
       limit: limit
     };
-    let test = [
+    let query = [
       {
         "$match": {
-          "users": {
-            "$in": [
-              Types.ObjectId(id)
-            ]
-          }
+          "users": { "$in": [Types.ObjectId(id)] },
+          "lefts": { "$nin": [Types.ObjectId(id)] }
         }
       },
-      {
-        "$unwind": "$users"
-      },
+      { "$unwind": "$users" },
       {
         "$match": {
-          "users": {
-            "$ne": Types.ObjectId(id)
-          }
+          "users": { "$ne": Types.ObjectId(id) }
         }
       },
       {
@@ -83,22 +65,23 @@ export class RoomService {
       },
       {
         "$project": {
-          "user": {
-            "$arrayElemAt": [
-              "$user",
-              0.0
-            ]
-          },
+          "user": { "$arrayElemAt": ["$user", 0.0] },
           "lastMsg": "$lastMsg",
           "updatedAt": "$updatedAt",
           "createdAt": "$createdAt",
           "count": {
-            "$size": "$notification"
+            "$size": {
+              $filter: {
+                input: "$notification",
+                as: "notification",
+                cond: { $eq: ["$$notification.user", Types.ObjectId(id)] }
+              }
+            }
           }
         }
       }
     ];
-    return await this.rooms.aggregatePaginate(this.room.aggregate(test), options);    
+    return await this.rooms.aggregatePaginate(this.room.aggregate(query), options);
   }
 
   async findMessageByRoomId(id: string, offset: number = 0, limit: number = 10): Promise<Message[]> {

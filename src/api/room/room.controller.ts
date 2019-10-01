@@ -17,6 +17,7 @@ import { Room } from './room.interface';
 import { MessageService } from '../message/message.service';
 import { CreateMessageDto } from '../message/message.dto';
 import { Message } from '../message/message.interface';
+import { NotificationService } from '../notification/notification.service';
 import { PushService } from '../../common/push/push.service';
 
 @ApiBearerAuth()
@@ -26,7 +27,8 @@ export class RoomController {
   constructor(
     private readonly RoomService: RoomService,
     private readonly messageService: MessageService,
-    private readonly pushService: PushService
+    private readonly pushService: PushService,
+    private readonly notificationService: NotificationService
   ) { }
 
   @UseGuards(AuthGuard('jwt'))
@@ -54,8 +56,9 @@ export class RoomController {
   @Get('/:id/messages')
   async findById(@Param('id') id: string, @Query('offset') offset: number, @Query('limit') limit: number, @Request() req): Promise<Message[]> {
     // validation
-    let res: Room = await this.RoomService.checkUserInRoom(id, req.user.id);
-    if (null === res) throw new UnauthorizedException();
+    let room: Room = await this.RoomService.checkUserInRoom(id, req.user.id);
+    if (null === room) throw new UnauthorizedException();
+    this.notificationService.deleteByUserAndRoom(room.id, req.user.id);    
     return this.RoomService.findMessageByRoomId(id, offset, limit);
   }
 
