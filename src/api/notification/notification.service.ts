@@ -15,10 +15,13 @@ export class NotificationService {
     return await created.save();
   }
 
+  async count(id: string): Promise<Number> {
+    return this.notification.countDocuments({ user: id }).exec(); 
+  }
+
   async update(id: string): Promise<void> {
     this.notification.findByIdAndUpdate(id, { isRead: true }, { new: true }).exec();
   }
-
 
   async deleteByUserAndRoom(roomId: string, userId: string): Promise<void> {
     this.notification.deleteMany({ room: roomId, user: userId }).exec();

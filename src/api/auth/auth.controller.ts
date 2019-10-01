@@ -11,6 +11,7 @@ import { AuthService } from './auth.service';
 import { UserService } from './../user/user.service';
 import { CreateUserDto } from './../user/user.dto';
 import { AuthLoginDto } from './auth.dto';
+import { NotificationService } from '../notification/notification.service';
 
 @ApiBearerAuth()
 @ApiUseTags('Auth')
@@ -19,6 +20,7 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly userService: UserService,
+    private readonly notificationService: NotificationService,
   ) { }
 
   @Post('register')
@@ -30,7 +32,7 @@ export class AuthController {
   @ApiResponse({ status: 201, description: 'Successful Login' })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
-  async login(@Body() authLoginDto: AuthLoginDto): Promise<any> {    
+  async login(@Body() authLoginDto: AuthLoginDto): Promise<any> {
     const user = await this.userService.findOne({
       email: authLoginDto.email,
       password: crypto.createHmac('sha256', authLoginDto.password).digest('hex')
@@ -43,7 +45,22 @@ export class AuthController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get('me')
-  getProfile(@Request() req) {
-    return req.user;
+  async getProfile(@Request() req) {
+    let user = req.user;
+    return {
+      id: user.id,
+      state: user.state,
+      point: user.point,
+      lastLoginAt: user.lastLoginAt,
+      location: user.location,
+      email: user.email,
+      images: user.images,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+      intro: user.intro,
+      name: user.name,
+      birthday: user.birthday,      
+      tabBadgeCount: await this.notificationService.count(req.user.id)
+    };
   }
 }
