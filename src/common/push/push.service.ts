@@ -1,15 +1,18 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import Expo from 'expo-server-sdk';
+import { NotificationService } from './../../api/notification/notification.service'; import { NotificationModule } from './../../api/notification/notification.module';
+import { CreateNotificationDto } from './../../api/notification/notification.dto';
 
 @Injectable()
 export class PushService {
   private readonly expo: Expo;
 
-  constructor() {
+  constructor(private readonly notificationService: NotificationService) {
     this.expo = new Expo();
   }
 
-  send(pushToken = 'ExponentPushToken[D6tnZPGvJ9R1Yt70dt7OXQ]') {
+  send(userId: string, lastMsg: string, roomId: string) {
+    let pushToken = 'ExponentPushToken[D6tnZPGvJ9R1Yt70dt7OXQ]';
     if (Expo.isExpoPushToken(pushToken)) {
       let messages = [];
       messages.push({
@@ -32,7 +35,10 @@ export class PushService {
             console.log(ticketChunk);
             tickets.push(...ticketChunk);
             // NOTE: If a ticket contains an error code in ticket.details.error, you
-            // must handle it appropriately. The error codes are listed in the Expo            
+            // must handle it appropriately. The error codes are listed in the Expo
+            this.notificationService.create(
+              new CreateNotificationDto(roomId, userId, 'msg'
+              ));
           } catch (error) {
             console.error(error);
           }

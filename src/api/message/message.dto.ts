@@ -35,4 +35,8 @@ export class CreateMessageDto {
   @ApiModelProperty({ type: Object })
   @IsOptional()
   quickReplies: object;
+
+  @ApiModelProperty({ type: Object })
+  @IsOptional()
+  to: string;
 }

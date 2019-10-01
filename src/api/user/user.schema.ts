@@ -17,7 +17,7 @@ export const UserSchema = new Schema({
   },
   name: { type: String },
   state: { type: String, enum: states, default: 'WAITING' },
-  password: { type: String, required: true, minlength: 6 },
+  password: { type: String, required: true, minlength: 6, select: false },
   // 성별
   gender: { type: String, enum: genders, trim: true },
   // 생년월일
@@ -41,6 +41,8 @@ export const UserSchema = new Schema({
   // 내소개
   intro: { type: String },
   pushToken: { type: String },
+  PlatformOS: { type: String },
+  PlatformVer: { type: String },
 }, {
   versionKey: false,
   timestamps: true,

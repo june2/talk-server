@@ -33,13 +33,13 @@ export class RoomController {
   @Post()
   @ApiOperation({ title: 'Create room' })
   async create(@Body() reqRoomDto: ReqRoomDto, @Request() req): Promise<Room> {
-    let res = await this.RoomService.create(new CreateRoomDto(
+    let room = await this.RoomService.create(new CreateRoomDto(
       [req.user.id, reqRoomDto.userId],
       reqRoomDto.lastMsg
     ));
-    this.messageService.create(new CreateMessageDto(res.id, req.user.id, reqRoomDto.lastMsg));
-    this.pushService.send();
-    return res;
+    this.messageService.create(new CreateMessageDto(room.id, req.user.id, reqRoomDto.lastMsg));
+    this.pushService.send(reqRoomDto.userId, room.lastMsg, room.id);///
+    return room;
   }
 
   @UseGuards(AuthGuard('jwt'))

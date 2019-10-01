@@ -24,27 +24,35 @@ export class UpdateUserDto {
   readonly name: string;
 
   @ApiModelProperty({ type: Array })
-  @IsOptional()  
+  @IsOptional()
   images: Array<object> = [];
 
   @ApiModelProperty({ type: String })
-  @IsOptional()  
+  @IsOptional()
   location: string;
 
   @ApiModelProperty({ type: String })
-  @IsOptional()  
+  @IsOptional()
   gender: string;
 
   @ApiModelProperty({ type: date })
-  @IsOptional()  
+  @IsOptional()
   birthday: Date;
 
   @ApiModelProperty({ type: String })
-  @IsOptional()  
+  @IsOptional()
   intro: string;
 }
 
 export class UpdateUserPushTokenDto {
+  @ApiModelProperty({ type: String })
+  @IsString()
+  PlatformOS: string;
+
+  @ApiModelProperty({ type: String })
+  @IsString()
+  PlatformVer: string;
+
   @ApiModelProperty({ type: String })
   @IsString()
   pushToken: string;

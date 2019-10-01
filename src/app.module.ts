@@ -8,6 +8,7 @@ import { UserModule } from './api/user/user.module';
 import { RoomModule } from './api/room/room.module';
 import { MessageModule } from './api/message/message.module';
 import { ReportModule } from './api/report/report.module';
+import { NotificationModule } from './api/notification/notification.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { ReportModule } from './api/report/report.module';
     RoomModule,
     MessageModule,
     ReportModule,
+    NotificationModule,
   ]
 })
 export class ApplicationModule { }

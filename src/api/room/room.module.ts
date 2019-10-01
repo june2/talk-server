@@ -10,10 +10,9 @@ import { PushModule } from '../../common/push/push.module';
 @Module({
   imports: [MongooseModule.forFeature([
     { name: 'room', schema: RoomSchema },
-    { name: 'message', schema: MessageSchema }
-  ]),
-  PushModule
-],
+    { name: 'message', schema: MessageSchema }]),
+    PushModule
+  ],
   controllers: [RoomController],
   providers: [RoomService, MessageService],
 })

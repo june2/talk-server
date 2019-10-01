@@ -12,14 +12,20 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { CreateMessageDto } from './message.dto';
 import { MessageService } from './message.service';
-import { RoomService } from './../room/room.service';
 import { Message } from './message.interface';
+import { RoomService } from './../room/room.service';
+import { PushService } from '../../common/push/push.service';
+import { CreateNotificationDto } from './../notification/notification.dto';
 
 @ApiBearerAuth()
 @ApiUseTags('Message')
 @Controller('messages')
 export class MessageController {
-  constructor(private readonly messageService: MessageService, private readonly roomService: RoomService) { }
+  constructor(
+    private readonly messageService: MessageService,
+    private readonly roomService: RoomService,
+    private readonly pushService: PushService
+  ) { }
 
   @UseGuards(AuthGuard('jwt'))
   @Post()
@@ -27,6 +33,7 @@ export class MessageController {
   async create(@Body() createMessageDto: CreateMessageDto, @Request() req): Promise<Message> {
     createMessageDto.user = req.user.id;
     this.roomService.updatLastMsgByRoomId(createMessageDto.room, createMessageDto.text);
+    this.pushService.send(createMessageDto.to, createMessageDto.text, createMessageDto.room);///
     return this.messageService.create(createMessageDto);
   }
 

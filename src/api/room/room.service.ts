@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel } from 'mongoose-paginate-v2';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { CreateRoomDto } from './room.dto';
 import { Room } from './room.interface';
 import { Message } from './../message/message.interface';
@@ -11,7 +11,7 @@ export class RoomService {
   constructor(
     @InjectModel('room') private readonly room: Model<Room>,
     @InjectModel('room') private readonly rooms: PaginateModel<Room>,
-    @InjectModel('message') private readonly message: PaginateModel<Message>,        
+    @InjectModel('message') private readonly message: PaginateModel<Message>,
   ) { }
 
   async create(createRoomDto: CreateRoomDto): Promise<Room> {
@@ -28,7 +28,7 @@ export class RoomService {
     return await this.room.findById(id).exec();
   }
 
-  async findByUserId(id: string, offset: number = 0, limit: number = 10): Promise<Room[]> {
+  async findByUserId(id: string, offset: number = 1, limit: number = 10): Promise<Room[]> {
     let query = {
       $and: [
         { users: { $in: id } },
@@ -37,15 +37,68 @@ export class RoomService {
     };
     let options = {
       sort: { updatedAt: -1 },
-      populate: {
-        path: 'users',
-        match: { _id: { $ne: id } }
-      },
-      lean: true,
-      offset: offset,
+      // populate: {
+      //   path: 'users',
+      //   match: { _id: { $ne: id } }
+      // },
+      // lean: true,
+      page: offset,
       limit: limit
     };
-    return await this.rooms.paginate(query, options);
+    let test = [
+      {
+        "$match": {
+          "users": {
+            "$in": [
+              Types.ObjectId(id)
+            ]
+          }
+        }
+      },
+      {
+        "$unwind": "$users"
+      },
+      {
+        "$match": {
+          "users": {
+            "$ne": Types.ObjectId(id)
+          }
+        }
+      },
+      {
+        "$lookup": {
+          "from": "notifications",
+          "localField": "_id",
+          "foreignField": "room",
+          "as": "notification"
+        }
+      },
+      {
+        "$lookup": {
+          "from": "users",
+          "localField": "users",
+          "foreignField": "_id",
+          "as": "user"
+        }
+      },
+      {
+        "$project": {
+          "user": {
+            "$arrayElemAt": [
+              "$user",
+              0.0
+            ]
+          },
+          "lastMsg": "$lastMsg",
+          "updatedAt": "$updatedAt",
+          "createdAt": "$createdAt",
+          "count": {
+            "$size": "$notification"
+          }
+        }
+      }
+    ];
+    return await this.rooms.aggregatePaginate(this.room.aggregate(test), options);    
   }
 
   async findMessageByRoomId(id: string, offset: number = 0, limit: number = 10): Promise<Message[]> {
