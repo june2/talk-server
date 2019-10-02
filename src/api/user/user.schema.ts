@@ -25,7 +25,7 @@ export const UserSchema = new Schema({
   // 폰번호
   phone: { type: String },
   // 포인트
-  point: { type: Number, default: 0 },
+  point: { type: Number, default: 100 },
   // 마지막 로그인 시간
   lastLoginAt: { type: Date, default: new Date() },
   // 아바타

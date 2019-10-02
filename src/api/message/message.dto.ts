@@ -2,10 +2,11 @@ import { ApiModelProperty } from '@nestjs/swagger';
 import { IsInt, IsString, IsBoolean, IsOptional, IsEmail } from 'class-validator';
 
 export class CreateMessageDto {
-  constructor(room: string, user: string, text: string) {
+  constructor(room: string, user: string, text: string, system: boolean = false) {
     this.room = room;
     this.user = user;
     this.text = text;
+    this.system = system;
   }
 
   @ApiModelProperty({ type: String })

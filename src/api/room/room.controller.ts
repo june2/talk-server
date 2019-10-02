@@ -58,7 +58,7 @@ export class RoomController {
     // validation
     let room: Room = await this.RoomService.checkUserInRoom(id, req.user.id);
     if (null === room) throw new UnauthorizedException();
-    this.notificationService.deleteByUserAndRoom(room.id, req.user.id);    
+    this.notificationService.deleteByUserAndRoom(room.id, req.user.id);
     return this.RoomService.findMessageByRoomId(id, offset, limit);
   }
 
@@ -66,10 +66,11 @@ export class RoomController {
   @Delete('/:id')
   async deleteById(@Param('id') id: string, @Request() req): Promise<Room> {
     // validation
-    let res: Room = await this.RoomService.checkUserInRoom(id, req.user.id);
-    if (null === res) throw new UnauthorizedException();
-    let arr: Array<string> = res.lefts;
+    let room: Room = await this.RoomService.checkUserInRoom(id, req.user.id);
+    if (null === room) throw new UnauthorizedException();
+    let arr: Array<string> = room.lefts;
     arr.push(req.user.id);
+    this.messageService.create(new CreateMessageDto(room.id, req.user.id, `${req.user.name}님이 방을 나갔습니다.`, true));
     return this.RoomService.updatLeftByRoomId(id, arr);
   }
 }
