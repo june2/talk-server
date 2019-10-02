@@ -28,6 +28,10 @@ export class RoomService {
     return await this.room.findById(id).exec();
   }
 
+  async findByUsers(id: string, userId: string): Promise<Room> {
+    return await this.room.findOne({ users: { $all: [id, userId] } }).exec();    
+  }
+
   async findByUserId(id: string, page: number = 1, limit: number = 10): Promise<Room[]> {
     let options = {
       sort: { updatedAt: -1 },

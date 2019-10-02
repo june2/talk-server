@@ -41,10 +41,8 @@ export class UserService {
     return await this.user.findByIdAndUpdate(id, newValue, { new: true }).exec();
   }
 
-  async upload(id: string, filename: string, path: string): Promise<User> {
-    let user = await this.user.findById(id).exec();
-    user.images.push({ thumbnail: filename, full: path });
-    return await user.save();
+  async upload(id: string, images: object): Promise<User> {
+    return this.user.findByIdAndUpdate(id, { images: images }, { new: true }).exec();
   }
 
   async updateLastLogin(id: string): Promise<void> {

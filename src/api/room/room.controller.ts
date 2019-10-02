@@ -25,7 +25,7 @@ import { PushService } from '../../common/push/push.service';
 @Controller('rooms')
 export class RoomController {
   constructor(
-    private readonly RoomService: RoomService,
+    private readonly roomService: RoomService,
     private readonly messageService: MessageService,
     private readonly pushService: PushService,
     private readonly notificationService: NotificationService
@@ -35,12 +35,22 @@ export class RoomController {
   @Post()
   @ApiOperation({ title: 'Create room' })
   async create(@Body() reqRoomDto: ReqRoomDto, @Request() req): Promise<Room> {
-    let room = await this.RoomService.create(new CreateRoomDto(
-      [req.user.id, reqRoomDto.userId],
-      reqRoomDto.lastMsg
-    ));
+    // check room 
+    let room: Room = await this.roomService.findByUsers(req.user.id, reqRoomDto.userId);
+    if (!room) {
+      // check point
+      if (req.user.point < 50) throw new UnauthorizedException();
+      // create room
+      room = await this.roomService.create(new CreateRoomDto(
+        [req.user.id, reqRoomDto.userId],
+        reqRoomDto.lastMsg
+      ));            
+      // TODO: substract point  
+    } else {
+      this.roomService.updatLastMsgByRoomId(room.id, reqRoomDto.lastMsg);
+    }
     this.messageService.create(new CreateMessageDto(room.id, req.user.id, reqRoomDto.lastMsg));
-    this.pushService.send(reqRoomDto.userId, room.lastMsg, room.id);///
+    this.pushService.send(reqRoomDto.userId, room.lastMsg, room.id);
     return room;
   }
 
@@ -49,28 +59,28 @@ export class RoomController {
   @ApiOperation({ title: 'Get rooms by userId' })
   async findAll(@Query('offset') offset: number, @Query('limit') limit: number, @Request() req): Promise<Room[]> {
     let userId = req.user.id;
-    return this.RoomService.findByUserId(userId, offset, limit);
+    return this.roomService.findByUserId(userId, offset, limit);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Get('/:id/messages')
   async findById(@Param('id') id: string, @Query('offset') offset: number, @Query('limit') limit: number, @Request() req): Promise<Message[]> {
     // validation
-    let room: Room = await this.RoomService.checkUserInRoom(id, req.user.id);
+    let room: Room = await this.roomService.checkUserInRoom(id, req.user.id);
     if (null === room) throw new UnauthorizedException();
     this.notificationService.deleteByUserAndRoom(room.id, req.user.id);
-    return this.RoomService.findMessageByRoomId(id, offset, limit);
+    return this.roomService.findMessageByRoomId(id, offset, limit);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Delete('/:id')
   async deleteById(@Param('id') id: string, @Request() req): Promise<Room> {
     // validation
-    let room: Room = await this.RoomService.checkUserInRoom(id, req.user.id);
+    let room: Room = await this.roomService.checkUserInRoom(id, req.user.id);
     if (null === room) throw new UnauthorizedException();
     let arr: Array<string> = room.lefts;
     arr.push(req.user.id);
     this.messageService.create(new CreateMessageDto(room.id, req.user.id, `${req.user.name}님이 방을 나갔습니다.`, true));
-    return this.RoomService.updatLeftByRoomId(id, arr);
+    return this.roomService.updatLeftByRoomId(id, arr);
   }
 }
