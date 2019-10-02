@@ -8,7 +8,7 @@ import {
 } from '@nestjs/swagger';
 import {
   UseGuards, Controller,
-  Request, Param, Body, Query,
+  Request, Response, Param, Body, Query,
   Get, Post, Put,
   UnauthorizedException, BadRequestException, NotFoundException,
   UseInterceptors, UploadedFile
@@ -25,7 +25,8 @@ import { CreateUserDto, UpdateUserDto, UpdateUserPushTokenDto } from './user.dto
 @ApiUseTags('User')
 @Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) { }
+  constructor(
+    private readonly userService: UserService) { }
 
   @UseGuards(AuthGuard('jwt'))
   @Get()
@@ -71,9 +72,9 @@ export class UserController {
   @ApiImplicitParam({ name: 'id', type: 'string', required: true, description: 'user id' })
   @UseGuards(AuthGuard('jwt'))
   @Post('/:id/upload')
-  @UseInterceptors(FileInterceptor('file', multerOptions))
-  uploadFile(@UploadedFile() file, @Request() req): Promise<User> {
-    let images = [...req.user.images, { thumbnail: file.filename, full: file.path }];
+  @UseInterceptors(FileInterceptor('upload', multerOptions()))
+  uploadFile(@UploadedFile() file, @Request() req): Promise<User> {    
+    let images = [...req.user.images, file.Location];
     return this.userService.upload(req.user.id, images);
   }
 

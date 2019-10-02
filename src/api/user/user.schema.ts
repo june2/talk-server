@@ -31,11 +31,7 @@ export const UserSchema = new Schema({
   // 아바타
   avatar: { type: String },
   // 이미지
-  images: [{
-    _id: false,
-    thumbnail: '',
-    full: ''
-  }],
+  images: [String],
   // 지역 
   location: { type: String, default: null },
   // 내소개
