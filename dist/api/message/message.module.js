@@ -13,11 +13,18 @@ const message_controller_1 = require("./message.controller");
 const message_service_1 = require("./message.service");
 const room_service_1 = require("./../room/room.service");
 const room_schema_1 = require("./../room/room.schema");
+const push_module_1 = require("../../common/push/push.module");
 let MessageModule = class MessageModule {
 };
 MessageModule = __decorate([
     common_1.Module({
-        imports: [mongoose_1.MongooseModule.forFeature([{ name: 'message', schema: message_schema_1.MessageSchema }, { name: 'room', schema: room_schema_1.RoomSchema }])],
+        imports: [
+            mongoose_1.MongooseModule.forFeature([
+                { name: 'message', schema: message_schema_1.MessageSchema },
+                { name: 'room', schema: room_schema_1.RoomSchema }
+            ]),
+            push_module_1.PushModule
+        ],
         controllers: [message_controller_1.MessageController],
         providers: [message_service_1.MessageService, room_service_1.RoomService],
     })

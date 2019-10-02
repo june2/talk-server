@@ -7,22 +7,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
-const push_service_1 = require("./push.service");
-const notification_module_1 = require("./../../api/notification/notification.module");
-const notification_service_1 = require("./../../api/notification/notification.service");
-let PushModule = class PushModule {
+const mongoose_1 = require("@nestjs/mongoose");
+const notification_schema_1 = require("./notification.schema");
+const notification_service_1 = require("./notification.service");
+let NotificationModule = class NotificationModule {
 };
-PushModule = __decorate([
+NotificationModule = __decorate([
     common_1.Module({
-        imports: [
-            notification_module_1.NotificationModule
-        ],
-        providers: [
-            push_service_1.PushService,
-            notification_service_1.NotificationService
-        ],
-        exports: [push_service_1.PushService],
+        imports: [mongoose_1.MongooseModule.forFeature([{ name: 'notification', schema: notification_schema_1.NotificationSchema }])],
+        providers: [notification_service_1.NotificationService],
     })
-], PushModule);
-exports.PushModule = PushModule;
-//# sourceMappingURL=push.module.js.map
+], NotificationModule);
+exports.NotificationModule = NotificationModule;
+//# sourceMappingURL=notification.module.js.map

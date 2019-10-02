@@ -26,15 +26,18 @@ const passport_1 = require("@nestjs/passport");
 const message_dto_1 = require("./message.dto");
 const message_service_1 = require("./message.service");
 const room_service_1 = require("./../room/room.service");
+const push_service_1 = require("../../common/push/push.service");
 let MessageController = class MessageController {
-    constructor(messageService, roomService) {
+    constructor(messageService, roomService, pushService) {
         this.messageService = messageService;
         this.roomService = roomService;
+        this.pushService = pushService;
     }
     create(createMessageDto, req) {
         return __awaiter(this, void 0, void 0, function* () {
             createMessageDto.user = req.user.id;
             this.roomService.updatLastMsgByRoomId(createMessageDto.room, createMessageDto.text);
+            this.pushService.send(createMessageDto.to, createMessageDto.text, createMessageDto.room);
             return this.messageService.create(createMessageDto);
         });
     }
@@ -67,7 +70,9 @@ MessageController = __decorate([
     swagger_1.ApiBearerAuth(),
     swagger_1.ApiUseTags('Message'),
     common_1.Controller('messages'),
-    __metadata("design:paramtypes", [message_service_1.MessageService, room_service_1.RoomService])
+    __metadata("design:paramtypes", [message_service_1.MessageService,
+        room_service_1.RoomService,
+        push_service_1.PushService])
 ], MessageController);
 exports.MessageController = MessageController;
 //# sourceMappingURL=message.controller.js.map

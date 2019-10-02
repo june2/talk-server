@@ -12,5 +12,7 @@ export declare class UpdateUserDto {
     intro: string;
 }
 export declare class UpdateUserPushTokenDto {
+    PlatformOS: string;
+    PlatformVer: string;
     pushToken: string;
 }

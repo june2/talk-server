@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 const mongoosePaginate = require("mongoose-paginate-v2");
+const aggregatePaginate = require("mongoose-aggregate-paginate-v2");
 exports.RoomSchema = new mongoose_1.Schema({
     users: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'user' }],
     lefts: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'user' }],
@@ -20,4 +21,5 @@ exports.RoomSchema = new mongoose_1.Schema({
     }
 });
 exports.RoomSchema.plugin(mongoosePaginate);
+exports.RoomSchema.plugin(aggregatePaginate);
 //# sourceMappingURL=room.schema.js.map

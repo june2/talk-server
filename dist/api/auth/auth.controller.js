@@ -28,10 +28,12 @@ const auth_service_1 = require("./auth.service");
 const user_service_1 = require("./../user/user.service");
 const user_dto_1 = require("./../user/user.dto");
 const auth_dto_1 = require("./auth.dto");
+const notification_service_1 = require("../notification/notification.service");
 let AuthController = class AuthController {
-    constructor(authService, userService) {
+    constructor(authService, userService, notificationService) {
         this.authService = authService;
         this.userService = userService;
+        this.notificationService = notificationService;
     }
     register(createUserDto) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -51,7 +53,24 @@ let AuthController = class AuthController {
         });
     }
     getProfile(req) {
-        return req.user;
+        return __awaiter(this, void 0, void 0, function* () {
+            let user = req.user;
+            return {
+                id: user.id,
+                state: user.state,
+                point: user.point,
+                lastLoginAt: user.lastLoginAt,
+                location: user.location,
+                email: user.email,
+                images: user.images,
+                createdAt: user.createdAt,
+                updatedAt: user.updatedAt,
+                intro: user.intro,
+                name: user.name,
+                birthday: user.birthday,
+                tabBadgeCount: yield this.notificationService.count(req.user.id)
+            };
+        });
     }
 };
 __decorate([
@@ -77,14 +96,15 @@ __decorate([
     __param(0, common_1.Request()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], AuthController.prototype, "getProfile", null);
 AuthController = __decorate([
     swagger_1.ApiBearerAuth(),
     swagger_1.ApiUseTags('Auth'),
     common_1.Controller('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService,
-        user_service_1.UserService])
+        user_service_1.UserService,
+        notification_service_1.NotificationService])
 ], AuthController);
 exports.AuthController = AuthController;
 //# sourceMappingURL=auth.controller.js.map

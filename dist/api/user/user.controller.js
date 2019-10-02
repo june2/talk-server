@@ -56,7 +56,8 @@ let UserController = class UserController {
         });
     }
     uploadFile(file, req) {
-        return this.userService.upload(req.user.id, file.filename, file.path);
+        let images = [...req.user.images, { thumbnail: file.filename, full: file.path }];
+        return this.userService.upload(req.user.id, images);
     }
     updateLastLogin(id, req) {
         this.userService.updateLastLogin(req.user.id);

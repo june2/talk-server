@@ -3,12 +3,14 @@ import { RoomService } from './room.service';
 import { Room } from './room.interface';
 import { MessageService } from '../message/message.service';
 import { Message } from '../message/message.interface';
+import { NotificationService } from '../notification/notification.service';
 import { PushService } from '../../common/push/push.service';
 export declare class RoomController {
-    private readonly RoomService;
+    private readonly roomService;
     private readonly messageService;
     private readonly pushService;
-    constructor(RoomService: RoomService, messageService: MessageService, pushService: PushService);
+    private readonly notificationService;
+    constructor(roomService: RoomService, messageService: MessageService, pushService: PushService, notificationService: NotificationService);
     create(reqRoomDto: ReqRoomDto, req: any): Promise<Room>;
     findAll(offset: number, limit: number, req: any): Promise<Room[]>;
     findById(id: string, offset: number, limit: number, req: any): Promise<Message[]>;

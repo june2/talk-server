@@ -27,43 +27,55 @@ const room_dto_1 = require("./room.dto");
 const room_service_1 = require("./room.service");
 const message_service_1 = require("../message/message.service");
 const message_dto_1 = require("../message/message.dto");
+const notification_service_1 = require("../notification/notification.service");
 const push_service_1 = require("../../common/push/push.service");
 let RoomController = class RoomController {
-    constructor(RoomService, messageService, pushService) {
-        this.RoomService = RoomService;
+    constructor(roomService, messageService, pushService, notificationService) {
+        this.roomService = roomService;
         this.messageService = messageService;
         this.pushService = pushService;
+        this.notificationService = notificationService;
     }
     create(reqRoomDto, req) {
         return __awaiter(this, void 0, void 0, function* () {
-            let res = yield this.RoomService.create(new room_dto_1.CreateRoomDto([req.user.id, reqRoomDto.userId], reqRoomDto.lastMsg));
-            this.messageService.create(new message_dto_1.CreateMessageDto(res.id, req.user.id, reqRoomDto.lastMsg));
-            this.pushService.send();
-            return res;
+            let room = yield this.roomService.findByUsers(req.user.id, reqRoomDto.userId);
+            if (!room) {
+                if (req.user.point < 50)
+                    throw new common_1.UnauthorizedException();
+                room = yield this.roomService.create(new room_dto_1.CreateRoomDto([req.user.id, reqRoomDto.userId], reqRoomDto.lastMsg));
+            }
+            else {
+                this.roomService.updatLastMsgByRoomId(room.id, reqRoomDto.lastMsg);
+            }
+            this.messageService.create(new message_dto_1.CreateMessageDto(room.id, req.user.id, reqRoomDto.lastMsg));
+            this.pushService.send(reqRoomDto.userId, room.lastMsg, room.id);
+            return room;
         });
     }
     findAll(offset, limit, req) {
         return __awaiter(this, void 0, void 0, function* () {
             let userId = req.user.id;
-            return this.RoomService.findByUserId(userId, offset, limit);
+            return this.roomService.findByUserId(userId, offset, limit);
         });
     }
     findById(id, offset, limit, req) {
         return __awaiter(this, void 0, void 0, function* () {
-            let res = yield this.RoomService.checkUserInRoom(id, req.user.id);
-            if (null === res)
+            let room = yield this.roomService.checkUserInRoom(id, req.user.id);
+            if (null === room)
                 throw new common_1.UnauthorizedException();
-            return this.RoomService.findMessageByRoomId(id, offset, limit);
+            this.notificationService.deleteByUserAndRoom(room.id, req.user.id);
+            return this.roomService.findMessageByRoomId(id, offset, limit);
         });
     }
     deleteById(id, req) {
         return __awaiter(this, void 0, void 0, function* () {
-            let res = yield this.RoomService.checkUserInRoom(id, req.user.id);
-            if (null === res)
+            let room = yield this.roomService.checkUserInRoom(id, req.user.id);
+            if (null === room)
                 throw new common_1.UnauthorizedException();
-            let arr = res.lefts;
+            let arr = room.lefts;
             arr.push(req.user.id);
-            return this.RoomService.updatLeftByRoomId(id, arr);
+            this.messageService.create(new message_dto_1.CreateMessageDto(room.id, req.user.id, `${req.user.name}님이 방을 나갔습니다.`, true));
+            return this.roomService.updatLeftByRoomId(id, arr);
         });
     }
 };
@@ -107,7 +119,8 @@ RoomController = __decorate([
     common_1.Controller('rooms'),
     __metadata("design:paramtypes", [room_service_1.RoomService,
         message_service_1.MessageService,
-        push_service_1.PushService])
+        push_service_1.PushService,
+        notification_service_1.NotificationService])
 ], RoomController);
 exports.RoomController = RoomController;
 //# sourceMappingURL=room.controller.js.map

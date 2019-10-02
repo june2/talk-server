@@ -19,11 +19,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
 const expo_server_sdk_1 = require("expo-server-sdk");
+const notification_service_1 = require("./../../api/notification/notification.service");
+const notification_dto_1 = require("./../../api/notification/notification.dto");
 let PushService = class PushService {
-    constructor() {
+    constructor(notificationService) {
+        this.notificationService = notificationService;
         this.expo = new expo_server_sdk_1.default();
     }
-    send(pushToken = 'ExponentPushToken[D6tnZPGvJ9R1Yt70dt7OXQ]') {
+    send(userId, lastMsg, roomId) {
+        let pushToken = 'ExponentPushToken[D6tnZPGvJ9R1Yt70dt7OXQ]';
         if (expo_server_sdk_1.default.isExpoPushToken(pushToken)) {
             let messages = [];
             messages.push({
@@ -41,6 +45,7 @@ let PushService = class PushService {
                         let ticketChunk = yield this.expo.sendPushNotificationsAsync(chunk);
                         console.log(ticketChunk);
                         tickets.push(...ticketChunk);
+                        this.notificationService.create(new notification_dto_1.CreateNotificationDto(roomId, userId, 'msg'));
                     }
                     catch (error) {
                         console.error(error);
@@ -52,7 +57,7 @@ let PushService = class PushService {
 };
 PushService = __decorate([
     common_1.Injectable(),
-    __metadata("design:paramtypes", [])
+    __metadata("design:paramtypes", [notification_service_1.NotificationService])
 ], PushService);
 exports.PushService = PushService;
 //# sourceMappingURL=push.service.js.map

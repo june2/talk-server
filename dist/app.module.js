@@ -24,6 +24,7 @@ const user_module_1 = require("./api/user/user.module");
 const room_module_1 = require("./api/room/room.module");
 const message_module_1 = require("./api/message/message.module");
 const report_module_1 = require("./api/report/report.module");
+const notification_module_1 = require("./api/notification/notification.module");
 let ApplicationModule = class ApplicationModule {
 };
 ApplicationModule = __decorate([
@@ -48,6 +49,7 @@ ApplicationModule = __decorate([
             room_module_1.RoomModule,
             message_module_1.MessageModule,
             report_module_1.ReportModule,
+            notification_module_1.NotificationModule,
         ]
     })
 ], ApplicationModule);

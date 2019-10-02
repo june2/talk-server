@@ -11,7 +11,7 @@ export declare class UserService {
     findOne(options: object): Promise<User>;
     findById(id: string): Promise<User>;
     update(id: string, newValue: UpdateUserDto): Promise<User>;
-    upload(id: string, filename: string, path: string): Promise<User>;
+    upload(id: string, images: object): Promise<User>;
     updateLastLogin(id: string): Promise<void>;
     registerPushToken(id: string, newValue: UpdateUserPushTokenDto): Promise<void>;
 }

@@ -74,6 +74,16 @@ __decorate([
     swagger_1.ApiModelProperty({ type: String }),
     class_validator_1.IsString(),
     __metadata("design:type", String)
+], UpdateUserPushTokenDto.prototype, "PlatformOS", void 0);
+__decorate([
+    swagger_1.ApiModelProperty({ type: String }),
+    class_validator_1.IsString(),
+    __metadata("design:type", String)
+], UpdateUserPushTokenDto.prototype, "PlatformVer", void 0);
+__decorate([
+    swagger_1.ApiModelProperty({ type: String }),
+    class_validator_1.IsString(),
+    __metadata("design:type", String)
 ], UpdateUserPushTokenDto.prototype, "pushToken", void 0);
 exports.UpdateUserPushTokenDto = UpdateUserPushTokenDto;
 //# sourceMappingURL=user.dto.js.map

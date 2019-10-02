@@ -11,53 +11,33 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
-class CreateMessageDto {
-    constructor(room, user, text, system = false) {
+class CreateNotificationDto {
+    constructor(room, user, type, isRead = false) {
         this.room = room;
         this.user = user;
-        this.text = text;
-        this.system = system;
+        this.type = type;
+        this.isRead = isRead;
     }
 }
 __decorate([
     swagger_1.ApiModelProperty({ type: String }),
     class_validator_1.IsOptional(),
     __metadata("design:type", String)
-], CreateMessageDto.prototype, "room", void 0);
+], CreateNotificationDto.prototype, "user", void 0);
 __decorate([
     swagger_1.ApiModelProperty({ type: String }),
     class_validator_1.IsOptional(),
     __metadata("design:type", String)
-], CreateMessageDto.prototype, "user", void 0);
+], CreateNotificationDto.prototype, "room", void 0);
 __decorate([
     swagger_1.ApiModelProperty({ type: String }),
     class_validator_1.IsOptional(),
     __metadata("design:type", String)
-], CreateMessageDto.prototype, "text", void 0);
-__decorate([
-    swagger_1.ApiModelProperty({ type: String }),
-    class_validator_1.IsOptional(),
-    __metadata("design:type", String)
-], CreateMessageDto.prototype, "image", void 0);
-__decorate([
-    swagger_1.ApiModelProperty({ type: String }),
-    class_validator_1.IsOptional(),
-    __metadata("design:type", String)
-], CreateMessageDto.prototype, "video", void 0);
+], CreateNotificationDto.prototype, "type", void 0);
 __decorate([
     swagger_1.ApiModelProperty({ type: Boolean }),
     class_validator_1.IsOptional(),
     __metadata("design:type", Boolean)
-], CreateMessageDto.prototype, "system", void 0);
-__decorate([
-    swagger_1.ApiModelProperty({ type: Object }),
-    class_validator_1.IsOptional(),
-    __metadata("design:type", Object)
-], CreateMessageDto.prototype, "quickReplies", void 0);
-__decorate([
-    swagger_1.ApiModelProperty({ type: Object }),
-    class_validator_1.IsOptional(),
-    __metadata("design:type", String)
-], CreateMessageDto.prototype, "to", void 0);
-exports.CreateMessageDto = CreateMessageDto;
-//# sourceMappingURL=message.dto.js.map
+], CreateNotificationDto.prototype, "isRead", void 0);
+exports.CreateNotificationDto = CreateNotificationDto;
+//# sourceMappingURL=notification.dto.js.map

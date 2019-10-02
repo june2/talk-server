@@ -47,25 +47,66 @@ let RoomService = class RoomService {
             return yield this.room.findById(id).exec();
         });
     }
-    findByUserId(id, offset = 0, limit = 10) {
+    findByUsers(id, userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            let query = {
-                $and: [
-                    { users: { $in: id } },
-                    { lefts: { $ne: id } },
-                ]
-            };
+            return yield this.room.findOne({ users: { $all: [id, userId] } }).exec();
+        });
+    }
+    findByUserId(id, page = 1, limit = 10) {
+        return __awaiter(this, void 0, void 0, function* () {
             let options = {
                 sort: { updatedAt: -1 },
-                populate: {
-                    path: 'users',
-                    match: { _id: { $ne: id } }
-                },
-                lean: true,
-                offset: offset,
+                page: page,
                 limit: limit
             };
-            return yield this.rooms.paginate(query, options);
+            let query = [
+                {
+                    "$match": {
+                        "users": { "$in": [mongoose_2.Types.ObjectId(id)] },
+                        "lefts": { "$nin": [mongoose_2.Types.ObjectId(id)] }
+                    }
+                },
+                { "$unwind": "$users" },
+                {
+                    "$match": {
+                        "users": { "$ne": mongoose_2.Types.ObjectId(id) }
+                    }
+                },
+                {
+                    "$lookup": {
+                        "from": "notifications",
+                        "localField": "_id",
+                        "foreignField": "room",
+                        "as": "notification"
+                    }
+                },
+                {
+                    "$lookup": {
+                        "from": "users",
+                        "localField": "users",
+                        "foreignField": "_id",
+                        "as": "user"
+                    }
+                },
+                {
+                    "$project": {
+                        "user": { "$arrayElemAt": ["$user", 0.0] },
+                        "lastMsg": "$lastMsg",
+                        "updatedAt": "$updatedAt",
+                        "createdAt": "$createdAt",
+                        "count": {
+                            "$size": {
+                                $filter: {
+                                    input: "$notification",
+                                    as: "notification",
+                                    cond: { $eq: ["$$notification.user", mongoose_2.Types.ObjectId(id)] }
+                                }
+                            }
+                        }
+                    }
+                }
+            ];
+            return yield this.rooms.aggregatePaginate(this.room.aggregate(query), options);
         });
     }
     findMessageByRoomId(id, offset = 0, limit = 10) {

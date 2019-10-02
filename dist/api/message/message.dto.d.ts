@@ -1,5 +1,5 @@
 export declare class CreateMessageDto {
-    constructor(room: string, user: string, text: string);
+    constructor(room: string, user: string, text: string, system?: boolean);
     room: string;
     user: string;
     text: string;
@@ -7,4 +7,5 @@ export declare class CreateMessageDto {
     video: string;
     system: boolean;
     quickReplies: object;
+    to: string;
 }
