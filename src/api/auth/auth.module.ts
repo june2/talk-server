@@ -17,7 +17,7 @@ import { NotificationService } from '../notification/notification.service';
     JwtModule.register({
       secret: jwtConstants.secret,
       signOptions: {
-        expiresIn: 60 * 60 * 24,
+        expiresIn: jwtConstants.expiresIn,
       },
     }),
   ],

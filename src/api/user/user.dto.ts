@@ -15,6 +15,20 @@ export class CreateUserDto {
   @IsString()
   @IsOptional()
   name: string;
+
+  @ApiModelProperty({ type: String })
+  @IsString()
+  @IsOptional()
+  gender: string;
+
+  @ApiModelProperty({ type: date })  
+  @IsOptional()
+  birthday: Date;
+
+  @ApiModelProperty({ type: String })
+  @IsString()
+  @IsOptional()
+  location: string;
 }
 
 export class UpdateUserDto {

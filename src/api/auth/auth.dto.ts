@@ -11,5 +11,5 @@ export class AuthLoginDto {
   @IsNotEmpty()
   @IsString()
   @MinLength(5)
-  public password: string;  
+  public password: string;
 }
