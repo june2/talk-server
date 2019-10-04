@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel } from 'mongoose-paginate-v2';
 import { Model } from 'mongoose';
-import { CreateUserDto, UpdateUserDto, UpdateUserPushTokenDto } from './user.dto'
+import { CreateUserDto, UpdateUserDto, UpdateUserPushTokenDto, CreateUserSampleDto } from './user.dto'
 import { User } from './user.interface';
 
 
@@ -16,6 +16,10 @@ export class UserService {
   async create(createUserDto: CreateUserDto): Promise<User> {
     const created = new this.user(createUserDto);
     return await created.save();
+  }
+
+  async createAll(arr: CreateUserSampleDto[]): Promise<User[]> {
+    return await this.user.insertMany(arr);
   }
 
   async findAll(id: string, offset: number = 0, limit: number = 10): Promise<User[]> {
@@ -53,7 +57,7 @@ export class UserService {
     this.user.findByIdAndUpdate(id, newValue, { new: true }).exec();
   }
 
-  // async delete(id: number, updateUserDto: UpdateUserDto): Promise<UpdateResult> {
-  //   return await this.userRepository.d
-  // }
+  async deleteSample(): Promise<void> {
+    await this.user.deleteMany({ states: 'SAMPLE' });
+  }
 }

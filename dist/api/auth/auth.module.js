@@ -27,7 +27,7 @@ AuthModule = __decorate([
             jwt_1.JwtModule.register({
                 secret: constants_1.jwtConstants.secret,
                 signOptions: {
-                    expiresIn: 60 * 60 * 24,
+                    expiresIn: constants_1.jwtConstants.expiresIn,
                 },
             }),
         ],

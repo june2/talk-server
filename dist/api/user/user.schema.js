@@ -4,7 +4,7 @@ const mongoose_1 = require("mongoose");
 const mongoosePaginate = require("mongoose-paginate-v2");
 const crypto = require("crypto");
 const genders = ['M', 'F'];
-const states = ['NORMAL', 'REJECT', 'WAITING', 'BLOCK', 'LEAVE'];
+const states = ['NORMAL', 'REJECT', 'WAITING', 'BLOCK', 'LEAVE', 'SAMPLE'];
 exports.UserSchema = new mongoose_1.Schema({
     email: {
         type: String,
@@ -23,11 +23,7 @@ exports.UserSchema = new mongoose_1.Schema({
     point: { type: Number, default: 100 },
     lastLoginAt: { type: Date, default: new Date() },
     avatar: { type: String },
-    images: [{
-            _id: false,
-            thumbnail: '',
-            full: ''
-        }],
+    images: [String],
     location: { type: String, default: null },
     intro: { type: String },
     pushToken: { type: String },

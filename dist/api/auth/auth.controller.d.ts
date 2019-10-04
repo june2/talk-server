@@ -22,6 +22,7 @@ export declare class AuthController {
         updatedAt: any;
         intro: any;
         name: any;
+        gender: any;
         birthday: any;
         tabBadgeCount: Number;
     }>;

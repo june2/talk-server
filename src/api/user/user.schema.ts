@@ -4,7 +4,7 @@ import * as crypto from 'crypto';
 import { User } from './user.interface';
 
 const genders = ['M', 'F'];
-const states = ['NORMAL', 'REJECT', 'WAITING', 'BLOCK', 'LEAVE']; // 일반, 반려, 심사대기중, 재심사대기중, 블락, 탈퇴
+const states = ['NORMAL', 'REJECT', 'WAITING', 'BLOCK', 'LEAVE', 'SAMPLE']; // 일반, 반려, 심사대기중, 재심사대기중, 블락, 탈퇴
 
 export const UserSchema = new Schema({
   email: {

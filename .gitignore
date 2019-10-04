@@ -23,3 +23,5 @@ upload
 npm-debug.log
 *temp-db*
 *logs*
+#env
+.env*

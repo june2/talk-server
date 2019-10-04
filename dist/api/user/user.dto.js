@@ -13,6 +13,9 @@ const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 const joi_1 = require("joi");
 class CreateUserDto {
+    constructor() {
+        this.images = [];
+    }
 }
 __decorate([
     swagger_1.ApiModelProperty(),
@@ -30,7 +33,92 @@ __decorate([
     class_validator_1.IsOptional(),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "name", void 0);
+__decorate([
+    swagger_1.ApiModelProperty({ type: Array }),
+    class_validator_1.IsOptional(),
+    __metadata("design:type", Array)
+], CreateUserDto.prototype, "images", void 0);
+__decorate([
+    swagger_1.ApiModelProperty({ type: String }),
+    class_validator_1.IsString(),
+    class_validator_1.IsOptional(),
+    __metadata("design:type", String)
+], CreateUserDto.prototype, "gender", void 0);
+__decorate([
+    swagger_1.ApiModelProperty({ type: joi_1.date }),
+    class_validator_1.IsOptional(),
+    __metadata("design:type", Date)
+], CreateUserDto.prototype, "birthday", void 0);
+__decorate([
+    swagger_1.ApiModelProperty({ type: String }),
+    class_validator_1.IsString(),
+    class_validator_1.IsOptional(),
+    __metadata("design:type", String)
+], CreateUserDto.prototype, "location", void 0);
 exports.CreateUserDto = CreateUserDto;
+class CreateUserSampleDto {
+    constructor(email, password, name, images, gender, birthday, location, intro, states = 'SAMPLE') {
+        this.images = [];
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.images = images;
+        this.gender = gender;
+        this.birthday = birthday;
+        this.location = location;
+        this.intro = intro;
+        this.states = states;
+    }
+}
+__decorate([
+    swagger_1.ApiModelProperty(),
+    class_validator_1.IsEmail(),
+    __metadata("design:type", String)
+], CreateUserSampleDto.prototype, "email", void 0);
+__decorate([
+    swagger_1.ApiModelProperty({ type: String }),
+    class_validator_1.IsString(),
+    __metadata("design:type", String)
+], CreateUserSampleDto.prototype, "password", void 0);
+__decorate([
+    swagger_1.ApiModelProperty({ type: String }),
+    class_validator_1.IsString(),
+    class_validator_1.IsOptional(),
+    __metadata("design:type", String)
+], CreateUserSampleDto.prototype, "name", void 0);
+__decorate([
+    swagger_1.ApiModelProperty({ type: Array }),
+    class_validator_1.IsOptional(),
+    __metadata("design:type", Array)
+], CreateUserSampleDto.prototype, "images", void 0);
+__decorate([
+    swagger_1.ApiModelProperty({ type: String }),
+    class_validator_1.IsString(),
+    class_validator_1.IsOptional(),
+    __metadata("design:type", String)
+], CreateUserSampleDto.prototype, "gender", void 0);
+__decorate([
+    swagger_1.ApiModelProperty({ type: joi_1.date }),
+    class_validator_1.IsOptional(),
+    __metadata("design:type", Date)
+], CreateUserSampleDto.prototype, "birthday", void 0);
+__decorate([
+    swagger_1.ApiModelProperty({ type: String }),
+    class_validator_1.IsString(),
+    class_validator_1.IsOptional(),
+    __metadata("design:type", String)
+], CreateUserSampleDto.prototype, "location", void 0);
+__decorate([
+    swagger_1.ApiModelProperty({ type: String }),
+    class_validator_1.IsOptional(),
+    __metadata("design:type", String)
+], CreateUserSampleDto.prototype, "intro", void 0);
+__decorate([
+    swagger_1.ApiModelProperty({ type: String }),
+    class_validator_1.IsOptional(),
+    __metadata("design:type", String)
+], CreateUserSampleDto.prototype, "states", void 0);
+exports.CreateUserSampleDto = CreateUserSampleDto;
 class UpdateUserDto {
     constructor() {
         this.images = [];

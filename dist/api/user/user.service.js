@@ -36,6 +36,11 @@ let UserService = class UserService {
             return yield created.save();
         });
     }
+    createAll(arr) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.user.insertMany(arr);
+        });
+    }
     findAll(id, offset = 0, limit = 10) {
         return __awaiter(this, void 0, void 0, function* () {
             let query = { _id: { $ne: id } };
@@ -76,6 +81,11 @@ let UserService = class UserService {
     registerPushToken(id, newValue) {
         return __awaiter(this, void 0, void 0, function* () {
             this.user.findByIdAndUpdate(id, newValue, { new: true }).exec();
+        });
+    }
+    deleteSample() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.user.deleteMany({ states: 'SAMPLE' });
         });
     }
 };

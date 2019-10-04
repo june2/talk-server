@@ -56,7 +56,7 @@ let UserController = class UserController {
         });
     }
     uploadFile(file, req) {
-        let images = [...req.user.images, { thumbnail: file.filename, full: file.path }];
+        let images = [...req.user.images, file.Location];
         return this.userService.upload(req.user.id, images);
     }
     updateLastLogin(id, req) {
@@ -107,7 +107,7 @@ __decorate([
     swagger_1.ApiImplicitParam({ name: 'id', type: 'string', required: true, description: 'user id' }),
     common_1.UseGuards(passport_1.AuthGuard('jwt')),
     common_1.Post('/:id/upload'),
-    common_1.UseInterceptors(platform_express_1.FileInterceptor('file', multer_config_1.multerOptions)),
+    common_1.UseInterceptors(platform_express_1.FileInterceptor('upload', multer_config_1.multerOptions())),
     __param(0, common_1.UploadedFile()), __param(1, common_1.Request()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),

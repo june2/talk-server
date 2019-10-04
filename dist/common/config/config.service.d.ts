@@ -14,4 +14,7 @@ export declare class ConfigService {
     readonly dbUser: string;
     readonly dbPwd: string;
     readonly uri: string;
+    readonly bucketName: string;
+    readonly bucketId: string;
+    readonly bucketKey: string;
 }

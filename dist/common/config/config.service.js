@@ -22,6 +22,9 @@ class ConfigService {
             DB_NAME: Joi.string().default('nest'),
             DB_USER: Joi.string().default(null),
             DB_PWD: Joi.string().default(null),
+            BUCKET_NAME: Joi.string().default(null),
+            BUCKET_ID: Joi.string().default(null),
+            BUCKET_KEY: Joi.string().default(null),
         });
         const { error, value: validatedEnvConfig } = Joi.validate(envConfig, envVarsSchema);
         if (error) {
@@ -55,6 +58,15 @@ class ConfigService {
     }
     get uri() {
         return String(this.envConfig.DB_URI);
+    }
+    get bucketName() {
+        return String(this.envConfig.BUCKET_NAME);
+    }
+    get bucketId() {
+        return String(this.envConfig.BUCKET_ID);
+    }
+    get bucketKey() {
+        return String(this.envConfig.BUCKET_KEY);
     }
 }
 exports.ConfigService = ConfigService;
