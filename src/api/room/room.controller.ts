@@ -40,12 +40,13 @@ export class RoomController {
     if (!room) {
       // check point
       if (req.user.point < 50) throw new UnauthorizedException();
+      // TODO: check user 
       // create room
       room = await this.roomService.create(new CreateRoomDto(
         [req.user.id, reqRoomDto.userId],
         reqRoomDto.lastMsg
-      ));            
-      // TODO: substract point  
+      ));
+      // TODO: substract point        
     } else {
       this.roomService.updatLastMsgByRoomId(room.id, reqRoomDto.lastMsg);
     }

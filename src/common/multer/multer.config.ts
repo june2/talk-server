@@ -4,8 +4,8 @@ import { diskStorage } from 'multer';
 import { v4 as uuid } from 'uuid';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import * as AWS from 'aws-sdk';
-import s3Storage = require('multer-sharp-s3');
 import { ConfigService } from './../config/config.service';
+const s3Storage = require('multer-sharp-s3');
 
 // Multer configuration
 export const multerConfig = {

@@ -2,7 +2,7 @@
   "name": "nest-typescript-starter",
   "version": "1.0.0",
   "description": "Nest TypeScript starter repository",
-  "license": "MIT",
+  "license": "MIT",  
   "scripts": {
     "build": "NODE_ENV=production tsc -p tsconfig.build.json",
     "format": "prettier --write \"src/**/*.ts\"",
