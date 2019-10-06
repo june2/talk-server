@@ -4,8 +4,8 @@ const path_1 = require("path");
 const uuid_1 = require("uuid");
 const common_1 = require("@nestjs/common");
 const AWS = require("aws-sdk");
-const s3Storage = require('multer-sharp-s3');
 const config_service_1 = require("./../config/config.service");
+const s3Storage = require('multer-sharp-s3');
 exports.multerConfig = {
     dest: 'upload',
 };
