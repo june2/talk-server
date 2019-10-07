@@ -36,16 +36,17 @@ export class CreateUserDto {
 }
 
 export class CreateUserSampleDto {
-  constructor(email, password, name, images, gender, birthday, location, intro, states = 'SAMPLE') {
+  constructor(email, password, name, images, gender, birthday, country, location, intro, state = 'SAMPLE') {
     this.email = email;
     this.password = password;
     this.name = name;
     this.images = images;
     this.gender = gender;
     this.birthday = birthday;
+    this.country = country;
     this.location = location;
     this.intro = intro;
-    this.states = states;
+    this.state = state;
   }
 
   @ApiModelProperty()
@@ -77,6 +78,11 @@ export class CreateUserSampleDto {
   @ApiModelProperty({ type: String })
   @IsString()
   @IsOptional()
+  country: string;
+
+  @ApiModelProperty({ type: String })
+  @IsString()
+  @IsOptional()
   location: string;
 
   @ApiModelProperty({ type: String })
@@ -85,7 +91,7 @@ export class CreateUserSampleDto {
   
   @ApiModelProperty({ type: String })
   @IsOptional()
-  states: string;
+  state: string;
 }
 
 export class UpdateUserDto {

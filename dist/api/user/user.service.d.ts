@@ -15,5 +15,5 @@ export declare class UserService {
     upload(id: string, images: object): Promise<User>;
     updateLastLogin(id: string): Promise<void>;
     registerPushToken(id: string, newValue: UpdateUserPushTokenDto): Promise<void>;
-    deleteSample(): Promise<void>;
+    deleteSample(state: string): Promise<void>;
 }

@@ -57,7 +57,7 @@ __decorate([
 ], CreateUserDto.prototype, "location", void 0);
 exports.CreateUserDto = CreateUserDto;
 class CreateUserSampleDto {
-    constructor(email, password, name, images, gender, birthday, location, intro, states = 'SAMPLE') {
+    constructor(email, password, name, images, gender, birthday, country, location, intro, state = 'SAMPLE') {
         this.images = [];
         this.email = email;
         this.password = password;
@@ -65,9 +65,10 @@ class CreateUserSampleDto {
         this.images = images;
         this.gender = gender;
         this.birthday = birthday;
+        this.country = country;
         this.location = location;
         this.intro = intro;
-        this.states = states;
+        this.state = state;
     }
 }
 __decorate([
@@ -107,6 +108,12 @@ __decorate([
     class_validator_1.IsString(),
     class_validator_1.IsOptional(),
     __metadata("design:type", String)
+], CreateUserSampleDto.prototype, "country", void 0);
+__decorate([
+    swagger_1.ApiModelProperty({ type: String }),
+    class_validator_1.IsString(),
+    class_validator_1.IsOptional(),
+    __metadata("design:type", String)
 ], CreateUserSampleDto.prototype, "location", void 0);
 __decorate([
     swagger_1.ApiModelProperty({ type: String }),
@@ -117,7 +124,7 @@ __decorate([
     swagger_1.ApiModelProperty({ type: String }),
     class_validator_1.IsOptional(),
     __metadata("design:type", String)
-], CreateUserSampleDto.prototype, "states", void 0);
+], CreateUserSampleDto.prototype, "state", void 0);
 exports.CreateUserSampleDto = CreateUserSampleDto;
 class UpdateUserDto {
     constructor() {

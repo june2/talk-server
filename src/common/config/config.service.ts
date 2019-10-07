@@ -35,6 +35,7 @@ export class ConfigService {
       BUCKET_NAME: Joi.string().default(null),
       BUCKET_ID: Joi.string().default(null),
       BUCKET_KEY: Joi.string().default(null),
+      BUCKET_REGION: Joi.string().default('ap-northeast-2'),      
     });
 
     const { error, value: validatedEnvConfig } = Joi.validate(
@@ -93,5 +94,9 @@ export class ConfigService {
 
   get bucketKey(): string {
     return String(this.envConfig.BUCKET_KEY);
+  }
+
+  get bucketRegion(): string {
+    return String(this.envConfig.BUCKET_REGION);
   }
 }

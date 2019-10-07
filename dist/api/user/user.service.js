@@ -83,9 +83,9 @@ let UserService = class UserService {
             this.user.findByIdAndUpdate(id, newValue, { new: true }).exec();
         });
     }
-    deleteSample() {
+    deleteSample(state) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.user.deleteMany({ states: 'SAMPLE' });
+            yield this.user.deleteMany({ state: state });
         });
     }
 };

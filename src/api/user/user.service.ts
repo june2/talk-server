@@ -57,7 +57,7 @@ export class UserService {
     this.user.findByIdAndUpdate(id, newValue, { new: true }).exec();
   }
 
-  async deleteSample(): Promise<void> {
-    await this.user.deleteMany({ states: 'SAMPLE' });
+  async deleteSample(state: string): Promise<void> {
+    await this.user.deleteMany({ state: state });
   }
 }

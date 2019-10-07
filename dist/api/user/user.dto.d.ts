@@ -8,16 +8,17 @@ export declare class CreateUserDto {
     location: string;
 }
 export declare class CreateUserSampleDto {
-    constructor(email: any, password: any, name: any, images: any, gender: any, birthday: any, location: any, intro: any, states?: string);
+    constructor(email: any, password: any, name: any, images: any, gender: any, birthday: any, country: any, location: any, intro: any, state?: string);
     email: string;
     password: string;
     name: string;
     images: Array<string>;
     gender: string;
     birthday: Date;
+    country: string;
     location: string;
     intro: string;
-    states: string;
+    state: string;
 }
 export declare class UpdateUserDto {
     readonly name: string;

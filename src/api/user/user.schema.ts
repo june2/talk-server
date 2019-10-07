@@ -4,7 +4,7 @@ import * as crypto from 'crypto';
 import { User } from './user.interface';
 
 const genders = ['M', 'F'];
-const states = ['NORMAL', 'REJECT', 'WAITING', 'BLOCK', 'LEAVE', 'SAMPLE']; // 일반, 반려, 심사대기중, 재심사대기중, 블락, 탈퇴
+const states = ['NORMAL', 'REJECT', 'WAITING', 'BLOCK', 'LEAVE', 'SAMPLE', 'DATALK']; // 일반, 반려, 심사대기중, 재심사대기중, 블락, 탈퇴
 
 export const UserSchema = new Schema({
   email: {
@@ -17,6 +17,7 @@ export const UserSchema = new Schema({
   },
   name: { type: String },
   state: { type: String, enum: states, default: 'WAITING' },
+  isActive: { type: Boolean, default: true },
   password: { type: String, required: true, minlength: 6, select: false },
   // 성별
   gender: { type: String, enum: genders, trim: true },
@@ -25,7 +26,7 @@ export const UserSchema = new Schema({
   // 폰번호
   phone: { type: String },
   // 포인트
-  point: { type: Number, default: 100 },
+  point: { type: Number, default: 50 },
   // 마지막 로그인 시간
   lastLoginAt: { type: Date, default: new Date() },
   // 아바타
@@ -33,9 +34,12 @@ export const UserSchema = new Schema({
   // 이미지
   images: [String],
   // 지역 
+  country: { type: String, default: null },
+  // 지역 
   location: { type: String, default: null },
   // 내소개
   intro: { type: String },
+  // mobile 
   pushToken: { type: String },
   PlatformOS: { type: String },
   PlatformVer: { type: String },
