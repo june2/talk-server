@@ -16,7 +16,6 @@ export const multerConfig = {
 export const multerOptions = () => {
   const config = new ConfigService();
   const s3 = new AWS.S3();
-  console.log(config.bucketId);
   AWS.config.update({
     region: config.bucketRegion,
     accessKeyId: config.bucketId,

@@ -18,6 +18,7 @@ import { MessageService } from '../message/message.service';
 import { CreateMessageDto } from '../message/message.dto';
 import { Message } from '../message/message.interface';
 import { NotificationService } from '../notification/notification.service';
+import { UserService } from './../user/user.service';
 import { PushService } from '../../common/push/push.service';
 
 @ApiBearerAuth()
@@ -28,7 +29,8 @@ export class RoomController {
     private readonly roomService: RoomService,
     private readonly messageService: MessageService,
     private readonly pushService: PushService,
-    private readonly notificationService: NotificationService
+    private readonly notificationService: NotificationService,
+    private readonly userService: UserService
   ) { }
 
   @UseGuards(AuthGuard('jwt'))
@@ -40,13 +42,13 @@ export class RoomController {
     if (!room) {
       // check point
       if (req.user.point < 50) throw new UnauthorizedException();
-      // TODO: check user 
       // create room
       room = await this.roomService.create(new CreateRoomDto(
         [req.user.id, reqRoomDto.userId],
         reqRoomDto.lastMsg
       ));
-      // TODO: substract point        
+      // substract point 
+      this.userService.updatePoint(req.user.id, (req.user.point - 50));
     } else {
       this.roomService.updatLastMsgByRoomId(room.id, reqRoomDto.lastMsg);
     }

@@ -18,6 +18,7 @@ export const UserSchema = new Schema({
   name: { type: String },
   state: { type: String, enum: states, default: 'WAITING' },
   isActive: { type: Boolean, default: true },
+  isActivePush: { type: Boolean, default: true },
   password: { type: String, required: true, minlength: 6, select: false },
   // 성별
   gender: { type: String, enum: genders, trim: true },
