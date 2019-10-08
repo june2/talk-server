@@ -27,6 +27,7 @@ export declare class UpdateUserDto {
     gender: string;
     birthday: Date;
     intro: string;
+    isActivePush: boolean;
 }
 export declare class UpdateUserPushTokenDto {
     PlatformOS: string;

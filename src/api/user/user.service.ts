@@ -53,6 +53,10 @@ export class UserService {
     this.user.findByIdAndUpdate(id, { lastLoginAt: new Date() }, { new: true }).exec();
   }
 
+  async updateState(id: string, state: string): Promise<void> {    
+    this.user.findByIdAndUpdate(id, { state: state }, { new: true }).exec();
+  }
+
   async updatePoint(id: string, point: number): Promise<void> {
     this.user.findByIdAndUpdate(id, { point: point }, { new: true }).exec();
   }

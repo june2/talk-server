@@ -73,7 +73,7 @@ export class UserController {
   @UseGuards(AuthGuard('jwt'))
   @Post('/:id/upload')
   @UseInterceptors(FileInterceptor('upload', multerOptions()))
-  uploadFile(@UploadedFile() file, @Request() req): Promise<User> {    
+  uploadFile(@UploadedFile() file, @Request() req): Promise<User> {
     let images = [...req.user.images, file.Location];
     return this.userService.upload(req.user.id, images);
   }
@@ -82,6 +82,12 @@ export class UserController {
   @Put('/:id/updateLastLogin')
   updateLastLogin(@Param('id') id: string, @Request() req) {
     this.userService.updateLastLogin(req.user.id);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Put('/:id/leave')
+  leave(@Param('id') id: string, @Request() req) {    
+    this.userService.updateState(req.user.id, 'LEAVE');
   }
 
   @UseGuards(AuthGuard('jwt'))

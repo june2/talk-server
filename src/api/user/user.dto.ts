@@ -1,6 +1,7 @@
 import { ApiModelProperty } from '@nestjs/swagger';
 import { IsInt, IsString, IsBoolean, IsOptional, IsEmail } from 'class-validator';
 import { date } from 'joi';
+import { bool } from 'aws-sdk/clients/signer';
 
 export class CreateUserDto {
   @ApiModelProperty()
@@ -88,7 +89,7 @@ export class CreateUserSampleDto {
   @ApiModelProperty({ type: String })
   @IsOptional()
   intro: string;
-  
+
   @ApiModelProperty({ type: String })
   @IsOptional()
   state: string;
@@ -119,6 +120,10 @@ export class UpdateUserDto {
   @ApiModelProperty({ type: String })
   @IsOptional()
   intro: string;
+
+  @ApiModelProperty({ type: Boolean })
+  @IsOptional()
+  isActivePush: boolean;
 }
 
 export class UpdateUserPushTokenDto {

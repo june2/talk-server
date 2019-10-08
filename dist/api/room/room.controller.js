@@ -28,13 +28,15 @@ const room_service_1 = require("./room.service");
 const message_service_1 = require("../message/message.service");
 const message_dto_1 = require("../message/message.dto");
 const notification_service_1 = require("../notification/notification.service");
+const user_service_1 = require("./../user/user.service");
 const push_service_1 = require("../../common/push/push.service");
 let RoomController = class RoomController {
-    constructor(roomService, messageService, pushService, notificationService) {
+    constructor(roomService, messageService, pushService, notificationService, userService) {
         this.roomService = roomService;
         this.messageService = messageService;
         this.pushService = pushService;
         this.notificationService = notificationService;
+        this.userService = userService;
     }
     create(reqRoomDto, req) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -43,6 +45,7 @@ let RoomController = class RoomController {
                 if (req.user.point < 50)
                     throw new common_1.UnauthorizedException();
                 room = yield this.roomService.create(new room_dto_1.CreateRoomDto([req.user.id, reqRoomDto.userId], reqRoomDto.lastMsg));
+                this.userService.updatePoint(req.user.id, (req.user.point - 50));
             }
             else {
                 this.roomService.updatLastMsgByRoomId(room.id, reqRoomDto.lastMsg);
@@ -120,7 +123,8 @@ RoomController = __decorate([
     __metadata("design:paramtypes", [room_service_1.RoomService,
         message_service_1.MessageService,
         push_service_1.PushService,
-        notification_service_1.NotificationService])
+        notification_service_1.NotificationService,
+        user_service_1.UserService])
 ], RoomController);
 exports.RoomController = RoomController;
 //# sourceMappingURL=room.controller.js.map

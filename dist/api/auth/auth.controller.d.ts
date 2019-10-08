@@ -24,6 +24,7 @@ export declare class AuthController {
         name: any;
         gender: any;
         birthday: any;
+        isActivePush: any;
         tabBadgeCount: Number;
     }>;
 }

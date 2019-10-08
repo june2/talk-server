@@ -162,6 +162,11 @@ __decorate([
     class_validator_1.IsOptional(),
     __metadata("design:type", String)
 ], UpdateUserDto.prototype, "intro", void 0);
+__decorate([
+    swagger_1.ApiModelProperty({ type: Boolean }),
+    class_validator_1.IsOptional(),
+    __metadata("design:type", Boolean)
+], UpdateUserDto.prototype, "isActivePush", void 0);
 exports.UpdateUserDto = UpdateUserDto;
 class UpdateUserPushTokenDto {
 }

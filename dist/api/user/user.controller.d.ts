@@ -10,5 +10,6 @@ export declare class UserController {
     update(id: string, updateUserDto: UpdateUserDto, req: any): Promise<User>;
     uploadFile(file: any, req: any): Promise<User>;
     updateLastLogin(id: string, req: any): void;
+    leave(id: string, req: any): void;
     registerPushToken(id: string, req: any, updateUserPushTokenDto: UpdateUserPushTokenDto): void;
 }

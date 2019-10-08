@@ -60,7 +60,8 @@ export class AuthController {
       intro: user.intro,
       name: user.name,
       gender: user.gender,
-      birthday: user.birthday,      
+      birthday: user.birthday,
+      isActivePush: user.isActivePush,
       tabBadgeCount: await this.notificationService.count(req.user.id)
     };
   }

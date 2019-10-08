@@ -14,6 +14,8 @@ export declare class UserService {
     update(id: string, newValue: UpdateUserDto): Promise<User>;
     upload(id: string, images: object): Promise<User>;
     updateLastLogin(id: string): Promise<void>;
+    updateState(id: string, state: string): Promise<void>;
+    updatePoint(id: string, point: number): Promise<void>;
     registerPushToken(id: string, newValue: UpdateUserPushTokenDto): Promise<void>;
     deleteSample(state: string): Promise<void>;
 }

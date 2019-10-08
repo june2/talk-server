@@ -7,6 +7,7 @@ import { UserModule } from './user.module';
 import { UserService } from './user.service';
 import { CreateUserSampleDto } from './user.dto';
 const datalk = require('./../../../test/sample.json');
+// const datalk = require('./../../../test/sample2.json');
 
 describe('UserService', () => {
   let service: UserService;
@@ -89,12 +90,11 @@ describe('UserService', () => {
   // });
 
   it('create DATALK', async () => {
-    let arr = [];
-    let ids = [];
+    let arr = [];    
     let members = datalk.lobby.member;
-    members.forEach(el => {
-      if (!ids.includes(el.idx)) {
-        ids.push(el.idx);
+    members.forEach(async el => {
+      let user = await service.findOne({ email: `${el.idx}@test.com` });
+      if (!user) {                
         let images = [];
         if (el.photo) {
           el.photo.forEach(im => {
@@ -110,7 +110,6 @@ describe('UserService', () => {
         ));
       }
     });
-    // console.log(arr[4]);
     await service.createAll(arr);
   });
 

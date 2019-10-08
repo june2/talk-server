@@ -62,6 +62,9 @@ let UserController = class UserController {
     updateLastLogin(id, req) {
         this.userService.updateLastLogin(req.user.id);
     }
+    leave(id, req) {
+        this.userService.updateState(req.user.id, 'LEAVE');
+    }
     registerPushToken(id, req, updateUserPushTokenDto) {
         this.userService.registerPushToken(req.user.id, updateUserPushTokenDto);
     }
@@ -121,6 +124,14 @@ __decorate([
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "updateLastLogin", null);
+__decorate([
+    common_1.UseGuards(passport_1.AuthGuard('jwt')),
+    common_1.Put('/:id/leave'),
+    __param(0, common_1.Param('id')), __param(1, common_1.Request()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "leave", null);
 __decorate([
     common_1.UseGuards(passport_1.AuthGuard('jwt')),
     common_1.Put('/:id/registerPushToken'),
