@@ -51,7 +51,11 @@ let RoomController = class RoomController {
                 this.roomService.updatLastMsgByRoomId(room.id, reqRoomDto.lastMsg);
             }
             this.messageService.create(new message_dto_1.CreateMessageDto(room.id, req.user.id, reqRoomDto.lastMsg));
-            this.pushService.send(reqRoomDto.userId, room.lastMsg, room.id);
+            let to = yield this.userService.findById(reqRoomDto.userId);
+            if (null != to.pushToken && to.isActivePush) {
+                let meg = `${req.user.name}님이 메시지를 보냈습니다.`;
+                this.pushService.send(req.user.name, reqRoomDto.userId, to.pushToken, meg, room.id);
+            }
             return room;
         });
     }

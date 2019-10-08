@@ -29,7 +29,7 @@ export class RoomService {
   }
 
   async findByUsers(id: string, userId: string): Promise<Room> {
-    return await this.room.findOne({ users: { $all: [id, userId] } }).exec();    
+    return await this.room.findOne({ users: { $all: [id, userId] } }).exec();
   }
 
   async findByUserId(id: string, page: number = 1, limit: number = 10): Promise<Room[]> {
@@ -88,7 +88,7 @@ export class RoomService {
     return await this.rooms.aggregatePaginate(this.room.aggregate(query), options);
   }
 
-  async findMessageByRoomId(id: string, offset: number = 0, limit: number = 10): Promise<Message[]> {
+  async findMessageByRoomId(id: string, offset: number = 0, limit: number = 50): Promise<Message[]> {
     let query = { room: id };
     let options = {
       // select: 'title date author',
@@ -102,7 +102,7 @@ export class RoomService {
   }
 
   async updatLastMsgByRoomId(id: string, lastMsg: string): Promise<Room> {
-    return await this.room.findByIdAndUpdate(id, { lastMsg: lastMsg }, { new: true }).exec();
+    return await this.room.findByIdAndUpdate(id, { lastMsg: lastMsg, lefts: [] }, { new: true }).exec();
   }
 
   async updatLeftByRoomId(id: string, arr: Array<string>): Promise<Room> {

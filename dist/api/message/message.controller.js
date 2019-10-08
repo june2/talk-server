@@ -27,17 +27,22 @@ const message_dto_1 = require("./message.dto");
 const message_service_1 = require("./message.service");
 const room_service_1 = require("./../room/room.service");
 const push_service_1 = require("../../common/push/push.service");
+const user_service_1 = require("./../user/user.service");
 let MessageController = class MessageController {
-    constructor(messageService, roomService, pushService) {
+    constructor(messageService, roomService, userService, pushService) {
         this.messageService = messageService;
         this.roomService = roomService;
+        this.userService = userService;
         this.pushService = pushService;
     }
     create(createMessageDto, req) {
         return __awaiter(this, void 0, void 0, function* () {
             createMessageDto.user = req.user.id;
             this.roomService.updatLastMsgByRoomId(createMessageDto.room, createMessageDto.text);
-            this.pushService.send(createMessageDto.to, createMessageDto.text, createMessageDto.room);
+            let to = yield this.userService.findById(createMessageDto.to);
+            if (null != to && null != to.pushToken && to.isActivePush) {
+                this.pushService.send(req.user.name, createMessageDto.to, to.pushToken, createMessageDto.text, createMessageDto.room);
+            }
             return this.messageService.create(createMessageDto);
         });
     }
@@ -72,6 +77,7 @@ MessageController = __decorate([
     common_1.Controller('messages'),
     __metadata("design:paramtypes", [message_service_1.MessageService,
         room_service_1.RoomService,
+        user_service_1.UserService,
         push_service_1.PushService])
 ], MessageController);
 exports.MessageController = MessageController;

@@ -5,16 +5,19 @@ import { MessageController } from './message.controller';
 import { MessageService } from './message.service';
 import { RoomService } from './../room/room.service';
 import { RoomSchema } from './../room/room.schema';
+import { UserModule } from './../user/user.module';
+import { UserService } from './../user/user.service';
 import { PushModule } from '../../common/push/push.module';
 
 @Module({
   imports: [
+    UserModule,
     MongooseModule.forFeature([
       { name: 'message', schema: MessageSchema },
       { name: 'room', schema: RoomSchema }]),
     PushModule
   ],
   controllers: [MessageController],
-  providers: [MessageService, RoomService],
+  providers: [MessageService, RoomService, UserService],
 })
 export class MessageModule { }

@@ -26,15 +26,14 @@ let PushService = class PushService {
         this.notificationService = notificationService;
         this.expo = new expo_server_sdk_1.default();
     }
-    send(userId, lastMsg, roomId) {
-        let pushToken = 'ExponentPushToken[D6tnZPGvJ9R1Yt70dt7OXQ]';
+    send(FromName, userId, pushToken, lastMsg, roomId) {
         if (expo_server_sdk_1.default.isExpoPushToken(pushToken)) {
             let messages = [];
             messages.push({
                 to: pushToken,
                 sound: 'default',
-                title: 'title',
-                body: 'This is a test notification',
+                title: FromName,
+                body: lastMsg,
                 data: { type: 'room' },
             });
             let chunks = this.expo.chunkPushNotifications(messages);
@@ -45,7 +44,7 @@ let PushService = class PushService {
                         let ticketChunk = yield this.expo.sendPushNotificationsAsync(chunk);
                         console.log(ticketChunk);
                         tickets.push(...ticketChunk);
-                        this.notificationService.create(new notification_dto_1.CreateNotificationDto(roomId, userId, 'msg'));
+                        this.notificationService.create(new notification_dto_1.CreateNotificationDto(roomId, userId, lastMsg));
                     }
                     catch (error) {
                         console.error(error);

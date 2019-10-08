@@ -11,15 +11,14 @@ export class PushService {
     this.expo = new Expo();
   }
 
-  send(userId: string, lastMsg: string, roomId: string) {
-    let pushToken = 'ExponentPushToken[D6tnZPGvJ9R1Yt70dt7OXQ]';
+  send(FromName: string, userId: string, pushToken: string, lastMsg: string, roomId: string) {
     if (Expo.isExpoPushToken(pushToken)) {
       let messages = [];
       messages.push({
         to: pushToken,
         sound: 'default',
-        title: 'title',
-        body: 'This is a test notification',
+        title: FromName,
+        body: lastMsg,
         data: { type: 'room' },
       })
 
@@ -36,9 +35,7 @@ export class PushService {
             tickets.push(...ticketChunk);
             // NOTE: If a ticket contains an error code in ticket.details.error, you
             // must handle it appropriately. The error codes are listed in the Expo
-            this.notificationService.create(
-              new CreateNotificationDto(roomId, userId, 'msg'
-              ));
+            this.notificationService.create(new CreateNotificationDto(roomId, userId, lastMsg));
           } catch (error) {
             console.error(error);
           }

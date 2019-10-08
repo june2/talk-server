@@ -109,7 +109,7 @@ let RoomService = class RoomService {
             return yield this.rooms.aggregatePaginate(this.room.aggregate(query), options);
         });
     }
-    findMessageByRoomId(id, offset = 0, limit = 10) {
+    findMessageByRoomId(id, offset = 0, limit = 50) {
         return __awaiter(this, void 0, void 0, function* () {
             let query = { room: id };
             let options = {
@@ -124,7 +124,7 @@ let RoomService = class RoomService {
     }
     updatLastMsgByRoomId(id, lastMsg) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.room.findByIdAndUpdate(id, { lastMsg: lastMsg }, { new: true }).exec();
+            return yield this.room.findByIdAndUpdate(id, { lastMsg: lastMsg, lefts: [] }, { new: true }).exec();
         });
     }
     updatLeftByRoomId(id, arr) {
