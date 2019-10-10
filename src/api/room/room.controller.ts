@@ -58,7 +58,7 @@ export class RoomController {
     if (null != to.pushToken && to.isActivePush) {
       // send push
       let meg = `${req.user.name}님이 메시지를 보냈습니다.`;
-      this.pushService.send(req.user.name, reqRoomDto.userId, to.pushToken, meg, room.id);
+      this.pushService.send(req.user.name, to, meg, room.id, 'room');
     }
     return room;
   }

@@ -39,7 +39,7 @@ export class MessageController {
     let to = await this.userService.findById(createMessageDto.to);    
     if (null != to && null != to.pushToken && to.isActivePush) {
       // send push
-      this.pushService.send(req.user.name, createMessageDto.to, to.pushToken, createMessageDto.text, createMessageDto.room);
+      this.pushService.send(req.user.name, to, createMessageDto.text, createMessageDto.room, 'msg');
     }
     return this.messageService.create(createMessageDto);
   }

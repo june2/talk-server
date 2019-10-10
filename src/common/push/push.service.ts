@@ -1,6 +1,7 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import Expo from 'expo-server-sdk';
-import { NotificationService } from './../../api/notification/notification.service'; import { NotificationModule } from './../../api/notification/notification.module';
+import { User } from './../../api/user/user.interface';
+import { NotificationService } from './../../api/notification/notification.service';
 import { CreateNotificationDto } from './../../api/notification/notification.dto';
 
 @Injectable()
@@ -11,15 +12,22 @@ export class PushService {
     this.expo = new Expo();
   }
 
-  send(FromName: string, userId: string, pushToken: string, lastMsg: string, roomId: string) {
-    if (Expo.isExpoPushToken(pushToken)) {
+  send(FromName: string, user: User, lastMsg: string, roomId: string, type: string) {
+    if (Expo.isExpoPushToken(user.pushToken)) {
       let messages = [];
       messages.push({
-        to: pushToken,
+        to: user.pushToken,
         sound: 'default',
         title: FromName,
         body: lastMsg,
-        data: { type: 'room' },
+        data: {
+          type: type,
+          roomId: roomId,
+          userId: user.id,
+          userName: user.name,
+          userImage: (user.images.length > 0) ? user.images[0] : null,
+          msg: lastMsg
+        },
       })
 
       let chunks = this.expo.chunkPushNotifications(messages);
@@ -35,7 +43,7 @@ export class PushService {
             tickets.push(...ticketChunk);
             // NOTE: If a ticket contains an error code in ticket.details.error, you
             // must handle it appropriately. The error codes are listed in the Expo
-            this.notificationService.create(new CreateNotificationDto(roomId, userId, lastMsg));
+            this.notificationService.create(new CreateNotificationDto(roomId, user.id, lastMsg));
           } catch (error) {
             console.error(error);
           }

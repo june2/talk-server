@@ -41,7 +41,7 @@ let MessageController = class MessageController {
             this.roomService.updatLastMsgByRoomId(createMessageDto.room, createMessageDto.text);
             let to = yield this.userService.findById(createMessageDto.to);
             if (null != to && null != to.pushToken && to.isActivePush) {
-                this.pushService.send(req.user.name, createMessageDto.to, to.pushToken, createMessageDto.text, createMessageDto.room);
+                this.pushService.send(req.user.name, to, createMessageDto.text, createMessageDto.room, 'msg');
             }
             return this.messageService.create(createMessageDto);
         });

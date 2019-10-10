@@ -15,8 +15,7 @@ export class RoomService {
   ) { }
 
   async create(createRoomDto: CreateRoomDto): Promise<Room> {
-    const created = new this.room(createRoomDto);
-    // this.pushService.send();
+    const created = new this.room(createRoomDto);    
     return await created.save();
   }
 
