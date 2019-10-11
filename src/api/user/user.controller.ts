@@ -33,6 +33,7 @@ export class UserController {
   @ApiOperation({ title: 'Get user' })
   findAll(@Query('offset') offset: number, @Query('limit') limit: number, @Request() req): Promise<User[]> {
     let userId = req.user.id;
+    this.userService.updateLastLogin(userId);
     return this.userService.findAll(userId, offset, limit);
   }
 
@@ -64,7 +65,7 @@ export class UserController {
     //   const user = await this.userService.findById(id);
     //   if (user) throw new NotFoundException('Customer does not exist!');
     // }
-    if (!req.user) throw new UnauthorizedException();
+    if (!req.user) throw new UnauthorizedException();    
     return this.userService.update(req.user.id, updateUserDto);
   }
 

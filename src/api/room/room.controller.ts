@@ -68,6 +68,7 @@ export class RoomController {
   @ApiOperation({ title: 'Get rooms by userId' })
   async findAll(@Query('offset') offset: number, @Query('limit') limit: number, @Request() req): Promise<Room[]> {
     let userId = req.user.id;
+    this.userService.updateLastLogin(userId);
     return this.roomService.findByUserId(userId, offset, limit);
   }
 

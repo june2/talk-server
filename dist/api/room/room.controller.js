@@ -62,6 +62,7 @@ let RoomController = class RoomController {
     findAll(offset, limit, req) {
         return __awaiter(this, void 0, void 0, function* () {
             let userId = req.user.id;
+            this.userService.updateLastLogin(userId);
             return this.roomService.findByUserId(userId, offset, limit);
         });
     }

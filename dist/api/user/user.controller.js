@@ -34,6 +34,7 @@ let UserController = class UserController {
     }
     findAll(offset, limit, req) {
         let userId = req.user.id;
+        this.userService.updateLastLogin(userId);
         return this.userService.findAll(userId, offset, limit);
     }
     findById(id, req) {

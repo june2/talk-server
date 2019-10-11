@@ -65,12 +65,12 @@ let UserService = class UserService {
     }
     update(id, newValue) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.user.findByIdAndUpdate(id, newValue, { new: true }).exec();
+            return yield this.user.findByIdAndUpdate(id, Object.assign({}, newValue, { lastLoginAt: new Date() }), { new: true }).exec();
         });
     }
     upload(id, images) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.user.findByIdAndUpdate(id, { images: images }, { new: true }).exec();
+            return this.user.findByIdAndUpdate(id, { images: images, lastLoginAt: new Date() }, { new: true }).exec();
         });
     }
     updateLastLogin(id) {

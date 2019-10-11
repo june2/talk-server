@@ -42,18 +42,18 @@ export class UserService {
   }
 
   async update(id: string, newValue: UpdateUserDto): Promise<User> {
-    return await this.user.findByIdAndUpdate(id, newValue, { new: true }).exec();
+    return await this.user.findByIdAndUpdate(id, { ...newValue, lastLoginAt: new Date() }, { new: true }).exec();
   }
 
   async upload(id: string, images: object): Promise<User> {
-    return this.user.findByIdAndUpdate(id, { images: images }, { new: true }).exec();
+    return this.user.findByIdAndUpdate(id, { images: images, lastLoginAt: new Date() }, { new: true }).exec();
   }
 
   async updateLastLogin(id: string): Promise<void> {
     this.user.findByIdAndUpdate(id, { lastLoginAt: new Date() }, { new: true }).exec();
   }
 
-  async updateState(id: string, state: string): Promise<void> {    
+  async updateState(id: string, state: string): Promise<void> {
     this.user.findByIdAndUpdate(id, { state: state }, { new: true }).exec();
   }
 
