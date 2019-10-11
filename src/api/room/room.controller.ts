@@ -38,27 +38,28 @@ export class RoomController {
   @ApiOperation({ title: 'Create room' })
   async create(@Body() reqRoomDto: ReqRoomDto, @Request() req): Promise<Room> {
     // check room 
-    let room: Room = await this.roomService.findByUsers(req.user.id, reqRoomDto.userId);
+    let user = req.user;
+    let room: Room = await this.roomService.findByUsers(user.id, reqRoomDto.userId);
     if (!room) {
       // check point
-      if (req.user.point < 50) throw new UnauthorizedException();
+      if (user.point < 50) throw new UnauthorizedException();
       // create room
       room = await this.roomService.create(new CreateRoomDto(
-        [req.user.id, reqRoomDto.userId],
+        [user.id, reqRoomDto.userId],
         reqRoomDto.lastMsg
       ));
       // substract point 
-      this.userService.updatePoint(req.user.id, (req.user.point - 50));
+      this.userService.updatePoint(user.id, (user.point - 50));
     } else {
       this.roomService.updatLastMsgByRoomId(room.id, reqRoomDto.lastMsg);
     }
-    this.messageService.create(new CreateMessageDto(room.id, req.user.id, reqRoomDto.lastMsg));
+    this.messageService.create(new CreateMessageDto(room.id, user.id, reqRoomDto.lastMsg));
     // find user and check pushtoken
     let to = await this.userService.findById(reqRoomDto.userId);
-    if (null != to.pushToken && to.isActivePush) {
+    if (null != to && null != to.pushToken && to.isActivePush) {
       // send push
-      let meg = `${req.user.name}님이 메시지를 보냈습니다.`;
-      this.pushService.send(req.user.name, to, meg, room.id, 'room');
+      let body = `${user.name}님이 메시지를 보냈습니다.`;
+      this.pushService.send(user, to, body, reqRoomDto.lastMsg, room.id, 'room');
     }
     return room;
   }

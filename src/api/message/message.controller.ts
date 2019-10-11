@@ -36,10 +36,10 @@ export class MessageController {
     createMessageDto.user = req.user.id;
     this.roomService.updatLastMsgByRoomId(createMessageDto.room, createMessageDto.text);
     // find user and check pushtoken    
-    let to = await this.userService.findById(createMessageDto.to);    
+    let to = await this.userService.findById(createMessageDto.to);
     if (null != to && null != to.pushToken && to.isActivePush) {
       // send push
-      this.pushService.send(req.user.name, to, createMessageDto.text, createMessageDto.room, 'msg');
+      this.pushService.send(req.user, to, createMessageDto.text, createMessageDto.text, createMessageDto.room, 'msg');
     }
     return this.messageService.create(createMessageDto);
   }
