@@ -17,6 +17,7 @@ import { multerOptions } from '../../common/multer/multer.config';
 import { FileInterceptor } from "@nestjs/platform-express"
 import { AuthGuard } from '@nestjs/passport';
 import * as mongoose from 'mongoose';
+import * as moment from 'moment';
 import { UserService } from './user.service';
 import { User } from './user.interface';
 import { CreateUserDto, UpdateUserDto, UpdateUserPushTokenDto } from './user.dto';
@@ -65,7 +66,7 @@ export class UserController {
     //   const user = await this.userService.findById(id);
     //   if (user) throw new NotFoundException('Customer does not exist!');
     // }
-    if (!req.user) throw new UnauthorizedException();    
+    if (!req.user) throw new UnauthorizedException();
     return this.userService.update(req.user.id, updateUserDto);
   }
 
@@ -81,13 +82,22 @@ export class UserController {
 
   @UseGuards(AuthGuard('jwt'))
   @Put('/:id/updateLastLogin')
-  updateLastLogin(@Param('id') id: string, @Request() req) {
+  updateLastLogin(@Param('id') id: string, @Request() req): any {
     this.userService.updateLastLogin(req.user.id);
+    let today = moment(new Date()).format('YYYY-MM-DD');
+    let isAfter = moment(req.user.lastLoginAt).isBefore(today);    
+    let point = req.user.point;
+    if (isAfter) {
+      this.userService.updatePoint(req.user.id, (point + 50));
+      return { isFirst: true, point: point + 50 };
+    } else {
+      return { isFirst: false, point: point };
+    }
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Put('/:id/leave')
-  leave(@Param('id') id: string, @Request() req) {    
+  leave(@Param('id') id: string, @Request() req) {
     this.userService.updateState(req.user.id, 'LEAVE');
   }
 
