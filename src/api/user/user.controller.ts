@@ -89,9 +89,9 @@ export class UserController {
     let point = req.user.point;
     if (isAfter) {
       this.userService.updatePoint(req.user.id, (point + 50));
-      return { isFirst: true, point: point + 50 };
+      return { reward: true, point: point + 50 };
     } else {
-      return { isFirst: false, point: point };
+      return { reward: false, point: point };
     }
   }
 
