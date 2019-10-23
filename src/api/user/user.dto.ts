@@ -139,3 +139,43 @@ export class UpdateUserPushTokenDto {
   @IsString()
   pushToken: string;
 }
+
+export class UpdateUserAdminDto {
+  @ApiModelProperty({ type: String })
+  @IsString()
+  @IsOptional()
+  readonly state: string;
+
+  @ApiModelProperty({ type: String })
+  @IsString()
+  @IsOptional()
+  readonly name: string;
+
+  @ApiModelProperty({ type: Array })
+  @IsOptional()
+  images: Array<string> = [];
+
+  @ApiModelProperty({ type: String })
+  @IsOptional()
+  location: string;
+
+  @ApiModelProperty({ type: String })
+  @IsOptional()
+  gender: string;
+
+  @ApiModelProperty({ type: date })
+  @IsOptional()
+  birthday: Date;
+
+  @ApiModelProperty({ type: String })
+  @IsOptional()
+  intro: string;
+
+  @ApiModelProperty({ type: Boolean })
+  @IsOptional()
+  isActivePush: boolean;
+
+  @ApiModelProperty({ type: Number })
+  @IsOptional()
+  point: number;
+}

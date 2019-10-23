@@ -4,7 +4,7 @@ import * as crypto from 'crypto';
 import { User } from './user.interface';
 
 const genders = ['M', 'F'];
-const states = ['NORMAL', 'REJECT', 'WAITING', 'BLOCK', 'LEAVE', 'SAMPLE', 'DATALK']; // 일반, 반려, 심사대기중, 재심사대기중, 블락, 탈퇴
+const states = ['ADMIN', 'NORMAL', 'REJECT', 'WAITING', 'BLOCK', 'LEAVE', 'SAMPLE', 'DATALK']; // 일반, 반려, 심사대기중, 재심사대기중, 블락, 탈퇴
 
 export const UserSchema = new Schema({
   email: {
@@ -29,9 +29,7 @@ export const UserSchema = new Schema({
   // 포인트
   point: { type: Number, default: 50 },
   // 마지막 로그인 시간
-  lastLoginAt: { type: Date, default: new Date() },
-  // 아바타
-  avatar: { type: String },
+  lastLoginAt: { type: Date, default: new Date() },  
   // 이미지
   images: [String],
   // 지역 

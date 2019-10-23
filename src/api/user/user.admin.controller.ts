@@ -1,0 +1,56 @@
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiUseTags,
+  ApiImplicitFile,
+  ApiImplicitParam
+} from '@nestjs/swagger';
+import {
+  UseGuards, Controller,
+  Request, Response, Param, Body, Query,
+  Get, Post, Put,
+  UnauthorizedException, BadRequestException, NotFoundException,
+  UseInterceptors, UploadedFile
+} from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import * as mongoose from 'mongoose';
+import { Roles } from './../../common/decorators/roles.decorator';
+import { RolesGuard } from './../../common/guards/roles.guard';
+import { UserService } from './user.service';
+import { User } from './user.interface';
+import { CreateUserDto, UpdateUserAdminDto, UpdateUserPushTokenDto } from './user.dto';
+
+@ApiBearerAuth()
+@ApiUseTags('User')
+@Controller('users')
+export class UserAdminController {
+  constructor(
+    private readonly userService: UserService) { }
+
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles('ADMIN')
+  @Get('/admin')
+  @ApiOperation({ title: 'Get user' })
+  findAll(@Query('offset') offset: number, @Query('limit') limit: number, @Request() req): Promise<User[]> {
+    let userId = req.user.id;
+    return this.userService.findAll(userId, offset, limit);
+  }
+
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles('ADMIN')
+  @Get('/:id/admin')
+  @ApiOperation({ title: 'Get user by Id' })
+  findById(@Param('id') id: string, @Request() req): Promise<User> {
+    if (!mongoose.Types.ObjectId.isValid(id)) throw new BadRequestException("this is not objectId");
+    return this.userService.findById(id);
+  }
+
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles('ADMIN')
+  @Put('/:id/admin')
+  async update(@Param('id') id: string, @Body() updateUserAdminDto: UpdateUserAdminDto, @Request() req): Promise<User> {
+    if (!mongoose.Types.ObjectId.isValid(id)) throw new BadRequestException("this is not objectId");
+    return this.userService.update(id, updateUserAdminDto);
+  }
+}

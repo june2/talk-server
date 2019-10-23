@@ -8,9 +8,17 @@ import { ConfigService } from './common/config/config.service';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(ApplicationModule);
-  const configService: ConfigService = app.get(ConfigService);
   // Pipe
   app.useGlobalPipes(new ValidationPipe());
+  // cors
+  app.enableCors();
+  app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Accept');
+    next();
+  });
+  const configService: ConfigService = app.get(ConfigService);  
   // static
   app.useStaticAssets(join(__dirname, '..', 'upload'));
   // Swagger
