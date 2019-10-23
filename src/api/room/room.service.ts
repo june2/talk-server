@@ -15,12 +15,25 @@ export class RoomService {
   ) { }
 
   async create(createRoomDto: CreateRoomDto): Promise<Room> {
-    const created = new this.room(createRoomDto);    
+    const created = new this.room(createRoomDto);
     return await created.save();
   }
 
-  async findAll(): Promise<Room[]> {
-    return await this.rooms.find().populate('users').exec();
+  async findAll(offset: number = 0, limit: number = 10,
+    sort: any = { updatedAt: -1 }, query: any = {}): Promise<Room[]> {
+    let options = {
+      sort: JSON.parse(sort),
+      populate: [{
+        path: 'users',
+        select: 'id name images gender birthday location',
+        // match: { color: 'black' },
+        // options: { sort: { name: -1 } }
+      }],
+      lean: true,
+      offset: offset,
+      limit: limit
+    };
+    return await this.rooms.paginate(query, options);
   }
 
   async findById(id: string): Promise<Room> {
