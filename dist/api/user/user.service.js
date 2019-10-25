@@ -41,11 +41,13 @@ let UserService = class UserService {
             return yield this.user.insertMany(arr);
         });
     }
-    findAll(id, offset = 0, limit = 10) {
+    findAll(id, offset = 0, limit = 10, sort = { lastLoginAt: -1 }, q = {}) {
         return __awaiter(this, void 0, void 0, function* () {
             let query = { _id: { $ne: id } };
+            if (q)
+                query = Object.assign(query, q);
             let options = {
-                sort: { lastLoginAt: -1 },
+                sort: sort,
                 lean: true,
                 offset: offset,
                 limit: limit
@@ -65,7 +67,7 @@ let UserService = class UserService {
     }
     update(id, newValue) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.user.findByIdAndUpdate(id, Object.assign({}, newValue, { lastLoginAt: new Date() }), { new: true }).exec();
+            return yield this.user.findByIdAndUpdate(id, Object.assign({}, newValue, { lastLoginAt: new Date() }), { new: false }).exec();
         });
     }
     upload(id, images) {

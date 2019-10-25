@@ -4,5 +4,5 @@ export declare class PushService {
     private readonly notificationService;
     private readonly expo;
     constructor(notificationService: NotificationService);
-    send(FromName: string, user: User, lastMsg: string, roomId: string, type: string): void;
+    send(from: User, to: User, body: string, lastMsg: string, roomId: string, type: string): void;
 }

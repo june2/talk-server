@@ -22,8 +22,8 @@ let RolesGuard = class RolesGuard {
         }
         const request = context.switchToHttp().getRequest();
         const user = request.user;
-        const hasRole = () => user.roles.some(role => !!roles.find(item => item === role));
-        return user && user.roles && hasRole();
+        const hasRole = () => roles.indexOf(user.state) > -1 ? true : false;
+        return user && user.state && hasRole();
     }
 };
 RolesGuard = __decorate([

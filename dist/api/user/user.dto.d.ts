@@ -34,3 +34,14 @@ export declare class UpdateUserPushTokenDto {
     PlatformVer: string;
     pushToken: string;
 }
+export declare class UpdateUserAdminDto {
+    readonly state: string;
+    readonly name: string;
+    images: Array<string>;
+    location: string;
+    gender: string;
+    birthday: Date;
+    intro: string;
+    isActivePush: boolean;
+    point: number;
+}

@@ -40,21 +40,22 @@ let RoomController = class RoomController {
     }
     create(reqRoomDto, req) {
         return __awaiter(this, void 0, void 0, function* () {
-            let room = yield this.roomService.findByUsers(req.user.id, reqRoomDto.userId);
+            let user = req.user;
+            let room = yield this.roomService.findByUsers(user.id, reqRoomDto.userId);
             if (!room) {
-                if (req.user.point < 50)
+                if (user.point < 50)
                     throw new common_1.UnauthorizedException();
-                room = yield this.roomService.create(new room_dto_1.CreateRoomDto([req.user.id, reqRoomDto.userId], reqRoomDto.lastMsg));
-                this.userService.updatePoint(req.user.id, (req.user.point - 50));
+                room = yield this.roomService.create(new room_dto_1.CreateRoomDto([user.id, reqRoomDto.userId], reqRoomDto.lastMsg));
+                this.userService.updatePoint(user.id, (user.point - 50));
             }
             else {
                 this.roomService.updatLastMsgByRoomId(room.id, reqRoomDto.lastMsg);
             }
-            this.messageService.create(new message_dto_1.CreateMessageDto(room.id, req.user.id, reqRoomDto.lastMsg));
+            this.messageService.create(new message_dto_1.CreateMessageDto(room.id, user.id, reqRoomDto.lastMsg));
             let to = yield this.userService.findById(reqRoomDto.userId);
-            if (null != to.pushToken && to.isActivePush) {
-                let meg = `${req.user.name}님이 메시지를 보냈습니다.`;
-                this.pushService.send(req.user.name, to, meg, room.id, 'room');
+            if (null != to && null != to.pushToken && to.isActivePush) {
+                let body = `${user.name}님이 메시지를 보냈습니다.`;
+                this.pushService.send(user, to, body, reqRoomDto.lastMsg, room.id, 'room');
             }
             return room;
         });

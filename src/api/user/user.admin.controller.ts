@@ -36,7 +36,7 @@ export class UserAdminController {
     @Query('sort') sort: any, @Query('filter') filter: any,
     @Request() req): Promise<User[]> {
     let userId = req.user.id;        
-    return this.userService.findAll(userId, offset, limit, sort);
+    return this.userService.findAll(userId, offset, limit, JSON.parse(sort));
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)

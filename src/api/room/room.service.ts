@@ -37,7 +37,7 @@ export class RoomService {
   }
 
   async findById(id: string): Promise<Room> {
-    return await this.room.findById(id).exec();
+    return await this.room.findById(id).populate(['users', 'lefts']).exec();
   }
 
   async findByUsers(id: string, userId: string): Promise<Room> {
@@ -105,7 +105,12 @@ export class RoomService {
     let options = {
       // select: 'title date author',
       sort: { updatedAt: -1 },
-      populate: 'user',
+      populate: [{
+        path: 'user',
+        select: 'id name images',
+        // match: { color: 'black' },
+        // options: { sort: { name: -1 } }
+      }],
       lean: true,
       offset: offset,
       limit: limit

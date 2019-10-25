@@ -6,8 +6,9 @@ import { UserSchema } from './user.schema';
 import { UserModule } from './user.module';
 import { UserService } from './user.service';
 import { CreateUserSampleDto } from './user.dto';
-const datalk = require('./../../../test/sample.json');
+// const datalk = require('./../../../test/sample.json');
 // const datalk = require('./../../../test/sample2.json');
+const datalk = require('./../../../test/sample2.json');
 
 describe('UserService', () => {
   let service: UserService;
@@ -80,7 +81,7 @@ describe('UserService', () => {
       .compile();
 
     service = module.get<UserService>(UserService);
-    await service.deleteSample('WAITING');
+    // await service.deleteSample('WAITING');
   });
 
   // it('create SAMPLE', async () => {
@@ -90,11 +91,12 @@ describe('UserService', () => {
   // });
 
   it('create DATALK', async () => {
-    let arr = [];    
+    let arr = [];
     let members = datalk.lobby.member;
-    members.forEach(async el => {
-      let user = await service.findOne({ email: `${el.idx}@test.com` });
-      if (!user) {                
+    const promises = members.map(async el => {
+      let user = (await service.findOne({ email: `${el.idx}@test.com` }));
+      // console.log(user);
+      if (null == user) {
         let images = [];
         if (el.photo) {
           el.photo.forEach(im => {
@@ -110,12 +112,16 @@ describe('UserService', () => {
         ));
       }
     });
+    // wait until all promises are resolved
+    await Promise.all(promises);
+    console.log(arr.length)
     await service.createAll(arr);
   });
 
 
   // it('find all', async () => {
   //   let users = await service.findAll(null);    
+  //   console.log(users);
   // });
 
   // afterAll(async () => {

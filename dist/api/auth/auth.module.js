@@ -10,6 +10,7 @@ const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const passport_1 = require("@nestjs/passport");
 const auth_controller_1 = require("./auth.controller");
+const auth_admin_controller_1 = require("./auth.admin.controller");
 const auth_service_1 = require("./auth.service");
 const user_module_1 = require("./../user/user.module");
 const jwt_strategy_1 = require("./jwt.strategy");
@@ -31,7 +32,7 @@ AuthModule = __decorate([
                 },
             }),
         ],
-        controllers: [auth_controller_1.AuthController],
+        controllers: [auth_admin_controller_1.AuthAdminController, auth_controller_1.AuthController,],
         providers: [auth_service_1.AuthService, jwt_strategy_1.JwtStrategy, notification_service_1.NotificationService],
     })
 ], AuthModule);

@@ -37,14 +37,24 @@ let RoomService = class RoomService {
             return yield created.save();
         });
     }
-    findAll() {
+    findAll(offset = 0, limit = 10, sort = { updatedAt: -1 }, query = {}) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.rooms.find().populate('users').exec();
+            let options = {
+                sort: JSON.parse(sort),
+                populate: [{
+                        path: 'users',
+                        select: 'id name images gender birthday location',
+                    }],
+                lean: true,
+                offset: offset,
+                limit: limit
+            };
+            return yield this.rooms.paginate(query, options);
         });
     }
     findById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.room.findById(id).exec();
+            return yield this.room.findById(id).populate(['users', 'lefts']).exec();
         });
     }
     findByUsers(id, userId) {
@@ -114,7 +124,10 @@ let RoomService = class RoomService {
             let query = { room: id };
             let options = {
                 sort: { updatedAt: -1 },
-                populate: 'user',
+                populate: [{
+                        path: 'user',
+                        select: 'id name images',
+                    }],
                 lean: true,
                 offset: offset,
                 limit: limit

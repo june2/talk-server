@@ -10,6 +10,7 @@ const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const message_schema_1 = require("./message.schema");
 const message_controller_1 = require("./message.controller");
+const message_admin_controller_1 = require("./message.admin.controller");
 const message_service_1 = require("./message.service");
 const room_service_1 = require("./../room/room.service");
 const room_schema_1 = require("./../room/room.schema");
@@ -28,7 +29,7 @@ MessageModule = __decorate([
             ]),
             push_module_1.PushModule
         ],
-        controllers: [message_controller_1.MessageController],
+        controllers: [message_admin_controller_1.MessageAdminController, message_controller_1.MessageController],
         providers: [message_service_1.MessageService, room_service_1.RoomService, user_service_1.UserService],
     })
 ], MessageModule);

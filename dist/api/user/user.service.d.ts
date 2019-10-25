@@ -8,7 +8,7 @@ export declare class UserService {
     constructor(user: Model<User>, users: PaginateModel<User>);
     create(createUserDto: CreateUserDto): Promise<User>;
     createAll(arr: CreateUserSampleDto[]): Promise<User[]>;
-    findAll(id: string, offset?: number, limit?: number): Promise<User[]>;
+    findAll(id: string, offset?: number, limit?: number, sort?: any, q?: any): Promise<User[]>;
     findOne(options: object): Promise<User>;
     findById(id: string): Promise<User>;
     update(id: string, newValue: UpdateUserDto): Promise<User>;

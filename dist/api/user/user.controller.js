@@ -26,6 +26,7 @@ const multer_config_1 = require("../../common/multer/multer.config");
 const platform_express_1 = require("@nestjs/platform-express");
 const passport_1 = require("@nestjs/passport");
 const mongoose = require("mongoose");
+const moment = require("moment");
 const user_service_1 = require("./user.service");
 const user_dto_1 = require("./user.dto");
 let UserController = class UserController {
@@ -62,6 +63,16 @@ let UserController = class UserController {
     }
     updateLastLogin(id, req) {
         this.userService.updateLastLogin(req.user.id);
+        let today = moment(new Date()).format('YYYY-MM-DD');
+        let isAfter = moment(req.user.lastLoginAt).isBefore(today);
+        let point = req.user.point;
+        if (isAfter) {
+            this.userService.updatePoint(req.user.id, (point + 50));
+            return { reward: true, point: point + 50 };
+        }
+        else {
+            return { reward: false, point: point };
+        }
     }
     leave(id, req) {
         this.userService.updateState(req.user.id, 'LEAVE');
@@ -123,7 +134,7 @@ __decorate([
     __param(0, common_1.Param('id')), __param(1, common_1.Request()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Object]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Object)
 ], UserController.prototype, "updateLastLogin", null);
 __decorate([
     common_1.UseGuards(passport_1.AuthGuard('jwt')),

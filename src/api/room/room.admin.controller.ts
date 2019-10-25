@@ -47,13 +47,28 @@ export class RoomAdminController {
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('ADMIN')
+  @Get('/:id/admin')
+  async findById(@Param('id') id: string, @Query('offset') offset: number, @Query('limit') limit: number, @Request() req): Promise<Room> {    
+    return this.roomService.findById(id);
+  }
+
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles('ADMIN')
   @Get('/:id/messages/admin')
-  async findById(@Param('id') id: string, @Query('offset') offset: number, @Query('limit') limit: number, @Request() req): Promise<Message[]> {
+  async findMessagesById(@Param('id') id: string, @Query('offset') offset: number, @Query('limit') limit: number, @Request() req): Promise<Message[]> {
     // validation
-    let room: Room = await this.roomService.checkUserInRoom(id, req.user.id);
-    if (null === room) throw new UnauthorizedException();
-    this.notificationService.deleteByUserAndRoom(room.id, req.user.id);
     return this.roomService.findMessageByRoomId(id, offset, limit);
   }
+
+  // @UseGuards(AuthGuard('jwt'), RolesGuard)
+  // @Roles('ADMIN')
+  // @Get('/:id/messages/admin')
+  // async findById(@Param('id') id: string, @Query('offset') offset: number, @Query('limit') limit: number, @Request() req): Promise<Message[]> {
+  //   // validation
+  //   let room: Room = await this.roomService.checkUserInRoom(id, req.user.id);
+  //   if (null === room) throw new UnauthorizedException();
+  //   this.notificationService.deleteByUserAndRoom(room.id, req.user.id);
+  //   return this.roomService.findMessageByRoomId(id, offset, limit);
+  // }
 
 }

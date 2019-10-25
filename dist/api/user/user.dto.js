@@ -186,4 +186,57 @@ __decorate([
     __metadata("design:type", String)
 ], UpdateUserPushTokenDto.prototype, "pushToken", void 0);
 exports.UpdateUserPushTokenDto = UpdateUserPushTokenDto;
+class UpdateUserAdminDto {
+    constructor() {
+        this.images = [];
+    }
+}
+__decorate([
+    swagger_1.ApiModelProperty({ type: String }),
+    class_validator_1.IsString(),
+    class_validator_1.IsOptional(),
+    __metadata("design:type", String)
+], UpdateUserAdminDto.prototype, "state", void 0);
+__decorate([
+    swagger_1.ApiModelProperty({ type: String }),
+    class_validator_1.IsString(),
+    class_validator_1.IsOptional(),
+    __metadata("design:type", String)
+], UpdateUserAdminDto.prototype, "name", void 0);
+__decorate([
+    swagger_1.ApiModelProperty({ type: Array }),
+    class_validator_1.IsOptional(),
+    __metadata("design:type", Array)
+], UpdateUserAdminDto.prototype, "images", void 0);
+__decorate([
+    swagger_1.ApiModelProperty({ type: String }),
+    class_validator_1.IsOptional(),
+    __metadata("design:type", String)
+], UpdateUserAdminDto.prototype, "location", void 0);
+__decorate([
+    swagger_1.ApiModelProperty({ type: String }),
+    class_validator_1.IsOptional(),
+    __metadata("design:type", String)
+], UpdateUserAdminDto.prototype, "gender", void 0);
+__decorate([
+    swagger_1.ApiModelProperty({ type: joi_1.date }),
+    class_validator_1.IsOptional(),
+    __metadata("design:type", Date)
+], UpdateUserAdminDto.prototype, "birthday", void 0);
+__decorate([
+    swagger_1.ApiModelProperty({ type: String }),
+    class_validator_1.IsOptional(),
+    __metadata("design:type", String)
+], UpdateUserAdminDto.prototype, "intro", void 0);
+__decorate([
+    swagger_1.ApiModelProperty({ type: Boolean }),
+    class_validator_1.IsOptional(),
+    __metadata("design:type", Boolean)
+], UpdateUserAdminDto.prototype, "isActivePush", void 0);
+__decorate([
+    swagger_1.ApiModelProperty({ type: Number }),
+    class_validator_1.IsOptional(),
+    __metadata("design:type", Number)
+], UpdateUserAdminDto.prototype, "point", void 0);
+exports.UpdateUserAdminDto = UpdateUserAdminDto;
 //# sourceMappingURL=user.dto.js.map

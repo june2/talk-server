@@ -27,7 +27,7 @@ export class UserService {
     let query = { _id: { $ne: id } };
     if (q) query = Object.assign(query, q);
     let options = {
-      sort: JSON.parse(sort),
+      sort: sort,
       lean: true,
       offset: offset,
       limit: limit
@@ -35,7 +35,7 @@ export class UserService {
     return await this.users.paginate(query, options);
   }
 
-  async findOne(options: object): Promise<User> {
+  async findOne(options: object): Promise<User> {    
     return this.user.findOne(options).exec();
   }
 

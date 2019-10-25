@@ -9,7 +9,7 @@ export declare class UserController {
     create(createUserDto: CreateUserDto): Promise<User>;
     update(id: string, updateUserDto: UpdateUserDto, req: any): Promise<User>;
     uploadFile(file: any, req: any): Promise<User>;
-    updateLastLogin(id: string, req: any): void;
+    updateLastLogin(id: string, req: any): any;
     leave(id: string, req: any): void;
     registerPushToken(id: string, req: any, updateUserPushTokenDto: UpdateUserPushTokenDto): void;
 }

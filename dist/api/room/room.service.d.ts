@@ -9,7 +9,7 @@ export declare class RoomService {
     private readonly message;
     constructor(room: Model<Room>, rooms: PaginateModel<Room>, message: PaginateModel<Message>);
     create(createRoomDto: CreateRoomDto): Promise<Room>;
-    findAll(): Promise<Room[]>;
+    findAll(offset?: number, limit?: number, sort?: any, query?: any): Promise<Room[]>;
     findById(id: string): Promise<Room>;
     findByUsers(id: string, userId: string): Promise<Room>;
     findByUserId(id: string, page?: number, limit?: number): Promise<Room[]>;

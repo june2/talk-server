@@ -17,8 +17,15 @@ const config_service_1 = require("./common/config/config.service");
 function bootstrap() {
     return __awaiter(this, void 0, void 0, function* () {
         const app = yield core_1.NestFactory.create(app_module_1.ApplicationModule);
-        const configService = app.get(config_service_1.ConfigService);
         app.useGlobalPipes(new common_1.ValidationPipe());
+        app.enableCors();
+        app.use((req, res, next) => {
+            res.header('Access-Control-Allow-Origin', '*');
+            res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+            res.header('Access-Control-Allow-Headers', 'Content-Type, Accept');
+            next();
+        });
+        const configService = app.get(config_service_1.ConfigService);
         app.useStaticAssets(path_1.join(__dirname, '..', 'upload'));
         const options = new swagger_1.DocumentBuilder()
             .setTitle('nest.js rest api example')
