@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 const mongoosePaginate = require("mongoose-paginate-v2");
+const aggregatePaginate = require("mongoose-aggregate-paginate-v2");
 const crypto = require("crypto");
 const genders = ['M', 'F'];
 const states = ['ADMIN', 'NORMAL', 'REJECT', 'WAITING', 'BLOCK', 'LEAVE', 'SAMPLE', 'DATALK'];
@@ -46,6 +47,7 @@ exports.UserSchema = new mongoose_1.Schema({
     }
 });
 exports.UserSchema.plugin(mongoosePaginate);
+exports.UserSchema.plugin(aggregatePaginate);
 exports.UserSchema.pre("save", function (next) {
     const user = this;
     this.set('password', crypto.createHmac('sha256', user.password).digest('hex'));

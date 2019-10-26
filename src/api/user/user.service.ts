@@ -32,7 +32,7 @@ export class UserService {
       offset: offset,
       limit: limit
     };
-    return await this.users.paginate(query, options);
+    return await this.users.aggregatePaginate(query, options);
   }
 
   async findOne(options: object): Promise<User> {    

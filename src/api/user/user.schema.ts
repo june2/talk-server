@@ -1,5 +1,6 @@
 import { Schema } from 'mongoose';
 import * as mongoosePaginate from 'mongoose-paginate-v2';
+import * as aggregatePaginate from 'mongoose-aggregate-paginate-v2';
 import * as crypto from 'crypto';
 import { User } from './user.interface';
 
@@ -58,6 +59,7 @@ export const UserSchema = new Schema({
 })
 
 UserSchema.plugin(mongoosePaginate);
+UserSchema.plugin(aggregatePaginate);
 
 UserSchema.pre<User>("save", function (next) {
   const user = this;

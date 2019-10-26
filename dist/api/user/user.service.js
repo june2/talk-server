@@ -52,7 +52,7 @@ let UserService = class UserService {
                 offset: offset,
                 limit: limit
             };
-            return yield this.users.paginate(query, options);
+            return yield this.users.aggregatePaginate(query, options);
         });
     }
     findOne(options) {
