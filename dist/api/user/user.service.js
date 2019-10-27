@@ -41,7 +41,7 @@ let UserService = class UserService {
             return yield this.user.insertMany(arr);
         });
     }
-    findAll(id, offset = 0, limit = 10, sort = { lastLoginAt: -1 }, q = {}) {
+    findAll(id, page = 0, limit = 10, sort = { lastLoginAt: -1 }, q = {}) {
         return __awaiter(this, void 0, void 0, function* () {
             let query = { _id: { $ne: id } };
             if (q)
@@ -49,7 +49,7 @@ let UserService = class UserService {
             let options = {
                 sort: sort,
                 lean: true,
-                offset: offset,
+                page: page,
                 limit: limit
             };
             return yield this.users.aggregatePaginate(query, options);

@@ -32,11 +32,11 @@ export class UserAdminController {
   @Roles('ADMIN')
   @Get('/admin')
   @ApiOperation({ title: 'Get user' })
-  findAll(@Query('offset') offset: number, @Query('limit') limit: number,
+  findAll(@Query('page') page: number, @Query('limit') limit: number,
     @Query('sort') sort: any, @Query('filter') filter: any,
     @Request() req): Promise<User[]> {
     let userId = req.user.id;        
-    return this.userService.findAll(userId, offset, limit, JSON.parse(sort));
+    return this.userService.findAll(userId, page, limit, JSON.parse(sort));
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)

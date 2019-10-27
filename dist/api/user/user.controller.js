@@ -33,10 +33,10 @@ let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
     }
-    findAll(offset, limit, req) {
+    findAll(page, limit, req) {
         let userId = req.user.id;
         this.userService.updateLastLogin(userId);
-        return this.userService.findAll(userId, offset, limit);
+        return this.userService.findAll(userId, page, limit);
     }
     findById(id, req) {
         if (id === 'me')
@@ -85,7 +85,7 @@ __decorate([
     common_1.UseGuards(passport_1.AuthGuard('jwt')),
     common_1.Get(),
     swagger_1.ApiOperation({ title: 'Get user' }),
-    __param(0, common_1.Query('offset')), __param(1, common_1.Query('limit')), __param(2, common_1.Request()),
+    __param(0, common_1.Query('page')), __param(1, common_1.Query('limit')), __param(2, common_1.Request()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number, Number, Object]),
     __metadata("design:returntype", Promise)

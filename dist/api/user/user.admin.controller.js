@@ -32,9 +32,9 @@ let UserAdminController = class UserAdminController {
     constructor(userService) {
         this.userService = userService;
     }
-    findAll(offset, limit, sort, filter, req) {
+    findAll(page, limit, sort, filter, req) {
         let userId = req.user.id;
-        return this.userService.findAll(userId, offset, limit, JSON.parse(sort));
+        return this.userService.findAll(userId, page, limit, JSON.parse(sort));
     }
     findById(id, req) {
         if (!mongoose.Types.ObjectId.isValid(id))
@@ -54,7 +54,7 @@ __decorate([
     roles_decorator_1.Roles('ADMIN'),
     common_1.Get('/admin'),
     swagger_1.ApiOperation({ title: 'Get user' }),
-    __param(0, common_1.Query('offset')), __param(1, common_1.Query('limit')),
+    __param(0, common_1.Query('page')), __param(1, common_1.Query('limit')),
     __param(2, common_1.Query('sort')), __param(3, common_1.Query('filter')),
     __param(4, common_1.Request()),
     __metadata("design:type", Function),

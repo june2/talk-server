@@ -4,7 +4,7 @@ import { CreateUserDto, UpdateUserDto, UpdateUserPushTokenDto } from './user.dto
 export declare class UserController {
     private readonly userService;
     constructor(userService: UserService);
-    findAll(offset: number, limit: number, req: any): Promise<User[]>;
+    findAll(page: number, limit: number, req: any): Promise<User[]>;
     findById(id: string, req: any): Promise<User>;
     create(createUserDto: CreateUserDto): Promise<User>;
     update(id: string, updateUserDto: UpdateUserDto, req: any): Promise<User>;
