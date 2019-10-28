@@ -14,7 +14,7 @@ export declare class RoomController {
     private readonly userService;
     constructor(roomService: RoomService, messageService: MessageService, pushService: PushService, notificationService: NotificationService, userService: UserService);
     create(reqRoomDto: ReqRoomDto, req: any): Promise<Room>;
-    findAll(offset: number, limit: number, req: any): Promise<Room[]>;
+    findAll(page: number, limit: number, req: any): Promise<Room[]>;
     findById(id: string, offset: number, limit: number, req: any): Promise<Message[]>;
     deleteById(id: string, req: any): Promise<Room>;
 }

@@ -36,7 +36,7 @@ export class RoomController {
   @UseGuards(AuthGuard('jwt'))
   @Post()
   @ApiOperation({ title: 'Create room' })
-  async create(@Body() reqRoomDto: ReqRoomDto, @Request() req): Promise<Room> {
+  async create(@Body() reqRoomDto: ReqRoomDto, @Request() req): Promise<Room> {    
     // check room 
     let user = req.user;
     let room: Room = await this.roomService.findByUsers(user.id, reqRoomDto.userId);
@@ -67,10 +67,10 @@ export class RoomController {
   @UseGuards(AuthGuard('jwt'))
   @Get()
   @ApiOperation({ title: 'Get rooms by userId' })
-  async findAll(@Query('offset') offset: number, @Query('limit') limit: number, @Request() req): Promise<Room[]> {
+  async findAll(@Query('page') page: number, @Query('limit') limit: number, @Request() req): Promise<Room[]> {
     let userId = req.user.id;
     this.userService.updateLastLogin(userId);
-    return this.roomService.findByUserId(userId, offset, limit);
+    return this.roomService.findByUserId(userId, page, limit);
   }
 
   @UseGuards(AuthGuard('jwt'))
