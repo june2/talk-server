@@ -13,14 +13,14 @@ export const multerConfig = {
 };
 
 // Multer upload options
-export const multerOptions = () => {
+export const multerOptions = (type: string) => {
   const config = new ConfigService();
   const s3 = new AWS.S3();
   AWS.config.update({
     region: config.bucketRegion,
     accessKeyId: config.bucketId,
     secretAccessKey: config.bucketKey,
-  });  
+  });
   return {
     // Enable file size limits
     limits: {
@@ -63,7 +63,7 @@ export const multerOptions = () => {
       ACL: 'public-read',
       Key: (req: any, file: any, cb: any) => {
         let date = new Date();
-        cb(null, `${date.getMonth() + 1}/${uuid()}${extname(file.originalname)}`)
+        cb(null, `${type}/${date.getMonth() + 1}/${uuid()}${extname(file.originalname)}`)
       },
       resize: {
         width: 400,

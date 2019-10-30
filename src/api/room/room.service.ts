@@ -82,6 +82,11 @@ export class RoomService {
       {
         "$project": {
           "user": { "$arrayElemAt": ["$user", 0.0] },
+          // "user": {
+          //   "userId": { "$arrayElemAt": ["$user._id", 0.0] },
+          //   "userName": { "$arrayElemAt": ["$user.name", 0.0] },
+          //   "userImages": { "$arrayElemAt": ["$user.images", 0.0] },
+          // },
           "lastMsg": "$lastMsg",
           "updatedAt": "$updatedAt",
           "createdAt": "$createdAt",

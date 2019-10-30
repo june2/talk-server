@@ -32,10 +32,31 @@ export class UserService {
       page: page,
       limit: limit
     };
-    return await this.users.aggregatePaginate(query, options);
+    return await this.users.paginate(query, options);
   }
 
-  async findOne(options: object): Promise<User> {    
+  async findActive(id: string, page: number = 0, limit: number = 10,
+    q: any = {}, sort: any = { lastLoginAt: -1 }): Promise<User[]> {
+    let query = {
+      $and: [
+        { _id: { $ne: id } },
+        { isActive: true },
+        { state: { $ne: 'ADMIN' } },
+        { state: { $ne: 'BLOCK' } },
+        { state: { $ne: 'LEAVE' } },
+      ]
+    };
+    if (q) query = Object.assign(query, q);
+    let options = {
+      sort: sort,
+      lean: true,
+      page: page,
+      limit: limit
+    };
+    return await this.users.paginate(query, options);
+  }
+
+  async findOne(options: object): Promise<User> {
     return this.user.findOne(options).exec();
   }
 
@@ -56,7 +77,7 @@ export class UserService {
   }
 
   async updateState(id: string, state: string): Promise<void> {
-    this.user.findByIdAndUpdate(id, { state: state }, { new: true }).exec();
+    this.user.findByIdAndUpdate(id, { state: state, isActive: false }, { new: true }).exec();
   }
 
   async updatePoint(id: string, point: number): Promise<void> {

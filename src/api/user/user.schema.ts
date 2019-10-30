@@ -5,7 +5,7 @@ import * as crypto from 'crypto';
 import { User } from './user.interface';
 
 const genders = ['M', 'F'];
-const states = ['ADMIN', 'NORMAL', 'REJECT', 'WAITING', 'BLOCK', 'LEAVE', 'SAMPLE', 'DATALK']; // 일반, 반려, 심사대기중, 재심사대기중, 블락, 탈퇴
+const states = ['ADMIN', 'NORMAL', 'BLOCK', 'LEAVE', 'SAMPLE', 'DATALK'];
 
 export const UserSchema = new Schema({
   email: {
@@ -17,7 +17,7 @@ export const UserSchema = new Schema({
     lowercase: true
   },
   name: { type: String },
-  state: { type: String, enum: states, default: 'WAITING' },
+  state: { type: String, enum: states, default: 'NORMAL' },
   isActive: { type: Boolean, default: true },
   isActivePush: { type: Boolean, default: true },
   password: { type: String, required: true, minlength: 6, select: false },

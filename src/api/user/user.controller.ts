@@ -35,7 +35,7 @@ export class UserController {
   findAll(@Query('page') page: number, @Query('limit') limit: number, @Request() req): Promise<User[]> {
     let userId = req.user.id;
     this.userService.updateLastLogin(userId);
-    return this.userService.findAll(userId, page, limit);
+    return this.userService.findActive(userId, page, limit);
   }
 
   @UseGuards(AuthGuard('jwt'))
@@ -74,10 +74,19 @@ export class UserController {
   @ApiImplicitParam({ name: 'id', type: 'string', required: true, description: 'user id' })
   @UseGuards(AuthGuard('jwt'))
   @Post('/:id/upload')
-  @UseInterceptors(FileInterceptor('upload', multerOptions()))
+  @UseInterceptors(FileInterceptor('upload', multerOptions('profile')))
   uploadFile(@UploadedFile() file, @Request() req): Promise<User> {
     let images = [...req.user.images, file.Location];
     return this.userService.upload(req.user.id, images);
+  }
+
+  @ApiImplicitFile({ name: 'file', required: true, description: 'files to upload' })
+  @ApiImplicitParam({ name: 'id', type: 'string', required: true, description: 'user id' })
+  @UseGuards(AuthGuard('jwt'))
+  @Post('/:id/upload/image')
+  @UseInterceptors(FileInterceptor('upload', multerOptions('message')))
+  uploadImage(@UploadedFile() file, @Request() req): any {
+    return { image: file.Location };
   }
 
   @UseGuards(AuthGuard('jwt'))
@@ -85,7 +94,7 @@ export class UserController {
   updateLastLogin(@Param('id') id: string, @Request() req): any {
     this.userService.updateLastLogin(req.user.id);
     let today = moment(new Date()).format('YYYY-MM-DD');
-    let isAfter = moment(req.user.lastLoginAt).isBefore(today);    
+    let isAfter = moment(req.user.lastLoginAt).isBefore(today);
     let point = req.user.point;
     if (isAfter) {
       this.userService.updatePoint(req.user.id, (point + 50));
