@@ -36,7 +36,7 @@ let UserController = class UserController {
     findAll(page, limit, req) {
         let userId = req.user.id;
         this.userService.updateLastLogin(userId);
-        return this.userService.findAll(userId, page, limit);
+        return this.userService.findActive(userId, page, limit);
     }
     findById(id, req) {
         if (id === 'me')
@@ -60,6 +60,9 @@ let UserController = class UserController {
     uploadFile(file, req) {
         let images = [...req.user.images, file.Location];
         return this.userService.upload(req.user.id, images);
+    }
+    uploadImage(file, req) {
+        return { image: file.Location };
     }
     updateLastLogin(id, req) {
         this.userService.updateLastLogin(req.user.id);
@@ -122,12 +125,23 @@ __decorate([
     swagger_1.ApiImplicitParam({ name: 'id', type: 'string', required: true, description: 'user id' }),
     common_1.UseGuards(passport_1.AuthGuard('jwt')),
     common_1.Post('/:id/upload'),
-    common_1.UseInterceptors(platform_express_1.FileInterceptor('upload', multer_config_1.multerOptions())),
+    common_1.UseInterceptors(platform_express_1.FileInterceptor('upload', multer_config_1.multerOptions('profile'))),
     __param(0, common_1.UploadedFile()), __param(1, common_1.Request()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "uploadFile", null);
+__decorate([
+    swagger_1.ApiImplicitFile({ name: 'file', required: true, description: 'files to upload' }),
+    swagger_1.ApiImplicitParam({ name: 'id', type: 'string', required: true, description: 'user id' }),
+    common_1.UseGuards(passport_1.AuthGuard('jwt')),
+    common_1.Post('/:id/upload/image'),
+    common_1.UseInterceptors(platform_express_1.FileInterceptor('upload', multer_config_1.multerOptions('message'))),
+    __param(0, common_1.UploadedFile()), __param(1, common_1.Request()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Object)
+], UserController.prototype, "uploadImage", null);
 __decorate([
     common_1.UseGuards(passport_1.AuthGuard('jwt')),
     common_1.Put('/:id/updateLastLogin'),

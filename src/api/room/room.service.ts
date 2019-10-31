@@ -19,7 +19,7 @@ export class RoomService {
     return await created.save();
   }
 
-  async findAll(offset: number = 0, limit: number = 10,
+  async findAll(page: number = 1, limit: number = 10,
     sort: any = { updatedAt: -1 }, query: any = {}): Promise<Room[]> {
     let options = {
       sort: JSON.parse(sort),
@@ -30,7 +30,7 @@ export class RoomService {
         // options: { sort: { name: -1 } }
       }],
       lean: true,
-      offset: offset,
+      page: page,
       limit: limit
     };
     return await this.rooms.paginate(query, options);
@@ -105,7 +105,7 @@ export class RoomService {
     return await this.rooms.aggregatePaginate(this.room.aggregate(query), options);
   }
 
-  async findMessageByRoomId(id: string, offset: number = 0, limit: number = 50): Promise<Message[]> {
+  async findMessageByRoomId(id: string, page: number = 1, limit: number = 50): Promise<Message[]> {
     let query = { room: id };
     let options = {
       // select: 'title date author',
@@ -117,7 +117,7 @@ export class RoomService {
         // options: { sort: { name: -1 } }
       }],
       lean: true,
-      offset: offset,
+      page: page,
       limit: limit
     };
     return await this.message.paginate(query, options);

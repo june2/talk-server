@@ -28,36 +28,32 @@ import { RolesGuard } from './../../common/guards/roles.guard';
 @Controller('rooms')
 export class RoomAdminController {
   constructor(
-    private readonly roomService: RoomService,
-    private readonly messageService: MessageService,
-    private readonly pushService: PushService,
-    private readonly notificationService: NotificationService,
-    private readonly userService: UserService
+    private readonly roomService: RoomService
   ) { }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('ADMIN')
   @Get('/admin')
   @ApiOperation({ title: 'Get rooms by userId' })
-  async findAll(@Query('offset') offset: number, @Query('limit') limit: number,
+  async findAll(@Query('page') page: number, @Query('limit') limit: number,
     @Query('sort') sort: any, @Query('filter') filter: any,
     @Request() req): Promise<Room[]> {
-    return this.roomService.findAll(offset, limit, sort);
+    return this.roomService.findAll(page, limit, sort);
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('ADMIN')
   @Get('/:id/admin')
-  async findById(@Param('id') id: string, @Query('offset') offset: number, @Query('limit') limit: number, @Request() req): Promise<Room> {    
+  async findById(@Param('id') id: string, @Request() req): Promise<Room> {
     return this.roomService.findById(id);
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('ADMIN')
   @Get('/:id/messages/admin')
-  async findMessagesById(@Param('id') id: string, @Query('offset') offset: number, @Query('limit') limit: number, @Request() req): Promise<Message[]> {
+  async findMessagesById(@Param('id') id: string, @Query('page') page: number, @Query('limit') limit: number, @Request() req): Promise<Message[]> {
     // validation
-    return this.roomService.findMessageByRoomId(id, offset, limit);
+    return this.roomService.findMessageByRoomId(id, page, limit);
   }
 
   // @UseGuards(AuthGuard('jwt'), RolesGuard)

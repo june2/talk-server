@@ -37,7 +37,7 @@ let RoomService = class RoomService {
             return yield created.save();
         });
     }
-    findAll(offset = 0, limit = 10, sort = { updatedAt: -1 }, query = {}) {
+    findAll(page = 1, limit = 10, sort = { updatedAt: -1 }, query = {}) {
         return __awaiter(this, void 0, void 0, function* () {
             let options = {
                 sort: JSON.parse(sort),
@@ -46,7 +46,7 @@ let RoomService = class RoomService {
                         select: 'id name images gender birthday location',
                     }],
                 lean: true,
-                offset: offset,
+                page: page,
                 limit: limit
             };
             return yield this.rooms.paginate(query, options);
@@ -119,7 +119,7 @@ let RoomService = class RoomService {
             return yield this.rooms.aggregatePaginate(this.room.aggregate(query), options);
         });
     }
-    findMessageByRoomId(id, offset = 0, limit = 50) {
+    findMessageByRoomId(id, page = 1, limit = 50) {
         return __awaiter(this, void 0, void 0, function* () {
             let query = { room: id };
             let options = {
@@ -129,7 +129,7 @@ let RoomService = class RoomService {
                         select: 'id name images',
                     }],
                 lean: true,
-                offset: offset,
+                page: page,
                 limit: limit
             };
             return yield this.message.paginate(query, options);

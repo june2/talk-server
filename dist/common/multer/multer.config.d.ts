@@ -1,7 +1,7 @@
 export declare const multerConfig: {
     dest: string;
 };
-export declare const multerOptions: () => {
+export declare const multerOptions: (type: string) => {
     limits: {
         fileSize: number;
     };

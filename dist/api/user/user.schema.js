@@ -5,7 +5,7 @@ const mongoosePaginate = require("mongoose-paginate-v2");
 const aggregatePaginate = require("mongoose-aggregate-paginate-v2");
 const crypto = require("crypto");
 const genders = ['M', 'F'];
-const states = ['ADMIN', 'NORMAL', 'REJECT', 'WAITING', 'BLOCK', 'LEAVE', 'SAMPLE', 'DATALK'];
+const states = ['ADMIN', 'NORMAL', 'BLOCK', 'LEAVE', 'SAMPLE', 'DATALK'];
 exports.UserSchema = new mongoose_1.Schema({
     email: {
         type: String,
@@ -16,7 +16,7 @@ exports.UserSchema = new mongoose_1.Schema({
         lowercase: true
     },
     name: { type: String },
-    state: { type: String, enum: states, default: 'WAITING' },
+    state: { type: String, enum: states, default: 'NORMAL' },
     isActive: { type: Boolean, default: true },
     isActivePush: { type: Boolean, default: true },
     password: { type: String, required: true, minlength: 6, select: false },

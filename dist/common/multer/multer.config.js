@@ -9,7 +9,7 @@ const s3Storage = require('multer-sharp-s3');
 exports.multerConfig = {
     dest: 'upload',
 };
-exports.multerOptions = () => {
+exports.multerOptions = (type) => {
     const config = new config_service_1.ConfigService();
     const s3 = new AWS.S3();
     AWS.config.update({
@@ -35,7 +35,7 @@ exports.multerOptions = () => {
             ACL: 'public-read',
             Key: (req, file, cb) => {
                 let date = new Date();
-                cb(null, `${date.getMonth() + 1}/${uuid_1.v4()}${path_1.extname(file.originalname)}`);
+                cb(null, `${type}/${date.getMonth() + 1}/${uuid_1.v4()}${path_1.extname(file.originalname)}`);
             },
             resize: {
                 width: 400,

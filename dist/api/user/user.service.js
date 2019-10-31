@@ -41,7 +41,7 @@ let UserService = class UserService {
             return yield this.user.insertMany(arr);
         });
     }
-    findAll(id, page = 0, limit = 10, sort = { lastLoginAt: -1 }, q = {}) {
+    findAll(id, page = 1, limit = 10, sort = { lastLoginAt: -1 }, q = {}) {
         return __awaiter(this, void 0, void 0, function* () {
             let query = { _id: { $ne: id } };
             if (q)
@@ -52,7 +52,29 @@ let UserService = class UserService {
                 page: page,
                 limit: limit
             };
-            return yield this.users.aggregatePaginate(query, options);
+            return yield this.users.paginate(query, options);
+        });
+    }
+    findActive(id, page = 0, limit = 10, q = {}, sort = { lastLoginAt: -1 }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let query = {
+                $and: [
+                    { _id: { $ne: id } },
+                    { isActive: true },
+                    { state: { $ne: 'ADMIN' } },
+                    { state: { $ne: 'BLOCK' } },
+                    { state: { $ne: 'LEAVE' } },
+                ]
+            };
+            if (q)
+                query = Object.assign(query, q);
+            let options = {
+                sort: sort,
+                lean: true,
+                page: page,
+                limit: limit
+            };
+            return yield this.users.paginate(query, options);
         });
     }
     findOne(options) {
@@ -82,7 +104,7 @@ let UserService = class UserService {
     }
     updateState(id, state) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.user.findByIdAndUpdate(id, { state: state }, { new: true }).exec();
+            this.user.findByIdAndUpdate(id, { state: state, isActive: false }, { new: true }).exec();
         });
     }
     updatePoint(id, point) {
