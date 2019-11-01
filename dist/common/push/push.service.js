@@ -8,57 +8,41 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
-const expo_server_sdk_1 = require("expo-server-sdk");
+const FCM = require("fcm-node");
 const notification_service_1 = require("./../../api/notification/notification.service");
 const notification_dto_1 = require("./../../api/notification/notification.dto");
 let PushService = class PushService {
     constructor(notificationService) {
         this.notificationService = notificationService;
-        this.expo = new expo_server_sdk_1.default();
+        this.fcm = new FCM();
     }
     send(from, to, body, lastMsg, roomId, type) {
-        if (expo_server_sdk_1.default.isExpoPushToken(to.pushToken)) {
-            let messages = [];
-            messages.push({
-                to: to.pushToken,
-                sound: 'default',
+        let message = {
+            to: to.pushToken,
+            notification: {
                 title: from.name,
-                body: body,
-                data: {
-                    type: type,
-                    roomId: roomId,
-                    userId: from.id,
-                    userName: from.name,
-                    userImage: (from.images.length > 0) ? from.images[0] : '',
-                    msg: lastMsg
-                },
-            });
-            let chunks = this.expo.chunkPushNotifications(messages);
-            let tickets = [];
-            (() => __awaiter(this, void 0, void 0, function* () {
-                for (let chunk of chunks) {
-                    try {
-                        let ticketChunk = yield this.expo.sendPushNotificationsAsync(chunk);
-                        console.log(ticketChunk);
-                        tickets.push(...ticketChunk);
-                        this.notificationService.create(new notification_dto_1.CreateNotificationDto(roomId, to.id, lastMsg));
-                    }
-                    catch (error) {
-                        console.error(error);
-                    }
-                }
-            }))();
-        }
+                body: body
+            },
+            data: {
+                type: type,
+                roomId: roomId,
+                userId: from.id,
+                userName: from.name,
+                userImage: (from.images.length > 0) ? from.images[0] : '',
+                msg: lastMsg
+            },
+        };
+        this.fcm.send(message, function (err, response) {
+            if (err) {
+                console.error(`push: ${err}`);
+            }
+            else {
+                console.log(response);
+                this.notificationService.create(new notification_dto_1.CreateNotificationDto(roomId, to.id, lastMsg));
+            }
+        });
     }
 };
 PushService = __decorate([
