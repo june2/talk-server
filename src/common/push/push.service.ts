@@ -1,5 +1,6 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import * as FCM from 'fcm-node';
+import { ConfigService } from './../config/config.service';
 import { User } from './../../api/user/user.interface';
 import { NotificationService } from './../../api/notification/notification.service';
 import { CreateNotificationDto } from './../../api/notification/notification.dto';
@@ -9,7 +10,8 @@ export class PushService {
   private readonly fcm: FCM;
 
   constructor(private readonly notificationService: NotificationService) {
-    this.fcm = new FCM();
+    const config = new ConfigService();
+    this.fcm = new FCM(config.fcmKey);
   }
 
   send(from: User, to: User, body: string, lastMsg: string, roomId: string, type: string) {

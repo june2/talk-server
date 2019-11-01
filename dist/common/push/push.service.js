@@ -11,12 +11,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
 const FCM = require("fcm-node");
+const config_service_1 = require("./../config/config.service");
 const notification_service_1 = require("./../../api/notification/notification.service");
 const notification_dto_1 = require("./../../api/notification/notification.dto");
 let PushService = class PushService {
     constructor(notificationService) {
         this.notificationService = notificationService;
-        this.fcm = new FCM();
+        const config = new config_service_1.ConfigService();
+        this.fcm = new FCM(config.fcmKey);
     }
     send(from, to, body, lastMsg, roomId, type) {
         let message = {
