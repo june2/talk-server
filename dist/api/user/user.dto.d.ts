@@ -6,6 +6,9 @@ export declare class CreateUserDto {
     gender: string;
     birthday: Date;
     location: string;
+    PlatformOS: string;
+    PlatformVer: string;
+    pushToken: string;
 }
 export declare class CreateUserSampleDto {
     constructor(email: any, password: any, name: any, images: any, gender: any, birthday: any, country: any, location: any, intro: any, state?: string);

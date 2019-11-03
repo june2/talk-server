@@ -55,6 +55,24 @@ __decorate([
     class_validator_1.IsOptional(),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "location", void 0);
+__decorate([
+    swagger_1.ApiModelProperty({ type: String }),
+    class_validator_1.IsString(),
+    class_validator_1.IsOptional(),
+    __metadata("design:type", String)
+], CreateUserDto.prototype, "PlatformOS", void 0);
+__decorate([
+    swagger_1.ApiModelProperty({ type: String }),
+    class_validator_1.IsString(),
+    class_validator_1.IsOptional(),
+    __metadata("design:type", String)
+], CreateUserDto.prototype, "PlatformVer", void 0);
+__decorate([
+    swagger_1.ApiModelProperty({ type: String }),
+    class_validator_1.IsString(),
+    class_validator_1.IsOptional(),
+    __metadata("design:type", String)
+], CreateUserDto.prototype, "pushToken", void 0);
 exports.CreateUserDto = CreateUserDto;
 class CreateUserSampleDto {
     constructor(email, password, name, images, gender, birthday, country, location, intro, state = 'SAMPLE') {

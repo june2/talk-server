@@ -15,7 +15,7 @@ export class CreateUserDto {
   @ApiModelProperty({ type: String })
   @IsString()
   @IsOptional()
-  name: string;
+  name: string;  
 
   @ApiModelProperty({ type: Array })
   @IsOptional()
@@ -34,6 +34,21 @@ export class CreateUserDto {
   @IsString()
   @IsOptional()
   location: string;
+
+  @ApiModelProperty({ type: String })
+  @IsString()
+  @IsOptional()
+  PlatformOS: string;
+
+  @ApiModelProperty({ type: String })
+  @IsString()
+  @IsOptional()
+  PlatformVer: string;
+
+  @ApiModelProperty({ type: String })
+  @IsString()
+  @IsOptional()
+  pushToken: string;
 }
 
 export class CreateUserSampleDto {
