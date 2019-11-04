@@ -12,11 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
 const FCM = require("fcm-node");
 const config_service_1 = require("./../config/config.service");
-const notification_service_1 = require("./../../api/notification/notification.service");
-const notification_dto_1 = require("./../../api/notification/notification.dto");
 let PushService = class PushService {
-    constructor(notificationService) {
-        this.notificationService = notificationService;
+    constructor() {
         const config = new config_service_1.ConfigService();
         this.fcm = new FCM(config.fcmKey);
     }
@@ -36,7 +33,6 @@ let PushService = class PushService {
                 msg: lastMsg
             },
         };
-        this.notificationService.create(new notification_dto_1.CreateNotificationDto(roomId, to.id, lastMsg));
         this.fcm.send(message, function (err, response) {
             if (err) {
                 console.error(`push: ${err}`);
@@ -49,7 +45,7 @@ let PushService = class PushService {
 };
 PushService = __decorate([
     common_1.Injectable(),
-    __metadata("design:paramtypes", [notification_service_1.NotificationService])
+    __metadata("design:paramtypes", [])
 ], PushService);
 exports.PushService = PushService;
 //# sourceMappingURL=push.service.js.map

@@ -28,6 +28,7 @@ const room_service_1 = require("./room.service");
 const message_service_1 = require("../message/message.service");
 const message_dto_1 = require("../message/message.dto");
 const notification_service_1 = require("../notification/notification.service");
+const notification_dto_1 = require("./../notification/notification.dto");
 const user_service_1 = require("./../user/user.service");
 const push_service_1 = require("../../common/push/push.service");
 let RoomController = class RoomController {
@@ -51,11 +52,13 @@ let RoomController = class RoomController {
             else {
                 this.roomService.updatLastMsgByRoomId(room.id, reqRoomDto.lastMsg);
             }
+            let type = 'room';
+            this.notificationService.create(new notification_dto_1.CreateNotificationDto(room.id, reqRoomDto.userId, type));
             this.messageService.create(new message_dto_1.CreateMessageDto(room.id, user.id, reqRoomDto.lastMsg));
             let to = yield this.userService.findById(reqRoomDto.userId);
             if (null != to && null != to.pushToken && to.isActivePush) {
                 let body = `${user.name}님이 메시지를 보냈습니다.`;
-                this.pushService.send(user, to, body, reqRoomDto.lastMsg, room.id, 'room');
+                this.pushService.send(user, to, body, reqRoomDto.lastMsg, room.id, type);
             }
             return room;
         });

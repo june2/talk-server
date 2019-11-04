@@ -6,7 +6,7 @@ exports.NotificationSchema = new mongoose_1.Schema({
     room: { type: mongoose_1.Schema.Types.ObjectId, ref: 'room' },
     user: { type: mongoose_1.Schema.Types.ObjectId, ref: 'user' },
     type: { type: String },
-    isRead: { type: Boolean }
+    isRead: { type: Boolean, default: false }
 }, {
     versionKey: false,
     timestamps: true,

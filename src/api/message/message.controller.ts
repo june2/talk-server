@@ -15,8 +15,9 @@ import { MessageService } from './message.service';
 import { Message } from './message.interface';
 import { RoomService } from './../room/room.service';
 import { PushService } from '../../common/push/push.service';
-import { CreateNotificationDto } from './../notification/notification.dto';
 import { UserService } from './../user/user.service';
+import { NotificationService } from './../notification/notification.service';
+import { CreateNotificationDto } from './../notification/notification.dto';
 
 @ApiBearerAuth()
 @ApiUseTags('Message')
@@ -26,7 +27,8 @@ export class MessageController {
     private readonly messageService: MessageService,
     private readonly roomService: RoomService,
     private readonly userService: UserService,
-    private readonly pushService: PushService
+    private readonly pushService: PushService,
+    private readonly notificationService: NotificationService
   ) { }
 
   @UseGuards(AuthGuard('jwt'))
@@ -37,10 +39,12 @@ export class MessageController {
     this.roomService.updatLastMsgByRoomId(createMessageDto.room, createMessageDto.text);
     // find user and check pushtoken    
     let to = await this.userService.findById(createMessageDto.to);
+    let type = 'msg';
     if (null != to && null != to.pushToken && to.isActivePush) {
       // send push
-      this.pushService.send(req.user, to, createMessageDto.text, createMessageDto.text, createMessageDto.room, 'msg');
+      this.pushService.send(req.user, to, createMessageDto.text, createMessageDto.text, createMessageDto.room, type);
     }
+    this.notificationService.create(new CreateNotificationDto(createMessageDto.room, to.id, type));
     return this.messageService.create(createMessageDto);
   }
 

@@ -2,14 +2,12 @@ import { Injectable, NestMiddleware } from '@nestjs/common';
 import * as FCM from 'fcm-node';
 import { ConfigService } from './../config/config.service';
 import { User } from './../../api/user/user.interface';
-import { NotificationService } from './../../api/notification/notification.service';
-import { CreateNotificationDto } from './../../api/notification/notification.dto';
 
 @Injectable()
 export class PushService {
   private readonly fcm: FCM;
 
-  constructor(private readonly notificationService: NotificationService) {
+  constructor() {
     const config = new ConfigService();
     this.fcm = new FCM(config.fcmKey);
   }
@@ -30,8 +28,7 @@ export class PushService {
         userImage: (from.images.length > 0) ? from.images[0] : '',
         msg: lastMsg
       },
-    }
-    this.notificationService.create(new CreateNotificationDto(roomId, to.id, type));
+    }    
     this.fcm.send(message, function (err, response) {
       if (err) {
         console.error(`push: ${err}`);

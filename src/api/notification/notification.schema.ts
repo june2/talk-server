@@ -5,7 +5,7 @@ export const NotificationSchema = new Schema({
   room: { type: Schema.Types.ObjectId, ref: 'room' },
   user: { type: Schema.Types.ObjectId, ref: 'user' },
   type: { type: String },
-  isRead: { type: Boolean }
+  isRead: { type: Boolean, default: false }
 }, {
   versionKey: false,
   timestamps: true,

@@ -14,6 +14,7 @@ const message_admin_controller_1 = require("./message.admin.controller");
 const message_service_1 = require("./message.service");
 const room_service_1 = require("./../room/room.service");
 const room_schema_1 = require("./../room/room.schema");
+const notification_service_1 = require("./../notification/notification.service");
 const user_module_1 = require("./../user/user.module");
 const user_service_1 = require("./../user/user.service");
 const push_module_1 = require("../../common/push/push.module");
@@ -23,14 +24,14 @@ MessageModule = __decorate([
     common_1.Module({
         imports: [
             user_module_1.UserModule,
+            push_module_1.PushModule,
             mongoose_1.MongooseModule.forFeature([
                 { name: 'message', schema: message_schema_1.MessageSchema },
                 { name: 'room', schema: room_schema_1.RoomSchema }
             ]),
-            push_module_1.PushModule
         ],
         controllers: [message_admin_controller_1.MessageAdminController, message_controller_1.MessageController],
-        providers: [message_service_1.MessageService, room_service_1.RoomService, user_service_1.UserService],
+        providers: [message_service_1.MessageService, room_service_1.RoomService, user_service_1.UserService, notification_service_1.NotificationService],
     })
 ], MessageModule);
 exports.MessageModule = MessageModule;

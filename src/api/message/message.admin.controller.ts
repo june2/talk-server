@@ -1,13 +1,11 @@
 import {
   ApiBearerAuth,
   ApiOperation,
-  ApiResponse,
   ApiUseTags,
 } from '@nestjs/swagger';
 import {
   UseGuards, Controller,
-  Request, Body, Query, Param,
-  Get, Post,
+  Request, Body, Post,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateMessageDto } from './message.dto';
@@ -18,6 +16,7 @@ import { PushService } from '../../common/push/push.service';
 import { CreateNotificationDto } from '../notification/notification.dto';
 import { User } from '../user/user.interface';
 import { UserService } from '../user/user.service';
+import { NotificationService } from './../notification/notification.service';
 import { Roles } from './../../common/decorators/roles.decorator';
 import { RolesGuard } from './../../common/guards/roles.guard';
 
@@ -29,7 +28,8 @@ export class MessageAdminController {
     private readonly messageService: MessageService,
     private readonly roomService: RoomService,
     private readonly userService: UserService,
-    private readonly pushService: PushService
+    private readonly pushService: PushService,
+    private readonly notificationService: NotificationService
   ) { }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
@@ -40,11 +40,13 @@ export class MessageAdminController {
     this.roomService.updatLastMsgByRoomId(createMessageDto.room, createMessageDto.text);
     // find user and check pushtoken    
     let to = await this.userService.findById(createMessageDto.to);
+    let type = 'msg';
     const user: User = await this.userService.findById(createMessageDto.user);
     if (null != user && null != to && null != to.pushToken && to.isActivePush) {
       // send push
       this.pushService.send(user, to, createMessageDto.text, createMessageDto.text, createMessageDto.room, 'msg');
     }
+    this.notificationService.create(new CreateNotificationDto(createMessageDto.room, to.id, type));
     return this.messageService.create(createMessageDto);
   }
 }

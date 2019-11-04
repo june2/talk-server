@@ -9,7 +9,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
 const push_service_1 = require("./push.service");
 const notification_module_1 = require("./../../api/notification/notification.module");
-const notification_service_1 = require("./../../api/notification/notification.service");
 let PushModule = class PushModule {
 };
 PushModule = __decorate([
@@ -19,7 +18,6 @@ PushModule = __decorate([
         ],
         providers: [
             push_service_1.PushService,
-            notification_service_1.NotificationService
         ],
         exports: [push_service_1.PushService],
     })

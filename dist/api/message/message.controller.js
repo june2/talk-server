@@ -28,21 +28,26 @@ const message_service_1 = require("./message.service");
 const room_service_1 = require("./../room/room.service");
 const push_service_1 = require("../../common/push/push.service");
 const user_service_1 = require("./../user/user.service");
+const notification_service_1 = require("./../notification/notification.service");
+const notification_dto_1 = require("./../notification/notification.dto");
 let MessageController = class MessageController {
-    constructor(messageService, roomService, userService, pushService) {
+    constructor(messageService, roomService, userService, pushService, notificationService) {
         this.messageService = messageService;
         this.roomService = roomService;
         this.userService = userService;
         this.pushService = pushService;
+        this.notificationService = notificationService;
     }
     create(createMessageDto, req) {
         return __awaiter(this, void 0, void 0, function* () {
             createMessageDto.user = req.user.id;
             this.roomService.updatLastMsgByRoomId(createMessageDto.room, createMessageDto.text);
             let to = yield this.userService.findById(createMessageDto.to);
+            let type = 'msg';
             if (null != to && null != to.pushToken && to.isActivePush) {
-                this.pushService.send(req.user, to, createMessageDto.text, createMessageDto.text, createMessageDto.room, 'msg');
+                this.pushService.send(req.user, to, createMessageDto.text, createMessageDto.text, createMessageDto.room, type);
             }
+            this.notificationService.create(new notification_dto_1.CreateNotificationDto(createMessageDto.room, to.id, type));
             return this.messageService.create(createMessageDto);
         });
     }
@@ -78,7 +83,8 @@ MessageController = __decorate([
     __metadata("design:paramtypes", [message_service_1.MessageService,
         room_service_1.RoomService,
         user_service_1.UserService,
-        push_service_1.PushService])
+        push_service_1.PushService,
+        notification_service_1.NotificationService])
 ], MessageController);
 exports.MessageController = MessageController;
 //# sourceMappingURL=message.controller.js.map
