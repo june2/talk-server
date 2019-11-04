@@ -46,7 +46,7 @@ export class MessageAdminController {
       // send push
       this.pushService.send(user, to, createMessageDto.text, createMessageDto.text, createMessageDto.room, 'msg');
     }
-    this.notificationService.create(new CreateNotificationDto(createMessageDto.room, to.id, type));
+    this.notificationService.create(new CreateNotificationDto(createMessageDto.room, createMessageDto.to, type));
     return this.messageService.create(createMessageDto);
   }
 }

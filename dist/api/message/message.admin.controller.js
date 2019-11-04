@@ -49,7 +49,7 @@ let MessageAdminController = class MessageAdminController {
             if (null != user && null != to && null != to.pushToken && to.isActivePush) {
                 this.pushService.send(user, to, createMessageDto.text, createMessageDto.text, createMessageDto.room, 'msg');
             }
-            this.notificationService.create(new notification_dto_1.CreateNotificationDto(createMessageDto.room, to.id, type));
+            this.notificationService.create(new notification_dto_1.CreateNotificationDto(createMessageDto.room, createMessageDto.to, type));
             return this.messageService.create(createMessageDto);
         });
     }
