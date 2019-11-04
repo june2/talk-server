@@ -36,13 +36,13 @@ let PushService = class PushService {
                 msg: lastMsg
             },
         };
+        this.notificationService.create(new notification_dto_1.CreateNotificationDto(roomId, to.id, lastMsg));
         this.fcm.send(message, function (err, response) {
             if (err) {
                 console.error(`push: ${err}`);
             }
             else {
                 console.log(response);
-                this.notificationService.create(new notification_dto_1.CreateNotificationDto(roomId, to.id, lastMsg));
             }
         });
     }

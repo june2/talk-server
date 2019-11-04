@@ -31,12 +31,12 @@ export class PushService {
         msg: lastMsg
       },
     }
+    this.notificationService.create(new CreateNotificationDto(roomId, to.id, type));
     this.fcm.send(message, function (err, response) {
       if (err) {
         console.error(`push: ${err}`);
       } else {
         console.log(response);
-        this.notificationService.create(new CreateNotificationDto(roomId, to.id, lastMsg));
       }
     });
   }
