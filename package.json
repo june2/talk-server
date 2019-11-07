@@ -31,6 +31,7 @@
     "class-validator": "0.9.1",
     "dotenv": "^8.0.0",
     "fcm-node": "^1.5.2",
+    "in-app-purchase": "^1.11.4",
     "joi": "^14.3.1",
     "moment": "^2.24.0",
     "mongoose": "5.5.2",

@@ -16,7 +16,6 @@ const room_service_1 = require("./../room/room.service");
 const room_schema_1 = require("./../room/room.schema");
 const notification_service_1 = require("./../notification/notification.service");
 const user_module_1 = require("./../user/user.module");
-const user_service_1 = require("./../user/user.service");
 const push_module_1 = require("../../common/push/push.module");
 let MessageModule = class MessageModule {
 };
@@ -31,7 +30,7 @@ MessageModule = __decorate([
             ]),
         ],
         controllers: [message_admin_controller_1.MessageAdminController, message_controller_1.MessageController],
-        providers: [message_service_1.MessageService, room_service_1.RoomService, user_service_1.UserService, notification_service_1.NotificationService],
+        providers: [message_service_1.MessageService, room_service_1.RoomService, notification_service_1.NotificationService],
     })
 ], MessageModule);
 exports.MessageModule = MessageModule;

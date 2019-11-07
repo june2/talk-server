@@ -8,7 +8,6 @@ import { RoomService } from './../room/room.service';
 import { RoomSchema } from './../room/room.schema';
 import { NotificationService } from './../notification/notification.service';
 import { UserModule } from './../user/user.module';
-import { UserService } from './../user/user.service';
 import { PushModule } from '../../common/push/push.module';
 
 @Module({
@@ -20,6 +19,6 @@ import { PushModule } from '../../common/push/push.module';
       { name: 'room', schema: RoomSchema }]),
   ],
   controllers: [MessageAdminController, MessageController],
-  providers: [MessageService, RoomService, UserService, NotificationService],
+  providers: [MessageService, RoomService, NotificationService],
 })
 export class MessageModule { }

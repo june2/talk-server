@@ -34,6 +34,9 @@ class ConfigService {
         }
         return validatedEnvConfig;
     }
+    get env() {
+        return String(this.envConfig.NODE_ENV);
+    }
     get isApiAuthEnabled() {
         return Boolean(this.envConfig.API_AUTH_ENABLED);
     }

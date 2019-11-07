@@ -5,6 +5,7 @@ export declare class ConfigService {
     private readonly envConfig;
     constructor();
     private validateInput;
+    readonly env: string;
     readonly isApiAuthEnabled: boolean;
     readonly port: number;
     readonly dbType: any;
