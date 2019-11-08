@@ -45,7 +45,7 @@ let MessageController = class MessageController {
             let to = yield this.userService.findById(createMessageDto.to);
             let type = 'msg';
             if (null != to && null != to.pushToken && to.isActivePush) {
-                this.pushService.send(req.user, to, createMessageDto.text, createMessageDto.text, createMessageDto.room, type);
+                this.pushService.send(req.user, to, createMessageDto.text, createMessageDto.text, createMessageDto.room, type, createMessageDto.image);
             }
             this.notificationService.create(new notification_dto_1.CreateNotificationDto(createMessageDto.room, to.id, type));
             return this.messageService.create(createMessageDto);

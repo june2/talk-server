@@ -44,7 +44,7 @@ export class MessageAdminController {
     const user: User = await this.userService.findById(createMessageDto.user);
     if (null != user && null != to && null != to.pushToken && to.isActivePush) {
       // send push
-      this.pushService.send(user, to, createMessageDto.text, createMessageDto.text, createMessageDto.room, 'msg');
+      this.pushService.send(user, to, createMessageDto.text, createMessageDto.text, createMessageDto.room, type, createMessageDto.image);
     }
     this.notificationService.create(new CreateNotificationDto(createMessageDto.room, createMessageDto.to, type));
     return this.messageService.create(createMessageDto);

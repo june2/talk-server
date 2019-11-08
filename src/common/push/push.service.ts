@@ -12,7 +12,7 @@ export class PushService {
     this.fcm = new FCM(config.fcmKey);
   }
 
-  send(from: User, to: User, body: string, lastMsg: string, roomId: string, type: string) {
+  send(from: User, to: User, body: string, lastMsg: string, roomId: string, type: string, image: string = null) {
     let message = {
       to: to.pushToken,
       // collapse_key: 'your_collapse_key',
@@ -26,7 +26,8 @@ export class PushService {
         userId: from.id,
         userName: from.name,
         userImage: (from.images.length > 0) ? from.images[0] : '',
-        msg: lastMsg
+        msg: lastMsg,
+        image: image
       },
     }    
     this.fcm.send(message, function (err, response) {

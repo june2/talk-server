@@ -17,7 +17,7 @@ let PushService = class PushService {
         const config = new config_service_1.ConfigService();
         this.fcm = new FCM(config.fcmKey);
     }
-    send(from, to, body, lastMsg, roomId, type) {
+    send(from, to, body, lastMsg, roomId, type, image = null) {
         let message = {
             to: to.pushToken,
             notification: {
@@ -30,7 +30,8 @@ let PushService = class PushService {
                 userId: from.id,
                 userName: from.name,
                 userImage: (from.images.length > 0) ? from.images[0] : '',
-                msg: lastMsg
+                msg: lastMsg,
+                image: image
             },
         };
         this.fcm.send(message, function (err, response) {

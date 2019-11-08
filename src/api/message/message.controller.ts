@@ -42,7 +42,7 @@ export class MessageController {
     let type = 'msg';
     if (null != to && null != to.pushToken && to.isActivePush) {
       // send push
-      this.pushService.send(req.user, to, createMessageDto.text, createMessageDto.text, createMessageDto.room, type);
+      this.pushService.send(req.user, to, createMessageDto.text, createMessageDto.text, createMessageDto.room, type, createMessageDto.image);
     }
     this.notificationService.create(new CreateNotificationDto(createMessageDto.room, to.id, type));
     return this.messageService.create(createMessageDto);
