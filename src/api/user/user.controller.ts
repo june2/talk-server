@@ -32,10 +32,10 @@ export class UserController {
   @UseGuards(AuthGuard('jwt'))
   @Get()
   @ApiOperation({ title: 'Get user' })
-  findAll(@Query('page') page: number, @Query('limit') limit: number, @Request() req): Promise<User[]> {
+  findAll(@Query('page') page: number, @Query('limit') limit: number, @Query('q') q: string, @Request() req): Promise<User[]> {
     let userId = req.user.id;
-    this.userService.updateLastLogin(userId);
-    return this.userService.findActive(userId, page, limit);
+    this.userService.updateLastLogin(userId);    
+    return this.userService.findActive(userId, page, limit, q);
   }
 
   @UseGuards(AuthGuard('jwt'))

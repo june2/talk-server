@@ -9,7 +9,7 @@ export declare class UserService {
     create(createUserDto: CreateUserDto): Promise<User>;
     createAll(arr: CreateUserSampleDto[]): Promise<User[]>;
     findAll(id: string, page?: number, limit?: number, sort?: any, q?: any): Promise<User[]>;
-    findActive(id: string, page?: number, limit?: number, q?: any, sort?: any): Promise<User[]>;
+    findActive(id: string, page: number, limit: number, q: string, sort?: any): Promise<User[]>;
     findOne(options: object): Promise<User>;
     findById(id: string): Promise<User>;
     update(id: string, newValue: UpdateUserDto): Promise<User>;

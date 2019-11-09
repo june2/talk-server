@@ -36,7 +36,7 @@ export class UserService {
   }
 
   async findActive(id: string, page: number = 0, limit: number = 10,
-    q: any = {}, sort: any = { lastLoginAt: -1 }): Promise<User[]> {
+    q: string, sort: any = { lastLoginAt: -1 }): Promise<User[]> {
     let query = {
       $and: [
         { _id: { $ne: id } },
@@ -46,7 +46,7 @@ export class UserService {
         { state: { $ne: 'LEAVE' } },
       ]
     };
-    if (q) query = Object.assign(query, q);
+    if (q) query = Object.assign(query, JSON.parse(q));    
     let options = {
       sort: sort,
       lean: true,
