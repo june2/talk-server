@@ -36,6 +36,11 @@ let UserAdminController = class UserAdminController {
         let userId = req.user.id;
         return this.userService.findAll(userId, page, limit, JSON.parse(sort));
     }
+    updateLastLogin(req) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.userService.updateUserLastLogin();
+        });
+    }
     findById(id, req) {
         if (!mongoose.Types.ObjectId.isValid(id))
             throw new common_1.BadRequestException("this is not objectId");
@@ -61,6 +66,15 @@ __decorate([
     __metadata("design:paramtypes", [Number, Number, Object, Object, Object]),
     __metadata("design:returntype", Promise)
 ], UserAdminController.prototype, "findAll", null);
+__decorate([
+    common_1.UseGuards(passport_1.AuthGuard('jwt'), roles_guard_1.RolesGuard),
+    roles_decorator_1.Roles('ADMIN'),
+    common_1.Get('/update/admin'),
+    __param(0, common_1.Request()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UserAdminController.prototype, "updateLastLogin", null);
 __decorate([
     common_1.UseGuards(passport_1.AuthGuard('jwt'), roles_guard_1.RolesGuard),
     roles_decorator_1.Roles('ADMIN'),

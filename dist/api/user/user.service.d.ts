@@ -19,4 +19,5 @@ export declare class UserService {
     updatePoint(id: string, point: number): Promise<void>;
     registerPushToken(id: string, newValue: UpdateUserPushTokenDto): Promise<void>;
     deleteSample(state: string): Promise<void>;
+    updateUserLastLogin(): Promise<void>;
 }

@@ -122,6 +122,16 @@ let UserService = class UserService {
             yield this.user.deleteMany({ state: state });
         });
     }
+    updateUserLastLogin() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const users = yield this.user.aggregate([{
+                    $sample: { size: 15 }
+                }]);
+            users.forEach((user) => __awaiter(this, void 0, void 0, function* () {
+                yield this.user.findByIdAndUpdate(user._id, { lastLoginAt: new Date() });
+            }));
+        });
+    }
 };
 UserService = __decorate([
     common_1.Injectable(),

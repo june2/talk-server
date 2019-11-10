@@ -46,7 +46,7 @@ export class UserService {
         { state: { $ne: 'LEAVE' } },
       ]
     };
-    if (q) query = Object.assign(query, JSON.parse(q));    
+    if (q) query = Object.assign(query, JSON.parse(q));
     let options = {
       sort: sort,
       lean: true,
@@ -90,5 +90,22 @@ export class UserService {
 
   async deleteSample(state: string): Promise<void> {
     await this.user.deleteMany({ state: state });
+  }
+
+  async updateUserLastLogin() {
+    const users: User[] = await this.user.aggregate([{
+      // $match: {
+      //   $and: [
+      //     { isActive: true },
+      //     { state: { $ne: 'ADMIN' } },
+      //     { state: { $ne: 'BLOCK' } },
+      //     { state: { $ne: 'LEAVE' } },
+      //   ]
+      // },
+      $sample: { size: 15 }
+    }]);
+    users.forEach(async user => {
+      await this.user.findByIdAndUpdate(user._id, { lastLoginAt: new Date() });
+    })
   }
 }
