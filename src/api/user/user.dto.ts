@@ -15,7 +15,7 @@ export class CreateUserDto {
   @ApiModelProperty({ type: String })
   @IsString()
   @IsOptional()
-  name: string;  
+  name: string;
 
   @ApiModelProperty({ type: Array })
   @IsOptional()
@@ -38,12 +38,22 @@ export class CreateUserDto {
   @ApiModelProperty({ type: String })
   @IsString()
   @IsOptional()
-  PlatformOS: string;
+  locale: string;
 
   @ApiModelProperty({ type: String })
   @IsString()
   @IsOptional()
-  PlatformVer: string;
+  region: string;
+
+  @ApiModelProperty({ type: String })
+  @IsString()
+  @IsOptional()
+  platformOS: string; 
+
+  @ApiModelProperty({ type: String })
+  @IsString()
+  @IsOptional()
+  platformVer: string;
 
   @ApiModelProperty({ type: String })
   @IsString()

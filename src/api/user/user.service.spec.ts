@@ -1,7 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigService } from '../../common/config/config.service';
 import { ConfigModule } from '../../common/config/config.module';
-import { MongooseModule } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { MongooseModule } from '@nestjs/mongoose'
+import { User } from './user.interface';;
 import { UserSchema } from './user.schema';
 import { UserModule } from './user.module';
 import { UserService } from './user.service';
@@ -12,6 +14,7 @@ const datalk = require('./../../../test/sample2.json');
 
 describe('UserService', () => {
   let service: UserService;
+  let repo: Model<User>;
   const config: ConfigService = new ConfigService();
 
   let u1 = new CreateUserSampleDto(
@@ -81,6 +84,7 @@ describe('UserService', () => {
       .compile();
 
     service = module.get<UserService>(UserService);
+    repo = service.userRepo;
     // await service.deleteSample('WAITING');
   });
 
@@ -90,32 +94,43 @@ describe('UserService', () => {
   //   expect(user).toBeDefined();
   // });
 
-  it('create DATALK', async () => {
-    let arr = [];
-    let members = datalk.lobby.member;
-    const promises = members.map(async el => {
-      let user = (await service.findOne({ email: `${el.idx}@test.com` }));
-      // console.log(user);
-      if (null == user) {
-        let images = [];
-        if (el.photo) {
-          el.photo.forEach(im => {
-            images.push(im.medium);
-          })
-        }
-        let location = (el.area) ? el.area.trim().toLowerCase() : 'seoul';
-        let gender = (el.gender == 'male') ? 'M' : 'F';
-        let birthday = `${2019 - el.age}-01-01`;
-        arr.push(new CreateUserSampleDto(
-          `${el.idx}@test.com`, 'password', el.nickname, images,
-          gender, birthday, 'KR', location, el.about, 'DATALK'
-        ));
-      }
+  // it('create DATALK', async () => {
+  //   let arr = [];
+  //   let members = datalk.lobby.member;
+  //   const promises = members.map(async el => {
+  //     let user = (await service.findOne({ email: `${el.idx}@test.com` }));
+  //     // console.log(user);
+  //     if (null == user) {
+  //       let images = [];
+  //       if (el.photo) {
+  //         el.photo.forEach(im => {
+  //           images.push(im.medium);
+  //         })
+  //       }
+  //       let location = (el.area) ? el.area.trim().toLowerCase() : 'seoul';
+  //       let gender = (el.gender == 'male') ? 'M' : 'F';
+  //       let birthday = `${2019 - el.age}-01-01`;
+  //       arr.push(new CreateUserSampleDto(
+  //         `${el.idx}@test.com`, 'password', el.nickname, images,
+  //         gender, birthday, 'KR', location, el.about, 'DATALK'
+  //       ));
+  //     }
+  //   });
+  //   // wait until all promises are resolved
+  //   await Promise.all(promises);
+  //   console.log(arr.length)
+  //   await service.createAll(arr);
+  // });
+
+  it('delete Image null', async () => {
+    let users = await repo.find({
+      isActive: true,
+      state: { $ne: 'ADMIN' },
+      images: { $exists: true, $eq: [] }
     });
-    // wait until all promises are resolved
-    await Promise.all(promises);
-    console.log(arr.length)
-    await service.createAll(arr);
+    let ids = users.map(user => user._id);
+    let res = await repo.deleteMany({ _id: { $in: ids } });
+    console.log(res);
   });
 
 

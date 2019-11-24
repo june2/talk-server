@@ -13,6 +13,10 @@ export class UserService {
     @InjectModel('user') private readonly users: PaginateModel<User>
   ) { }
 
+  get userRepo(): Model<User> {
+    return this.user;
+  }
+
   async create(createUserDto: CreateUserDto): Promise<User> {
     const created = new this.user(createUserDto);
     return await created.save();
