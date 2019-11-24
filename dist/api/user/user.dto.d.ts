@@ -6,8 +6,10 @@ export declare class CreateUserDto {
     gender: string;
     birthday: Date;
     location: string;
-    PlatformOS: string;
-    PlatformVer: string;
+    locale: string;
+    region: string;
+    platformOS: string;
+    platformVer: string;
     pushToken: string;
 }
 export declare class CreateUserSampleDto {

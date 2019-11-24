@@ -30,6 +30,9 @@ let UserService = class UserService {
         this.user = user;
         this.users = users;
     }
+    get userRepo() {
+        return this.user;
+    }
     create(createUserDto) {
         return __awaiter(this, void 0, void 0, function* () {
             const created = new this.user(createUserDto);

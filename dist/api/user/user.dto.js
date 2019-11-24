@@ -60,13 +60,25 @@ __decorate([
     class_validator_1.IsString(),
     class_validator_1.IsOptional(),
     __metadata("design:type", String)
-], CreateUserDto.prototype, "PlatformOS", void 0);
+], CreateUserDto.prototype, "locale", void 0);
 __decorate([
     swagger_1.ApiModelProperty({ type: String }),
     class_validator_1.IsString(),
     class_validator_1.IsOptional(),
     __metadata("design:type", String)
-], CreateUserDto.prototype, "PlatformVer", void 0);
+], CreateUserDto.prototype, "region", void 0);
+__decorate([
+    swagger_1.ApiModelProperty({ type: String }),
+    class_validator_1.IsString(),
+    class_validator_1.IsOptional(),
+    __metadata("design:type", String)
+], CreateUserDto.prototype, "platformOS", void 0);
+__decorate([
+    swagger_1.ApiModelProperty({ type: String }),
+    class_validator_1.IsString(),
+    class_validator_1.IsOptional(),
+    __metadata("design:type", String)
+], CreateUserDto.prototype, "platformVer", void 0);
 __decorate([
     swagger_1.ApiModelProperty({ type: String }),
     class_validator_1.IsString(),

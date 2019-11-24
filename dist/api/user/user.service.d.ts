@@ -6,6 +6,7 @@ export declare class UserService {
     private readonly user;
     private readonly users;
     constructor(user: Model<User>, users: PaginateModel<User>);
+    readonly userRepo: Model<User>;
     create(createUserDto: CreateUserDto): Promise<User>;
     createAll(arr: CreateUserSampleDto[]): Promise<User[]>;
     findAll(id: string, page?: number, limit?: number, sort?: any, q?: any): Promise<User[]>;
