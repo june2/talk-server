@@ -48,7 +48,7 @@ let UserService = class UserService {
         return __awaiter(this, void 0, void 0, function* () {
             let query = { _id: { $ne: id } };
             if (q)
-                query = Object.assign(query, q);
+                query = Object.assign(query, JSON.parse(q));
             let options = {
                 sort: sort,
                 lean: true,

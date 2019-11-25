@@ -36,13 +36,13 @@ export class UserAdminController {
     @Query('sort') sort: any, @Query('filter') filter: any,
     @Request() req): Promise<User[]> {
     let userId = req.user.id;
-    return this.userService.findAll(userId, page, limit, JSON.parse(sort));
+    return this.userService.findAll(userId, page, limit, JSON.parse(sort), filter);
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('ADMIN')
   @Get('/update/admin')
-  async updateLastLogin(@Request() req): Promise<void> {    
+  async updateLastLogin(@Request() req): Promise<void> {
     this.userService.updateUserLastLogin();
   }
 
@@ -61,5 +61,5 @@ export class UserAdminController {
   async update(@Param('id') id: string, @Body() updateUserAdminDto: UpdateUserAdminDto, @Request() req): Promise<User> {
     if (!mongoose.Types.ObjectId.isValid(id)) throw new BadRequestException("this is not objectId");
     return this.userService.update(id, updateUserAdminDto);
-  }  
+  }
 }

@@ -29,7 +29,7 @@ export class UserService {
   async findAll(id: string, page: number = 1, limit: number = 10,
     sort: any = { lastLoginAt: -1 }, q: any = {}): Promise<User[]> {
     let query = { _id: { $ne: id } };
-    if (q) query = Object.assign(query, q);
+    if (q) query = Object.assign(query, JSON.parse(q));    
     let options = {
       sort: sort,
       lean: true,

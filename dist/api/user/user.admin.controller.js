@@ -34,7 +34,7 @@ let UserAdminController = class UserAdminController {
     }
     findAll(page, limit, sort, filter, req) {
         let userId = req.user.id;
-        return this.userService.findAll(userId, page, limit, JSON.parse(sort));
+        return this.userService.findAll(userId, page, limit, JSON.parse(sort), filter);
     }
     updateLastLogin(req) {
         return __awaiter(this, void 0, void 0, function* () {
