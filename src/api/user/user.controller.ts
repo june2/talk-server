@@ -34,7 +34,7 @@ export class UserController {
   @ApiOperation({ title: 'Get user' })
   findAll(@Query('page') page: number, @Query('limit') limit: number, @Query('q') q: string, @Request() req): Promise<User[]> {
     let userId = req.user.id;
-    this.userService.updateLastLogin(userId);    
+    this.userService.updateLastLogin(userId);
     return this.userService.findActive(userId, page, limit, q);
   }
 
@@ -102,6 +102,14 @@ export class UserController {
     } else {
       return { reward: false, point: point };
     }
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Put('/:id/updateRewardPoint')
+  updateRewardPoint(@Param('id') id: string, @Request() req): any {
+    let point = req.user.point;
+    this.userService.updatePoint(req.user.id, (point + 10));
+    return { reward: true, point: point + 10 };
   }
 
   @UseGuards(AuthGuard('jwt'))

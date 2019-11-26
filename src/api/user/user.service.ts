@@ -78,7 +78,7 @@ export class UserService {
 
   async updateLastLogin(id: string): Promise<void> {
     this.user.findByIdAndUpdate(id, { lastLoginAt: new Date() }, { new: true }).exec();
-  }
+  }  
 
   async updateState(id: string, state: string): Promise<void> {
     this.user.findByIdAndUpdate(id, { state: state, isActive: false }, { new: true }).exec();

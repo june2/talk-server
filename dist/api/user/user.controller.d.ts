@@ -11,6 +11,7 @@ export declare class UserController {
     uploadFile(file: any, req: any): Promise<User>;
     uploadImage(file: any, req: any): any;
     updateLastLogin(id: string, req: any): any;
+    updateRewardPoint(id: string, req: any): any;
     leave(id: string, req: any): void;
     registerPushToken(id: string, req: any, updateUserPushTokenDto: UpdateUserPushTokenDto): void;
 }

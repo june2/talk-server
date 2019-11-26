@@ -77,6 +77,11 @@ let UserController = class UserController {
             return { reward: false, point: point };
         }
     }
+    updateRewardPoint(id, req) {
+        let point = req.user.point;
+        this.userService.updatePoint(req.user.id, (point + 10));
+        return { reward: true, point: point + 10 };
+    }
     leave(id, req) {
         this.userService.updateState(req.user.id, 'LEAVE');
     }
@@ -150,6 +155,14 @@ __decorate([
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Object)
 ], UserController.prototype, "updateLastLogin", null);
+__decorate([
+    common_1.UseGuards(passport_1.AuthGuard('jwt')),
+    common_1.Put('/:id/updateRewardPoint'),
+    __param(0, common_1.Param('id')), __param(1, common_1.Request()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Object)
+], UserController.prototype, "updateRewardPoint", null);
 __decorate([
     common_1.UseGuards(passport_1.AuthGuard('jwt')),
     common_1.Put('/:id/leave'),
