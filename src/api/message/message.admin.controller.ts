@@ -19,6 +19,7 @@ import { UserService } from '../user/user.service';
 import { NotificationService } from './../notification/notification.service';
 import { Roles } from './../../common/decorators/roles.decorator';
 import { RolesGuard } from './../../common/guards/roles.guard';
+import { MasterGuard } from './../../common/guards/master.guard';
 
 @ApiBearerAuth()
 @ApiUseTags('Message')
@@ -50,22 +51,21 @@ export class MessageAdminController {
     return this.messageService.create(createMessageDto);
   }
 
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @UseGuards(MasterGuard)
   @Roles('ADMIN')
   @Post('/admin/send')
   @ApiOperation({ title: 'Send message by lambda' })
   async send(@Body() createMessageDto: CreateMessageDto, @Request() req): Promise<Message> {
-    // this.roomService.updatLastMsgByRoomId(createMessageDto.room, createMessageDto.text);
-    // // find user and check pushtoken    
-    // let to = await this.userService.findById(createMessageDto.to);
-    // let type = 'msg';
-    // const user: User = await this.userService.findById(createMessageDto.user);
-    // if (null != user && null != to && null != to.pushToken && to.isActivePush) {
-    //   // send push
-    //   this.pushService.send(user, to, createMessageDto.text, createMessageDto.text, createMessageDto.room, type, createMessageDto.image);
-    // }
-    // this.notificationService.create(new CreateNotificationDto(createMessageDto.room, createMessageDto.to, type));
-    console.log(createMessageDto)
+    this.roomService.updatLastMsgByRoomId(createMessageDto.room, createMessageDto.text);
+    // find user and check pushtoken    
+    let to = await this.userService.findById(createMessageDto.to);
+    let type = 'msg';
+    const user: User = await this.userService.findById(createMessageDto.user);
+    if (null != user && null != to && null != to.pushToken && to.isActivePush) {
+      // send push
+      this.pushService.send(user, to, createMessageDto.text, createMessageDto.text, createMessageDto.room, type, createMessageDto.image);
+    }
+    this.notificationService.create(new CreateNotificationDto(createMessageDto.room, createMessageDto.to, type));    
     return this.messageService.create(createMessageDto);
   }
 }

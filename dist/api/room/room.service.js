@@ -40,7 +40,7 @@ let RoomService = class RoomService {
     findAll(page = 1, limit = 10, sort = { updatedAt: -1 }, query = {}) {
         return __awaiter(this, void 0, void 0, function* () {
             let options = {
-                sort: JSON.parse(sort),
+                sort: (typeof sort) === 'string' ? JSON.parse(sort) : sort,
                 populate: [{
                         path: 'users',
                         select: 'id name images gender birthday location',

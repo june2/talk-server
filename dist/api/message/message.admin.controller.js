@@ -32,6 +32,7 @@ const user_service_1 = require("../user/user.service");
 const notification_service_1 = require("./../notification/notification.service");
 const roles_decorator_1 = require("./../../common/decorators/roles.decorator");
 const roles_guard_1 = require("./../../common/guards/roles.guard");
+const master_guard_1 = require("./../../common/guards/master.guard");
 let MessageAdminController = class MessageAdminController {
     constructor(messageService, roomService, userService, pushService, notificationService) {
         this.messageService = messageService;
@@ -55,7 +56,14 @@ let MessageAdminController = class MessageAdminController {
     }
     send(createMessageDto, req) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(createMessageDto);
+            this.roomService.updatLastMsgByRoomId(createMessageDto.room, createMessageDto.text);
+            let to = yield this.userService.findById(createMessageDto.to);
+            let type = 'msg';
+            const user = yield this.userService.findById(createMessageDto.user);
+            if (null != user && null != to && null != to.pushToken && to.isActivePush) {
+                this.pushService.send(user, to, createMessageDto.text, createMessageDto.text, createMessageDto.room, type, createMessageDto.image);
+            }
+            this.notificationService.create(new notification_dto_1.CreateNotificationDto(createMessageDto.room, createMessageDto.to, type));
             return this.messageService.create(createMessageDto);
         });
     }
@@ -71,7 +79,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], MessageAdminController.prototype, "create", null);
 __decorate([
-    common_1.UseGuards(passport_1.AuthGuard('jwt'), roles_guard_1.RolesGuard),
+    common_1.UseGuards(master_guard_1.MasterGuard),
     roles_decorator_1.Roles('ADMIN'),
     common_1.Post('/admin/send'),
     swagger_1.ApiOperation({ title: 'Send message by lambda' }),

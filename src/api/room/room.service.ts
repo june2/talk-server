@@ -22,7 +22,7 @@ export class RoomService {
   async findAll(page: number = 1, limit: number = 10,
     sort: any = { updatedAt: -1 }, query: any = {}): Promise<Room[]> {
     let options = {
-      sort: JSON.parse(sort),
+      sort: (typeof sort) === 'string' ? JSON.parse(sort) : sort,
       populate: [{
         path: 'users',
         select: 'id name images gender birthday location',

@@ -29,9 +29,9 @@ export class UserService {
   async findAll(id: string, page: number = 1, limit: number = 10,
     sort: any = { lastLoginAt: -1 }, q: any = {}): Promise<User[]> {
     let query = { _id: { $ne: id } };
-    if (q) query = Object.assign(query, JSON.parse(q));    
+    if (q) query = Object.assign(query, (typeof q) === 'string' ? JSON.parse(q) : q);
     let options = {
-      sort: sort,
+      sort: (typeof sort) === 'string' ? JSON.parse(sort) : sort,
       lean: true,
       page: page,
       limit: limit
@@ -78,7 +78,7 @@ export class UserService {
 
   async updateLastLogin(id: string): Promise<void> {
     this.user.findByIdAndUpdate(id, { lastLoginAt: new Date() }, { new: true }).exec();
-  }  
+  }
 
   async updateState(id: string, state: string): Promise<void> {
     this.user.findByIdAndUpdate(id, { state: state, isActive: false }, { new: true }).exec();
