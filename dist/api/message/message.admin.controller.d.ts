@@ -13,4 +13,5 @@ export declare class MessageAdminController {
     private readonly notificationService;
     constructor(messageService: MessageService, roomService: RoomService, userService: UserService, pushService: PushService, notificationService: NotificationService);
     create(createMessageDto: CreateMessageDto, req: any): Promise<Message>;
+    send(createMessageDto: CreateMessageDto, req: any): Promise<Message>;
 }

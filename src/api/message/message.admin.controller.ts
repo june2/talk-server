@@ -49,4 +49,23 @@ export class MessageAdminController {
     this.notificationService.create(new CreateNotificationDto(createMessageDto.room, createMessageDto.to, type));
     return this.messageService.create(createMessageDto);
   }
+
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles('ADMIN')
+  @Post('/admin/send')
+  @ApiOperation({ title: 'Send message by lambda' })
+  async send(@Body() createMessageDto: CreateMessageDto, @Request() req): Promise<Message> {
+    // this.roomService.updatLastMsgByRoomId(createMessageDto.room, createMessageDto.text);
+    // // find user and check pushtoken    
+    // let to = await this.userService.findById(createMessageDto.to);
+    // let type = 'msg';
+    // const user: User = await this.userService.findById(createMessageDto.user);
+    // if (null != user && null != to && null != to.pushToken && to.isActivePush) {
+    //   // send push
+    //   this.pushService.send(user, to, createMessageDto.text, createMessageDto.text, createMessageDto.room, type, createMessageDto.image);
+    // }
+    // this.notificationService.create(new CreateNotificationDto(createMessageDto.room, createMessageDto.to, type));
+    console.log(createMessageDto)
+    return this.messageService.create(createMessageDto);
+  }
 }

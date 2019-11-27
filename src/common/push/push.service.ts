@@ -18,7 +18,8 @@ export class PushService {
       // collapse_key: 'your_collapse_key',
       notification: {
         title: from.name,
-        body: body
+        body: body,
+        sound: 'default'
       },
       data: {
         type: type,
@@ -29,7 +30,7 @@ export class PushService {
         msg: lastMsg,
         image: image
       },
-    }    
+    }
     this.fcm.send(message, function (err, response) {
       if (err) {
         console.error(`push: ${err}`);

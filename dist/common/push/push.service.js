@@ -22,7 +22,8 @@ let PushService = class PushService {
             to: to.pushToken,
             notification: {
                 title: from.name,
-                body: body
+                body: body,
+                sound: 'default'
             },
             data: {
                 type: type,

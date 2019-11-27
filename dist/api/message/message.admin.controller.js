@@ -53,6 +53,12 @@ let MessageAdminController = class MessageAdminController {
             return this.messageService.create(createMessageDto);
         });
     }
+    send(createMessageDto, req) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(createMessageDto);
+            return this.messageService.create(createMessageDto);
+        });
+    }
 };
 __decorate([
     common_1.UseGuards(passport_1.AuthGuard('jwt'), roles_guard_1.RolesGuard),
@@ -64,6 +70,16 @@ __decorate([
     __metadata("design:paramtypes", [message_dto_1.CreateMessageDto, Object]),
     __metadata("design:returntype", Promise)
 ], MessageAdminController.prototype, "create", null);
+__decorate([
+    common_1.UseGuards(passport_1.AuthGuard('jwt'), roles_guard_1.RolesGuard),
+    roles_decorator_1.Roles('ADMIN'),
+    common_1.Post('/admin/send'),
+    swagger_1.ApiOperation({ title: 'Send message by lambda' }),
+    __param(0, common_1.Body()), __param(1, common_1.Request()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [message_dto_1.CreateMessageDto, Object]),
+    __metadata("design:returntype", Promise)
+], MessageAdminController.prototype, "send", null);
 MessageAdminController = __decorate([
     swagger_1.ApiBearerAuth(),
     swagger_1.ApiUseTags('Message'),
