@@ -35,7 +35,12 @@ let SfService = class SfService {
                 stateMachineArn: 'arn:aws:iam::308674859491:role/service-role/stepfunction',
                 input: JSON.stringify(input)
             };
-            this.sf.startExecution(params);
+            this.sf.startExecution(params, function (err, data) {
+                if (err)
+                    console.error(err, err.stack);
+                else
+                    console.log(data);
+            });
         }
         catch (err) {
             console.error(`sf: ${err}`);

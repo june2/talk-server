@@ -41,10 +41,8 @@ export class MessageController {
     // find user and check pushtoken    
     let to = await this.userService.findById(createMessageDto.to);
     let type = 'msg';
-    // fake user 
-    console.log("to : ", to);
-    if (to.state === 'SAMPLE' || to.state === 'DATALK') {
-      console.log("step function!")
+    // fake user     
+    if (to.state === 'SAMPLE' || to.state === 'DATALK') {      
       this.sfService.excute(req.user, to, createMessageDto.text, createMessageDto.room);
     }
     if (null != to && null != to.pushToken && to.isActivePush) {

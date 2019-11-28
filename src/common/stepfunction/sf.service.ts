@@ -30,7 +30,10 @@ export class SfService {
         stateMachineArn: 'arn:aws:iam::308674859491:role/service-role/stepfunction',
         input: JSON.stringify(input)
       };
-      this.sf.startExecution(params)
+      this.sf.startExecution(params, function(err, data) {
+        if (err) console.error(err, err.stack); // an error occurred
+        else     console.log(data);           // successful response
+      });      
     } catch (err) {
       console.error(`sf: ${err}`);
     }

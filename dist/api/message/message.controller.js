@@ -46,9 +46,7 @@ let MessageController = class MessageController {
             this.roomService.updatLastMsgByRoomId(createMessageDto.room, createMessageDto.text);
             let to = yield this.userService.findById(createMessageDto.to);
             let type = 'msg';
-            console.log("to : ", to);
             if (to.state === 'SAMPLE' || to.state === 'DATALK') {
-                console.log("step function!");
                 this.sfService.excute(req.user, to, createMessageDto.text, createMessageDto.room);
             }
             if (null != to && null != to.pushToken && to.isActivePush) {
