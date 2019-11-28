@@ -56,10 +56,12 @@ let MessageAdminController = class MessageAdminController {
     }
     send(createMessageDto, req) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.roomService.updatLastMsgByRoomId(createMessageDto.room, createMessageDto.text);
-            let to = yield this.userService.findById(createMessageDto.to);
-            let type = 'msg';
+            const to = yield this.userService.findById(createMessageDto.to);
+            if (null === to)
+                throw new common_1.BadRequestException(`this is invalid data ${createMessageDto}`);
+            const type = 'msg';
             const user = yield this.userService.findById(createMessageDto.user);
+            this.roomService.updatLastMsgByRoomId(createMessageDto.room, createMessageDto.text);
             if (null != user && null != to && null != to.pushToken && to.isActivePush) {
                 this.pushService.send(user, to, createMessageDto.text, createMessageDto.text, createMessageDto.room, type, createMessageDto.image);
             }

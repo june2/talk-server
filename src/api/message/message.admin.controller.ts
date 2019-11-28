@@ -6,6 +6,7 @@ import {
 import {
   UseGuards, Controller,
   Request, Body, Post,
+  BadRequestException
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateMessageDto } from './message.dto';
@@ -56,16 +57,18 @@ export class MessageAdminController {
   @Post('/admin/send')
   @ApiOperation({ title: 'Send message by lambda' })
   async send(@Body() createMessageDto: CreateMessageDto, @Request() req): Promise<Message> {
-    this.roomService.updatLastMsgByRoomId(createMessageDto.room, createMessageDto.text);
     // find user and check pushtoken    
-    let to = await this.userService.findById(createMessageDto.to);
-    let type = 'msg';
+    const to = await this.userService.findById(createMessageDto.to);
+    if (null === to) throw new BadRequestException(`this is invalid data ${createMessageDto}`);
+    
+    const type = 'msg';
     const user: User = await this.userService.findById(createMessageDto.user);
+    this.roomService.updatLastMsgByRoomId(createMessageDto.room, createMessageDto.text);
     if (null != user && null != to && null != to.pushToken && to.isActivePush) {
       // send push
       this.pushService.send(user, to, createMessageDto.text, createMessageDto.text, createMessageDto.room, type, createMessageDto.image);
     }
-    this.notificationService.create(new CreateNotificationDto(createMessageDto.room, createMessageDto.to, type));    
+    this.notificationService.create(new CreateNotificationDto(createMessageDto.room, createMessageDto.to, type));
     return this.messageService.create(createMessageDto);
   }
 }
