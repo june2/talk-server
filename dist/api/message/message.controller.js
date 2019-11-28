@@ -26,16 +26,18 @@ const passport_1 = require("@nestjs/passport");
 const message_dto_1 = require("./message.dto");
 const message_service_1 = require("./message.service");
 const room_service_1 = require("./../room/room.service");
-const push_service_1 = require("../../common/push/push.service");
 const user_service_1 = require("./../user/user.service");
 const notification_service_1 = require("./../notification/notification.service");
 const notification_dto_1 = require("./../notification/notification.dto");
+const push_service_1 = require("../../common/push/push.service");
+const sf_service_1 = require("../../common/stepfunction/sf.service");
 let MessageController = class MessageController {
-    constructor(messageService, roomService, userService, pushService, notificationService) {
+    constructor(messageService, roomService, userService, pushService, sfService, notificationService) {
         this.messageService = messageService;
         this.roomService = roomService;
         this.userService = userService;
         this.pushService = pushService;
+        this.sfService = sfService;
         this.notificationService = notificationService;
     }
     create(createMessageDto, req) {
@@ -44,6 +46,9 @@ let MessageController = class MessageController {
             this.roomService.updatLastMsgByRoomId(createMessageDto.room, createMessageDto.text);
             let to = yield this.userService.findById(createMessageDto.to);
             let type = 'msg';
+            if (to.state === 'SAMPLE' || to.state === 'DATALK') {
+                this.sfService.excute(req.user, to, createMessageDto.text, createMessageDto.room);
+            }
             if (null != to && null != to.pushToken && to.isActivePush) {
                 this.pushService.send(req.user, to, createMessageDto.text, createMessageDto.text, createMessageDto.room, type, createMessageDto.image);
             }
@@ -84,6 +89,7 @@ MessageController = __decorate([
         room_service_1.RoomService,
         user_service_1.UserService,
         push_service_1.PushService,
+        sf_service_1.SfService,
         notification_service_1.NotificationService])
 ], MessageController);
 exports.MessageController = MessageController;

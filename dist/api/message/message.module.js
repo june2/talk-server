@@ -17,6 +17,7 @@ const room_schema_1 = require("./../room/room.schema");
 const notification_service_1 = require("./../notification/notification.service");
 const user_module_1 = require("./../user/user.module");
 const push_module_1 = require("../../common/push/push.module");
+const sf_module_1 = require("../../common/stepfunction/sf.module");
 let MessageModule = class MessageModule {
 };
 MessageModule = __decorate([
@@ -24,6 +25,7 @@ MessageModule = __decorate([
         imports: [
             user_module_1.UserModule,
             push_module_1.PushModule,
+            sf_module_1.SfModule,
             mongoose_1.MongooseModule.forFeature([
                 { name: 'message', schema: message_schema_1.MessageSchema },
                 { name: 'room', schema: room_schema_1.RoomSchema }

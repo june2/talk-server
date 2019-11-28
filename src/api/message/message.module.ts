@@ -9,11 +9,13 @@ import { RoomSchema } from './../room/room.schema';
 import { NotificationService } from './../notification/notification.service';
 import { UserModule } from './../user/user.module';
 import { PushModule } from '../../common/push/push.module';
+import { SfModule } from '../../common/stepfunction/sf.module';
 
 @Module({
   imports: [
     UserModule,
     PushModule,
+    SfModule,
     MongooseModule.forFeature([
       { name: 'message', schema: MessageSchema },
       { name: 'room', schema: RoomSchema }]),

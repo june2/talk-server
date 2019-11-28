@@ -1,12 +1,11 @@
 import {
   ApiBearerAuth,
   ApiOperation,
-  ApiResponse,
   ApiUseTags,
 } from '@nestjs/swagger';
 import {
   UseGuards, Controller,
-  Request, Body, Query, Param,
+  Request, Body,
   Get, Post,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -14,10 +13,11 @@ import { CreateMessageDto } from './message.dto';
 import { MessageService } from './message.service';
 import { Message } from './message.interface';
 import { RoomService } from './../room/room.service';
-import { PushService } from '../../common/push/push.service';
 import { UserService } from './../user/user.service';
 import { NotificationService } from './../notification/notification.service';
 import { CreateNotificationDto } from './../notification/notification.dto';
+import { PushService } from '../../common/push/push.service';
+import { SfService } from '../../common/stepfunction/sf.service';
 
 @ApiBearerAuth()
 @ApiUseTags('Message')
@@ -28,6 +28,7 @@ export class MessageController {
     private readonly roomService: RoomService,
     private readonly userService: UserService,
     private readonly pushService: PushService,
+    private readonly sfService: SfService,
     private readonly notificationService: NotificationService
   ) { }
 
@@ -40,6 +41,10 @@ export class MessageController {
     // find user and check pushtoken    
     let to = await this.userService.findById(createMessageDto.to);
     let type = 'msg';
+    // fake user 
+    if (to.state === 'SAMPLE' || to.state === 'DATALK') {
+      this.sfService.excute(req.user, to, createMessageDto.text, createMessageDto.room);
+    }
     if (null != to && null != to.pushToken && to.isActivePush) {
       // send push
       this.pushService.send(req.user, to, createMessageDto.text, createMessageDto.text, createMessageDto.room, type, createMessageDto.image);
