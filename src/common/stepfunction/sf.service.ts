@@ -22,8 +22,8 @@ export class SfService {
     try {
       const input = {
         wait: ((Math.floor(Math.random() * 50) + 1) * 10), // 10 ~ 1000 second
-        user: user.id,
-        to: to.id,
+        user: to.id, // send
+        to: user.id, // receive
         text: getContent(),
         room: room
       }

@@ -27,8 +27,8 @@ let SfService = class SfService {
         try {
             const input = {
                 wait: ((Math.floor(Math.random() * 50) + 1) * 10),
-                user: user.id,
-                to: to.id,
+                user: to.id,
+                to: user.id,
                 text: data_1.getContent(),
                 room: room
             };
