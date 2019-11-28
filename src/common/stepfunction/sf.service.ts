@@ -27,13 +27,13 @@ export class SfService {
         room: room
       }
       const params = {
-        stateMachineArn: 'arn:aws:iam::308674859491:role/service-role/stepfunction',
+        stateMachineArn: 'arn:aws:states:ap-northeast-2:308674859491:stateMachine:message_queue',
         input: JSON.stringify(input)
       };
-      this.sf.startExecution(params, function(err, data) {
+      this.sf.startExecution(params, function (err, data) {
         if (err) console.error(err, err.stack); // an error occurred
-        else     console.log(data);           // successful response
-      });      
+        else console.log(data);           // successful response
+      });
     } catch (err) {
       console.error(`sf: ${err}`);
     }
