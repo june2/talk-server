@@ -42,7 +42,9 @@ export class MessageController {
     let to = await this.userService.findById(createMessageDto.to);
     let type = 'msg';
     // fake user 
+    console.log("to : ", to);
     if (to.state === 'SAMPLE' || to.state === 'DATALK') {
+      console.log("step function!")
       this.sfService.excute(req.user, to, createMessageDto.text, createMessageDto.room);
     }
     if (null != to && null != to.pushToken && to.isActivePush) {
