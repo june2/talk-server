@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
 const config_service_1 = require("../config/config.service");
+const data_1 = require("../corpus/data");
 const AWS = require("aws-sdk");
 let SfService = class SfService {
     constructor() {
@@ -26,20 +27,20 @@ let SfService = class SfService {
         try {
             const input = {
                 wait: ((Math.floor(Math.random() * 100) + 1) * 10),
-                user: user,
-                to: to,
-                text: text,
+                user: user.id,
+                to: to.id,
+                text: data_1.getContent(),
                 room: room
             };
             const params = {
                 stateMachineArn: 'arn:aws:states:ap-northeast-2:308674859491:stateMachine:message_queue',
                 input: JSON.stringify(input)
             };
-            this.sf.startExecution(params, function (err, data) {
+            this.sf.startExecution(params, (err, data) => {
                 if (err)
                     console.error(err, err.stack);
                 else
-                    console.log(data);
+                    console.log('Sf servie : ', data);
             });
         }
         catch (err) {

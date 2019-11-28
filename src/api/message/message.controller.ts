@@ -42,9 +42,9 @@ export class MessageController {
     let to = await this.userService.findById(createMessageDto.to);
     let type = 'msg';
     // fake user     
-    if (to.state === 'SAMPLE' || to.state === 'DATALK') {      
-      this.sfService.excute(req.user, to, createMessageDto.text, createMessageDto.room);
-    }
+    // if (to.state === 'SAMPLE' || to.state === 'DATALK') {      
+    //   this.sfService.excute(req.user, to, createMessageDto.text, createMessageDto.room);
+    // }
     if (null != to && null != to.pushToken && to.isActivePush) {
       // send push
       this.pushService.send(req.user, to, createMessageDto.text, createMessageDto.text, createMessageDto.room, type, createMessageDto.image);

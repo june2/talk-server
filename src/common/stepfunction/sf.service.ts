@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '../config/config.service';
+import { getContent } from '../corpus/data';
 import { User } from './../../api/user/user.interface';
 import * as AWS from 'aws-sdk';
 
@@ -21,18 +22,18 @@ export class SfService {
     try {
       const input = {
         wait: ((Math.floor(Math.random() * 100) + 1) * 10), // 10 ~ 1000 second
-        user: user,
-        to: to,
-        text: text,
+        user: user.id,
+        to: to.id,
+        text: getContent(),
         room: room
       }
       const params = {
         stateMachineArn: 'arn:aws:states:ap-northeast-2:308674859491:stateMachine:message_queue',
         input: JSON.stringify(input)
       };
-      this.sf.startExecution(params, function (err, data) {
+      this.sf.startExecution(params, (err, data) => {
         if (err) console.error(err, err.stack); // an error occurred
-        else console.log(data);           // successful response
+        else console.log('Sf servie : ', data);           // successful response
       });
     } catch (err) {
       console.error(`sf: ${err}`);

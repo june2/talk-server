@@ -21,6 +21,7 @@ import { NotificationService } from '../notification/notification.service';
 import { CreateNotificationDto } from './../notification/notification.dto';
 import { UserService } from './../user/user.service';
 import { PushService } from '../../common/push/push.service';
+import { SfService } from '../../common/stepfunction/sf.service';
 
 @ApiBearerAuth()
 @ApiUseTags('Room')
@@ -31,6 +32,7 @@ export class RoomController {
     private readonly messageService: MessageService,
     private readonly pushService: PushService,
     private readonly notificationService: NotificationService,
+    private readonly sfService: SfService,
     private readonly userService: UserService
   ) { }
 
@@ -59,6 +61,10 @@ export class RoomController {
     this.messageService.create(new CreateMessageDto(room.id, user.id, reqRoomDto.lastMsg));
     // find user and check pushtoken
     let to = await this.userService.findById(reqRoomDto.userId);
+    // fake user     
+    if (to.state === 'SAMPLE' || to.state === 'DATALK') {      
+      this.sfService.excute(req.user, to, reqRoomDto.lastMsg, room.id);
+    }
     if (null != to && null != to.pushToken && to.isActivePush) {
       // send push
       let body = `${user.name}님이 메시지를 보냈습니다.`;

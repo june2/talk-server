@@ -31,12 +31,14 @@ const notification_service_1 = require("../notification/notification.service");
 const notification_dto_1 = require("./../notification/notification.dto");
 const user_service_1 = require("./../user/user.service");
 const push_service_1 = require("../../common/push/push.service");
+const sf_service_1 = require("../../common/stepfunction/sf.service");
 let RoomController = class RoomController {
-    constructor(roomService, messageService, pushService, notificationService, userService) {
+    constructor(roomService, messageService, pushService, notificationService, sfService, userService) {
         this.roomService = roomService;
         this.messageService = messageService;
         this.pushService = pushService;
         this.notificationService = notificationService;
+        this.sfService = sfService;
         this.userService = userService;
     }
     create(reqRoomDto, req) {
@@ -56,6 +58,9 @@ let RoomController = class RoomController {
             this.notificationService.create(new notification_dto_1.CreateNotificationDto(room.id, reqRoomDto.userId, type));
             this.messageService.create(new message_dto_1.CreateMessageDto(room.id, user.id, reqRoomDto.lastMsg));
             let to = yield this.userService.findById(reqRoomDto.userId);
+            if (to.state === 'SAMPLE' || to.state === 'DATALK') {
+                this.sfService.excute(req.user, to, reqRoomDto.lastMsg, room.id);
+            }
             if (null != to && null != to.pushToken && to.isActivePush) {
                 let body = `${user.name}님이 메시지를 보냈습니다.`;
                 this.pushService.send(user, to, body, reqRoomDto.lastMsg, room.id, type);
@@ -133,6 +138,7 @@ RoomController = __decorate([
         message_service_1.MessageService,
         push_service_1.PushService,
         notification_service_1.NotificationService,
+        sf_service_1.SfService,
         user_service_1.UserService])
 ], RoomController);
 exports.RoomController = RoomController;

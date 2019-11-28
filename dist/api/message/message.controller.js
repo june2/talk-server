@@ -46,9 +46,6 @@ let MessageController = class MessageController {
             this.roomService.updatLastMsgByRoomId(createMessageDto.room, createMessageDto.text);
             let to = yield this.userService.findById(createMessageDto.to);
             let type = 'msg';
-            if (to.state === 'SAMPLE' || to.state === 'DATALK') {
-                this.sfService.excute(req.user, to, createMessageDto.text, createMessageDto.room);
-            }
             if (null != to && null != to.pushToken && to.isActivePush) {
                 this.pushService.send(req.user, to, createMessageDto.text, createMessageDto.text, createMessageDto.room, type, createMessageDto.image);
             }
