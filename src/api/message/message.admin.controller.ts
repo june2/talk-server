@@ -44,11 +44,15 @@ export class MessageAdminController {
     let to = await this.userService.findById(createMessageDto.to);
     let type = 'msg';
     const user: User = await this.userService.findById(createMessageDto.user);
+    
+    // create badge
+    await this.notificationService.create(new CreateNotificationDto(createMessageDto.room, createMessageDto.to, type));
+    const badge = await this.notificationService.count(to.id);
+
     if (null != user && null != to && null != to.pushToken && to.isActivePush) {
       // send push
-      this.pushService.send(user, to, createMessageDto.text, createMessageDto.text, createMessageDto.room, type, createMessageDto.image);
+      this.pushService.send(user, to, badge, createMessageDto.text, createMessageDto.text, createMessageDto.room, type, createMessageDto.image);
     }
-    this.notificationService.create(new CreateNotificationDto(createMessageDto.room, createMessageDto.to, type));
     return this.messageService.create(createMessageDto);
   }
 
@@ -60,15 +64,19 @@ export class MessageAdminController {
     // find user and check pushtoken    
     const to = await this.userService.findById(createMessageDto.to);
     if (null === to) throw new BadRequestException(`this is invalid data ${createMessageDto}`);
-    
+
     const type = 'msg';
     const user: User = await this.userService.findById(createMessageDto.user);
     this.roomService.updatLastMsgByRoomId(createMessageDto.room, createMessageDto.text);
+    
+    // create badge
+    await this.notificationService.create(new CreateNotificationDto(createMessageDto.room, createMessageDto.to, type));
+    const badge = await this.notificationService.count(to.id);
+    
     if (null != user && null != to && null != to.pushToken && to.isActivePush) {
       // send push
-      this.pushService.send(user, to, createMessageDto.text, createMessageDto.text, createMessageDto.room, type, createMessageDto.image);
+      this.pushService.send(user, to, badge, createMessageDto.text, createMessageDto.text, createMessageDto.room, type, createMessageDto.image);
     }
-    this.notificationService.create(new CreateNotificationDto(createMessageDto.room, createMessageDto.to, type));
     return this.messageService.create(createMessageDto);
   }
 }

@@ -46,10 +46,11 @@ let MessageController = class MessageController {
             this.roomService.updatLastMsgByRoomId(createMessageDto.room, createMessageDto.text);
             let to = yield this.userService.findById(createMessageDto.to);
             let type = 'msg';
+            yield this.notificationService.create(new notification_dto_1.CreateNotificationDto(createMessageDto.room, to.id, type));
+            const badge = yield this.notificationService.count(to.id);
             if (null != to && null != to.pushToken && to.isActivePush) {
-                this.pushService.send(req.user, to, createMessageDto.text, createMessageDto.text, createMessageDto.room, type, createMessageDto.image);
+                this.pushService.send(req.user, to, badge, createMessageDto.text, createMessageDto.text, createMessageDto.room, type, createMessageDto.image);
             }
-            this.notificationService.create(new notification_dto_1.CreateNotificationDto(createMessageDto.room, to.id, type));
             return this.messageService.create(createMessageDto);
         });
     }

@@ -12,14 +12,14 @@ export class PushService {
     this.fcm = new FCM(config.fcmKey);
   }
 
-  send(from: User, to: User, body: string, lastMsg: string, roomId: string, type: string, image: string = null) {
+  send(from: User, to: User, badge: number, body: string, lastMsg: string, roomId: string, type: string, image: string = null) {
     let message = {
       to: to.pushToken,
       // collapse_key: 'your_collapse_key',
       notification: {
         title: from.name,
+        badge: badge,
         body: body,
-        badge: 3,
         sound: 'default'
       },
       data: {

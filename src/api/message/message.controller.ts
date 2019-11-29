@@ -41,15 +41,19 @@ export class MessageController {
     // find user and check pushtoken    
     let to = await this.userService.findById(createMessageDto.to);
     let type = 'msg';
+
     // fake user     
     // if (to.state === 'SAMPLE' || to.state === 'DATALK') {      
     //   this.sfService.excute(req.user, to, createMessageDto.text, createMessageDto.room);
     // }
+
+    // create badge
+    await this.notificationService.create(new CreateNotificationDto(createMessageDto.room, to.id, type));
+    const badge = await this.notificationService.count(to.id);
     if (null != to && null != to.pushToken && to.isActivePush) {
       // send push
-      this.pushService.send(req.user, to, createMessageDto.text, createMessageDto.text, createMessageDto.room, type, createMessageDto.image);
+      this.pushService.send(req.user, to, badge, createMessageDto.text, createMessageDto.text, createMessageDto.room, type, createMessageDto.image);
     }
-    this.notificationService.create(new CreateNotificationDto(createMessageDto.room, to.id, type));
     return this.messageService.create(createMessageDto);
   }
 

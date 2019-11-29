@@ -15,7 +15,7 @@ export class NotificationService {
     return await created.save();
   }
 
-  async count(id: string): Promise<Number> {
+  async count(id: string): Promise<number> {
     return this.notification.countDocuments({ user: id }).exec(); 
   }
 

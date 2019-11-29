@@ -47,10 +47,11 @@ let MessageAdminController = class MessageAdminController {
             let to = yield this.userService.findById(createMessageDto.to);
             let type = 'msg';
             const user = yield this.userService.findById(createMessageDto.user);
+            yield this.notificationService.create(new notification_dto_1.CreateNotificationDto(createMessageDto.room, createMessageDto.to, type));
+            const badge = yield this.notificationService.count(to.id);
             if (null != user && null != to && null != to.pushToken && to.isActivePush) {
-                this.pushService.send(user, to, createMessageDto.text, createMessageDto.text, createMessageDto.room, type, createMessageDto.image);
+                this.pushService.send(user, to, badge, createMessageDto.text, createMessageDto.text, createMessageDto.room, type, createMessageDto.image);
             }
-            this.notificationService.create(new notification_dto_1.CreateNotificationDto(createMessageDto.room, createMessageDto.to, type));
             return this.messageService.create(createMessageDto);
         });
     }
@@ -62,10 +63,11 @@ let MessageAdminController = class MessageAdminController {
             const type = 'msg';
             const user = yield this.userService.findById(createMessageDto.user);
             this.roomService.updatLastMsgByRoomId(createMessageDto.room, createMessageDto.text);
+            yield this.notificationService.create(new notification_dto_1.CreateNotificationDto(createMessageDto.room, createMessageDto.to, type));
+            const badge = yield this.notificationService.count(to.id);
             if (null != user && null != to && null != to.pushToken && to.isActivePush) {
-                this.pushService.send(user, to, createMessageDto.text, createMessageDto.text, createMessageDto.room, type, createMessageDto.image);
+                this.pushService.send(user, to, badge, createMessageDto.text, createMessageDto.text, createMessageDto.room, type, createMessageDto.image);
             }
-            this.notificationService.create(new notification_dto_1.CreateNotificationDto(createMessageDto.room, createMessageDto.to, type));
             return this.messageService.create(createMessageDto);
         });
     }

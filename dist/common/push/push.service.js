@@ -17,13 +17,13 @@ let PushService = class PushService {
         const config = new config_service_1.ConfigService();
         this.fcm = new FCM(config.fcmKey);
     }
-    send(from, to, body, lastMsg, roomId, type, image = null) {
+    send(from, to, badge, body, lastMsg, roomId, type, image = null) {
         let message = {
             to: to.pushToken,
             notification: {
                 title: from.name,
+                badge: badge,
                 body: body,
-                badge: 3,
                 sound: 'default'
             },
             data: {
