@@ -23,6 +23,7 @@ let PushService = class PushService {
             notification: {
                 title: from.name,
                 body: body,
+                badge: 3,
                 sound: 'default'
             },
             data: {
