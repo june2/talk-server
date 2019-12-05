@@ -32,6 +32,7 @@ exports.UserSchema = new mongoose_1.Schema({
     pushToken: { type: String },
     PlatformOS: { type: String },
     PlatformVer: { type: String },
+    blocks: { type: [mongoose_1.Schema.Types.ObjectId] }
 }, {
     versionKey: false,
     timestamps: true,

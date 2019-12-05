@@ -165,6 +165,12 @@ export class UpdateUserPushTokenDto {
   pushToken: string;
 }
 
+export class AddBlockUserDto {
+  @ApiModelProperty({ type: String })
+  @IsString()
+  blockId: string;
+}
+
 export class UpdateUserAdminDto {
   @ApiModelProperty({ type: String })
   @IsString()

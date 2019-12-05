@@ -216,6 +216,14 @@ __decorate([
     __metadata("design:type", String)
 ], UpdateUserPushTokenDto.prototype, "pushToken", void 0);
 exports.UpdateUserPushTokenDto = UpdateUserPushTokenDto;
+class AddBlockUserDto {
+}
+__decorate([
+    swagger_1.ApiModelProperty({ type: String }),
+    class_validator_1.IsString(),
+    __metadata("design:type", String)
+], AddBlockUserDto.prototype, "blockId", void 0);
+exports.AddBlockUserDto = AddBlockUserDto;
 class UpdateUserAdminDto {
     constructor() {
         this.images = [];

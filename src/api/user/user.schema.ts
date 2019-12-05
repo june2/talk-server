@@ -30,7 +30,7 @@ export const UserSchema = new Schema({
   // 포인트
   point: { type: Number, default: 50 },
   // 마지막 로그인 시간
-  lastLoginAt: { type: Date, default: new Date() },  
+  lastLoginAt: { type: Date, default: new Date() },
   // 이미지
   images: [String],
   // 지역 
@@ -43,6 +43,7 @@ export const UserSchema = new Schema({
   pushToken: { type: String },
   PlatformOS: { type: String },
   PlatformVer: { type: String },
+  blocks: { type: [Schema.Types.ObjectId] }
 }, {
   versionKey: false,
   timestamps: true,

@@ -20,7 +20,7 @@ import * as mongoose from 'mongoose';
 import * as moment from 'moment';
 import { UserService } from './user.service';
 import { User } from './user.interface';
-import { CreateUserDto, UpdateUserDto, UpdateUserPushTokenDto } from './user.dto';
+import { CreateUserDto, UpdateUserDto, UpdateUserPushTokenDto, AddBlockUserDto } from './user.dto';
 
 @ApiBearerAuth()
 @ApiUseTags('User')
@@ -87,6 +87,13 @@ export class UserController {
   @UseInterceptors(FileInterceptor('upload', multerOptions('message')))
   uploadImage(@UploadedFile() file, @Request() req): any {
     return { image: file.Location };
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post('/:id/block')  
+  blockUser(@Request() req, addBlockUserDto: AddBlockUserDto): any {
+    let blocks = req.user.blocks.push(addBlockUserDto.blockId);
+    return this.userService.addBlockUser(req.user.id, blocks);    
   }
 
   @UseGuards(AuthGuard('jwt'))

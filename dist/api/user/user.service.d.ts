@@ -18,6 +18,7 @@ export declare class UserService {
     updateLastLogin(id: string): Promise<void>;
     updateState(id: string, state: string): Promise<void>;
     updatePoint(id: string, point: number): Promise<void>;
+    addBlockUser(id: string, blocks: []): Promise<void>;
     registerPushToken(id: string, newValue: UpdateUserPushTokenDto): Promise<void>;
     deleteSample(state: string): Promise<void>;
     updateUserLastLogin(): Promise<void>;

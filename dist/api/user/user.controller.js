@@ -64,6 +64,10 @@ let UserController = class UserController {
     uploadImage(file, req) {
         return { image: file.Location };
     }
+    blockUser(req, addBlockUserDto) {
+        let blocks = req.user.blocks.push(addBlockUserDto.blockId);
+        return this.userService.addBlockUser(req.user.id, blocks);
+    }
     updateLastLogin(id, req) {
         this.userService.updateLastLogin(req.user.id);
         let today = moment(new Date()).format('YYYY-MM-DD');
@@ -147,6 +151,14 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Object)
 ], UserController.prototype, "uploadImage", null);
+__decorate([
+    common_1.UseGuards(passport_1.AuthGuard('jwt')),
+    common_1.Post('/:id/block'),
+    __param(0, common_1.Request()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, user_dto_1.AddBlockUserDto]),
+    __metadata("design:returntype", Object)
+], UserController.prototype, "blockUser", null);
 __decorate([
     common_1.UseGuards(passport_1.AuthGuard('jwt')),
     common_1.Put('/:id/updateLastLogin'),

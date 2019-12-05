@@ -88,6 +88,10 @@ export class UserService {
     this.user.findByIdAndUpdate(id, { point: point }, { new: true }).exec();
   }
 
+  async addBlockUser(id: string, blocks: []): Promise<void> {
+    this.user.findByIdAndUpdate(id, { blocks: blocks }, { new: true }).exec();
+  }
+
   async registerPushToken(id: string, newValue: UpdateUserPushTokenDto): Promise<void> {
     this.user.findByIdAndUpdate(id, newValue, { new: true }).exec();
   }

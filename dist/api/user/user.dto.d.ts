@@ -39,6 +39,9 @@ export declare class UpdateUserPushTokenDto {
     PlatformVer: string;
     pushToken: string;
 }
+export declare class AddBlockUserDto {
+    blockId: string;
+}
 export declare class UpdateUserAdminDto {
     readonly state: string;
     readonly name: string;
