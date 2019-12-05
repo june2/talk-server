@@ -43,7 +43,7 @@ export const UserSchema = new Schema({
   pushToken: { type: String },
   PlatformOS: { type: String },
   PlatformVer: { type: String },
-  blocks: { type: [Schema.Types.ObjectId] }
+  blocks: [Schema.Types.ObjectId]
 }, {
   versionKey: false,
   timestamps: true,

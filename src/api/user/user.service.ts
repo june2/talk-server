@@ -39,11 +39,11 @@ export class UserService {
     return await this.users.paginate(query, options);
   }
 
-  async findActive(id: string, page: number = 0, limit: number = 10,
+  async findActive(id: string, blocks: any[], page: number = 0, limit: number = 10,
     q: string, sort: any = { lastLoginAt: -1 }): Promise<User[]> {
     let query = {
       $and: [
-        { _id: { $ne: id } },
+        { _id: { $nin: [id, ...blocks] } },
         { isActive: true },
         { state: { $ne: 'ADMIN' } },
         { state: { $ne: 'BLOCK' } },
@@ -88,7 +88,7 @@ export class UserService {
     this.user.findByIdAndUpdate(id, { point: point }, { new: true }).exec();
   }
 
-  async addBlockUser(id: string, blocks: []): Promise<void> {
+  async addBlockUser(id: string, blocks: any[]): Promise<void> {
     this.user.findByIdAndUpdate(id, { blocks: blocks }, { new: true }).exec();
   }
 

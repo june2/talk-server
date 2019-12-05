@@ -10,7 +10,7 @@ export declare class UserService {
     create(createUserDto: CreateUserDto): Promise<User>;
     createAll(arr: CreateUserSampleDto[]): Promise<User[]>;
     findAll(id: string, page?: number, limit?: number, sort?: any, q?: any): Promise<User[]>;
-    findActive(id: string, page: number, limit: number, q: string, sort?: any): Promise<User[]>;
+    findActive(id: string, blocks: any[], page: number, limit: number, q: string, sort?: any): Promise<User[]>;
     findOne(options: object): Promise<User>;
     findById(id: string): Promise<User>;
     update(id: string, newValue: UpdateUserDto): Promise<User>;
@@ -18,7 +18,7 @@ export declare class UserService {
     updateLastLogin(id: string): Promise<void>;
     updateState(id: string, state: string): Promise<void>;
     updatePoint(id: string, point: number): Promise<void>;
-    addBlockUser(id: string, blocks: []): Promise<void>;
+    addBlockUser(id: string, blocks: any[]): Promise<void>;
     registerPushToken(id: string, newValue: UpdateUserPushTokenDto): Promise<void>;
     deleteSample(state: string): Promise<void>;
     updateUserLastLogin(): Promise<void>;

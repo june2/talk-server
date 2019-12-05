@@ -36,7 +36,8 @@ let UserController = class UserController {
     findAll(page, limit, q, req) {
         let userId = req.user.id;
         this.userService.updateLastLogin(userId);
-        return this.userService.findActive(userId, page, limit, q);
+        let blocks = (req.user.blocks) ? req.user.blocks : [];
+        return this.userService.findActive(userId, blocks, page, limit, q);
     }
     findById(id, req) {
         if (id === 'me')
@@ -65,7 +66,8 @@ let UserController = class UserController {
         return { image: file.Location };
     }
     blockUser(req, addBlockUserDto) {
-        let blocks = req.user.blocks.push(addBlockUserDto.blockId);
+        let arr = (req.user.blocks) ? req.user.blocks : [];
+        let blocks = [...arr, ...[require('mongodb').ObjectID(addBlockUserDto.blockId)]];
         return this.userService.addBlockUser(req.user.id, blocks);
     }
     updateLastLogin(id, req) {
@@ -154,7 +156,7 @@ __decorate([
 __decorate([
     common_1.UseGuards(passport_1.AuthGuard('jwt')),
     common_1.Post('/:id/block'),
-    __param(0, common_1.Request()),
+    __param(0, common_1.Request()), __param(1, common_1.Body()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, user_dto_1.AddBlockUserDto]),
     __metadata("design:returntype", Object)

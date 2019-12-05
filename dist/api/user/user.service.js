@@ -58,11 +58,11 @@ let UserService = class UserService {
             return yield this.users.paginate(query, options);
         });
     }
-    findActive(id, page = 0, limit = 10, q, sort = { lastLoginAt: -1 }) {
+    findActive(id, blocks, page = 0, limit = 10, q, sort = { lastLoginAt: -1 }) {
         return __awaiter(this, void 0, void 0, function* () {
             let query = {
                 $and: [
-                    { _id: { $ne: id } },
+                    { _id: { $nin: [id, ...blocks] } },
                     { isActive: true },
                     { state: { $ne: 'ADMIN' } },
                     { state: { $ne: 'BLOCK' } },

@@ -35,7 +35,8 @@ export class UserController {
   findAll(@Query('page') page: number, @Query('limit') limit: number, @Query('q') q: string, @Request() req): Promise<User[]> {
     let userId = req.user.id;
     this.userService.updateLastLogin(userId);
-    return this.userService.findActive(userId, page, limit, q);
+    let blocks = (req.user.blocks) ? req.user.blocks : [];    
+    return this.userService.findActive(userId, blocks, page, limit, q);
   }
 
   @UseGuards(AuthGuard('jwt'))
@@ -90,10 +91,11 @@ export class UserController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Post('/:id/block')  
-  blockUser(@Request() req, addBlockUserDto: AddBlockUserDto): any {
-    let blocks = req.user.blocks.push(addBlockUserDto.blockId);
-    return this.userService.addBlockUser(req.user.id, blocks);    
+  @Post('/:id/block')
+  blockUser(@Request() req, @Body() addBlockUserDto: AddBlockUserDto): any {    
+    let arr = (req.user.blocks) ? req.user.blocks : [];    
+    let blocks = [...arr, ...[require('mongodb').ObjectID(addBlockUserDto.blockId)]];    
+    return this.userService.addBlockUser(req.user.id, blocks);
   }
 
   @UseGuards(AuthGuard('jwt'))
