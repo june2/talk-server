@@ -154,11 +154,11 @@ export class UpdateUserDto {
 export class UpdateUserPushTokenDto {
   @ApiModelProperty({ type: String })
   @IsString()
-  PlatformOS: string;
+  platformOS: string;
 
   @ApiModelProperty({ type: String })
   @IsString()
-  PlatformVer: string;
+  platformVer: string;
 
   @ApiModelProperty({ type: String })
   @IsString()

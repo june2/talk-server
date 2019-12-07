@@ -35,8 +35,8 @@ export declare class UpdateUserDto {
     isActivePush: boolean;
 }
 export declare class UpdateUserPushTokenDto {
-    PlatformOS: string;
-    PlatformVer: string;
+    platformOS: string;
+    platformVer: string;
     pushToken: string;
 }
 export declare class AddBlockUserDto {

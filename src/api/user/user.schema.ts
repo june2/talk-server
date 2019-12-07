@@ -41,8 +41,8 @@ export const UserSchema = new Schema({
   intro: { type: String },
   // mobile 
   pushToken: { type: String },
-  PlatformOS: { type: String },
-  PlatformVer: { type: String },
+  platformOS: { type: String },
+  platformVer: { type: String },
   blocks: [Schema.Types.ObjectId]
 }, {
   versionKey: false,
