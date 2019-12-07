@@ -81,12 +81,21 @@ export class RoomService {
       },
       {
         "$project": {
-          "user": { "$arrayElemAt": ["$user", 0.0] },
-          // "user": {
-          //   "userId": { "$arrayElemAt": ["$user._id", 0.0] },
-          //   "userName": { "$arrayElemAt": ["$user.name", 0.0] },
-          //   "userImages": { "$arrayElemAt": ["$user.images", 0.0] },
-          // },
+          // "user": { "$arrayElemAt": ["$user", 0.0] },
+          "user": {
+            "$let": {
+              "vars": { "u": { "$arrayElemAt": ["$user", 0] } },
+              "in": {
+                "_id": "$$u._id",
+                "name": "$$u.name",
+                "images": "$$u.images",
+                "location": "$$u.location",
+                "gender": "$$u.gender",
+                "intro": "$$u.intro",
+                "country": "$$u.country",
+              }
+            }
+          },
           "lastMsg": "$lastMsg",
           "updatedAt": "$updatedAt",
           "createdAt": "$createdAt",
@@ -127,8 +136,8 @@ export class RoomService {
     return await this.room.findByIdAndUpdate(id, { lastMsg: lastMsg, lefts: [] }, { new: true }).exec();
   }
 
-  async updatLeftByRoomId(id: string, arr: Array<string>): Promise<Room> {
-    return await this.room.findByIdAndUpdate(id, { lefts: arr }, { new: true });
+  async updatLeftByRoomId(id: string, arr: Array<string>, lastMsg: string): Promise<Room> {
+    return await this.room.findByIdAndUpdate(id, { lefts: arr, lastMsg: lastMsg }, { new: true });
   }
 
   async checkUserInRoom(id: string, userId: string): Promise<Room> {

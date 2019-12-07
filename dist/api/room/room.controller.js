@@ -92,8 +92,9 @@ let RoomController = class RoomController {
                 throw new common_1.UnauthorizedException();
             let arr = room.lefts;
             arr.push(req.user.id);
-            this.messageService.create(new message_dto_1.CreateMessageDto(room.id, req.user.id, `${req.user.name}님이 방을 나갔습니다.`, true));
-            return this.roomService.updatLeftByRoomId(id, arr);
+            let msg = `${req.user.name}님이 방을 나갔습니다.`;
+            this.messageService.create(new message_dto_1.CreateMessageDto(room.id, req.user.id, msg, true));
+            return this.roomService.updatLeftByRoomId(id, arr, msg);
         });
     }
 };

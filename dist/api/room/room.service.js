@@ -100,7 +100,20 @@ let RoomService = class RoomService {
                 },
                 {
                     "$project": {
-                        "user": { "$arrayElemAt": ["$user", 0.0] },
+                        "user": {
+                            "$let": {
+                                "vars": { "u": { "$arrayElemAt": ["$user", 0] } },
+                                "in": {
+                                    "_id": "$$u._id",
+                                    "name": "$$u.name",
+                                    "images": "$$u.images",
+                                    "location": "$$u.location",
+                                    "gender": "$$u.gender",
+                                    "intro": "$$u.intro",
+                                    "country": "$$u.country",
+                                }
+                            }
+                        },
                         "lastMsg": "$lastMsg",
                         "updatedAt": "$updatedAt",
                         "createdAt": "$createdAt",
@@ -140,9 +153,9 @@ let RoomService = class RoomService {
             return yield this.room.findByIdAndUpdate(id, { lastMsg: lastMsg, lefts: [] }, { new: true }).exec();
         });
     }
-    updatLeftByRoomId(id, arr) {
+    updatLeftByRoomId(id, arr, lastMsg) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.room.findByIdAndUpdate(id, { lefts: arr }, { new: true });
+            return yield this.room.findByIdAndUpdate(id, { lefts: arr, lastMsg: lastMsg }, { new: true });
         });
     }
     checkUserInRoom(id, userId) {
