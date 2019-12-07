@@ -97,6 +97,7 @@ export class RoomService {
             }
           },
           "lastMsg": "$lastMsg",
+          "lefts": "$lefts",
           "updatedAt": "$updatedAt",
           "createdAt": "$createdAt",
           "count": {
