@@ -87,12 +87,14 @@ export class RoomService {
               "vars": { "u": { "$arrayElemAt": ["$user", 0] } },
               "in": {
                 "_id": "$$u._id",
+                "state": "$$u.state",
                 "name": "$$u.name",
                 "images": "$$u.images",
                 "location": "$$u.location",
                 "gender": "$$u.gender",
                 "intro": "$$u.intro",
                 "country": "$$u.country",
+                "birthday": "$$u.birthday",                
               }
             }
           },
