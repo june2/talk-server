@@ -5,11 +5,15 @@ import { join } from 'path';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ApplicationModule } from './app.module';
 import { ConfigService } from './common/config/config.service';
+import { ErrorFilter } from './common/filters/error.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(ApplicationModule);
+  const configService: ConfigService = app.get(ConfigService);
   // Pipe
   app.useGlobalPipes(new ValidationPipe());
+  // Filter
+  app.useGlobalFilters(new ErrorFilter(configService))
   // cors
   app.enableCors();
   app.use((req, res, next) => {
@@ -18,7 +22,6 @@ async function bootstrap() {
     res.header('Access-Control-Allow-Headers', 'Content-Type, Accept');
     next();
   });
-  const configService: ConfigService = app.get(ConfigService);  
   // static
   app.useStaticAssets(join(__dirname, '..', 'upload'));
   // Swagger

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as iap from 'in-app-purchase';
+import { InternalServerErrorException } from '@nestjs/common';
 import { ConfigService } from '../config/config.service';
 
 @Injectable()
@@ -39,7 +40,7 @@ export class IapService {
       const validationResponse = await iap.validate(receipt);
       return validationResponse;
     } catch (err) {
-      throw new Error(`Process Purchase error: ${err}`);
+      throw new InternalServerErrorException(`Process Purchase error: ${err}`);
     }
   }
 

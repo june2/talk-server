@@ -10,45 +10,31 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
-const FCM = require("fcm-node");
+const aws_cloudwatch_log_1 = require("aws-cloudwatch-log");
 const config_service_1 = require("./../config/config.service");
-let PushService = class PushService {
+const moment = require("moment");
+let LoggerService = class LoggerService {
     constructor() {
         const config = new config_service_1.ConfigService();
-        this.fcm = new FCM(config.fcmKey);
-    }
-    send(from, to, badge, body, lastMsg, roomId, type, image = null) {
-        let message = {
-            to: to.pushToken,
-            notification: {
-                title: from.name,
-                badge: badge,
-                body: body,
-                sound: 'default'
-            },
-            data: {
-                type: type,
-                roomId: roomId,
-                userId: from.id,
-                userName: from.name,
-                userImage: (from.images.length > 0) ? from.images[0] : '',
-                msg: lastMsg,
-                image: image
-            },
+        const today = moment(new Date()).format('YYYY-MM-DD');
+        this.option = {
+            logGroupName: 'test',
+            region: config.bucketRegion,
+            accessKeyId: config.bucketId,
+            secretAccessKey: config.bucketKey,
+            uploadFreq: 10000,
+            local: false
         };
-        this.fcm.send(message, function (err, response) {
-            if (err) {
-                throw new common_1.InternalServerErrorException(`push: ${err}`);
-            }
-            else {
-                console.log(response);
-            }
-        });
+        aws_cloudwatch_log_1.createLogStream(today, this.option);
+    }
+    setConfig(group, stream) {
+    }
+    info() {
     }
 };
-PushService = __decorate([
+LoggerService = __decorate([
     common_1.Injectable(),
     __metadata("design:paramtypes", [])
-], PushService);
-exports.PushService = PushService;
-//# sourceMappingURL=push.service.js.map
+], LoggerService);
+exports.LoggerService = LoggerService;
+//# sourceMappingURL=logger.service.js.map

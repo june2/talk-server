@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { ConfigService } from '../config/config.service';
 import { getContent } from '../corpus/data';
 import { User } from './../../api/user/user.interface';
@@ -32,11 +32,11 @@ export class SfService {
         input: JSON.stringify(input)
       };
       this.sf.startExecution(params, (err, data) => {
-        if (err) console.error(err, err.stack); // an error occurred
-        else console.log('Sf servie : ', data);           // successful response
+        if (err) throw new InternalServerErrorException(`sf servie: ${err}, ${data}`);
+        else console.log('Sf servie : ', data);
       });
     } catch (err) {
-      console.error(`sf: ${err}`);
+      throw new InternalServerErrorException(`sf: ${err}`);
     }
   }
 

@@ -51,7 +51,7 @@ ApplicationModule = __decorate([
             message_module_1.MessageModule,
             report_module_1.ReportModule,
             notification_module_1.NotificationModule,
-            purchase_module_1.PurchaseModule
+            purchase_module_1.PurchaseModule,
         ]
     })
 ], ApplicationModule);

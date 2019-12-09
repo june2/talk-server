@@ -1,4 +1,4 @@
-import { Injectable, NestMiddleware } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import * as FCM from 'fcm-node';
 import { ConfigService } from './../config/config.service';
 import { User } from './../../api/user/user.interface';
@@ -34,7 +34,7 @@ export class PushService {
     }
     this.fcm.send(message, function (err, response) {
       if (err) {
-        console.error(`push: ${err}`);
+        throw new InternalServerErrorException(`push: ${err}`);
       } else {
         console.log(response);
       }

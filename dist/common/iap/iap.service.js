@@ -19,6 +19,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
 const iap = require("in-app-purchase");
+const common_2 = require("@nestjs/common");
 const config_service_1 = require("../config/config.service");
 let IapService = class IapService {
     constructor() {
@@ -37,7 +38,7 @@ let IapService = class IapService {
                 return validationResponse;
             }
             catch (err) {
-                throw new Error(`Process Purchase error: ${err}`);
+                throw new common_2.InternalServerErrorException(`Process Purchase error: ${err}`);
             }
         });
     }

@@ -38,13 +38,13 @@ let SfService = class SfService {
             };
             this.sf.startExecution(params, (err, data) => {
                 if (err)
-                    console.error(err, err.stack);
+                    throw new common_1.InternalServerErrorException(`sf servie: ${err}, ${data}`);
                 else
                     console.log('Sf servie : ', data);
             });
         }
         catch (err) {
-            console.error(`sf: ${err}`);
+            throw new common_1.InternalServerErrorException(`sf: ${err}`);
         }
     }
 };

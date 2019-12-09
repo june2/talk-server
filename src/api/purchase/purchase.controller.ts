@@ -46,7 +46,7 @@ export class PurchaseController {
       await this.purchaseService.create(createPurchaseDto);
       // response
       return new ResPurchaseDto(true, updatePoint);
-    } catch (err) {
+    } catch (err) {      
       return new ResPurchaseDto(false, null);
     }
   }
