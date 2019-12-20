@@ -19,6 +19,7 @@ import { CreateMessageDto } from '../message/message.dto';
 import { Message } from '../message/message.interface';
 import { NotificationService } from '../notification/notification.service';
 import { UserService } from '../user/user.service';
+import { User } from '../user/user.interface';
 import { PushService } from '../../common/push/push.service';
 import { Roles } from './../../common/decorators/roles.decorator';
 import { RolesGuard } from './../../common/guards/roles.guard';
@@ -28,7 +29,9 @@ import { RolesGuard } from './../../common/guards/roles.guard';
 @Controller('rooms')
 export class RoomAdminController {
   constructor(
-    private readonly roomService: RoomService
+    private readonly roomService: RoomService,
+    private readonly messageService: MessageService,
+    private readonly userService: UserService
   ) { }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
@@ -54,5 +57,22 @@ export class RoomAdminController {
   async findMessagesById(@Param('id') id: string, @Query('page') page: number, @Query('limit') limit: number, @Request() req): Promise<Message[]> {
     // validation
     return this.roomService.findMessageByRoomId(id, page, limit);
+  }
+
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles('ADMIN')
+  @Delete('/:id/admin')
+  async deleteById(@Param('id') id: string, @Body() reqRoomDto: ReqRoomDto): Promise<Room> {    
+    // validation
+    let userId = reqRoomDto.userId;
+    let room: Room = await this.roomService.checkUserInRoom(id, userId);
+    if (null === room) throw new UnauthorizedException();
+    let arr: Array<string> = room.lefts;
+    arr.push(userId);
+    // // 방 나가기 messge 추가
+    let user: User = await this.userService.findById(userId);
+    let msg = `${user.name}님이 방을 나갔습니다.`;
+    this.messageService.create(new CreateMessageDto(room.id, userId, msg, true));
+    return this.roomService.updatLeftByRoomId(id, arr, msg);    
   }
 }

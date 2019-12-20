@@ -23,12 +23,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const swagger_1 = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
 const passport_1 = require("@nestjs/passport");
+const room_dto_1 = require("./room.dto");
 const room_service_1 = require("./room.service");
+const message_service_1 = require("../message/message.service");
+const message_dto_1 = require("../message/message.dto");
+const user_service_1 = require("../user/user.service");
 const roles_decorator_1 = require("./../../common/decorators/roles.decorator");
 const roles_guard_1 = require("./../../common/guards/roles.guard");
 let RoomAdminController = class RoomAdminController {
-    constructor(roomService) {
+    constructor(roomService, messageService, userService) {
         this.roomService = roomService;
+        this.messageService = messageService;
+        this.userService = userService;
     }
     findAll(page, limit, sort, filter, req) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -43,6 +49,20 @@ let RoomAdminController = class RoomAdminController {
     findMessagesById(id, page, limit, req) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.roomService.findMessageByRoomId(id, page, limit);
+        });
+    }
+    deleteById(id, reqRoomDto) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let userId = reqRoomDto.userId;
+            let room = yield this.roomService.checkUserInRoom(id, userId);
+            if (null === room)
+                throw new common_1.UnauthorizedException();
+            let arr = room.lefts;
+            arr.push(userId);
+            let user = yield this.userService.findById(userId);
+            let msg = `${user.name}님이 방을 나갔습니다.`;
+            this.messageService.create(new message_dto_1.CreateMessageDto(room.id, userId, msg, true));
+            return this.roomService.updatLeftByRoomId(id, arr, msg);
         });
     }
 };
@@ -76,11 +96,22 @@ __decorate([
     __metadata("design:paramtypes", [String, Number, Number, Object]),
     __metadata("design:returntype", Promise)
 ], RoomAdminController.prototype, "findMessagesById", null);
+__decorate([
+    common_1.UseGuards(passport_1.AuthGuard('jwt'), roles_guard_1.RolesGuard),
+    roles_decorator_1.Roles('ADMIN'),
+    common_1.Delete('/:id/admin'),
+    __param(0, common_1.Param('id')), __param(1, common_1.Body()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, room_dto_1.ReqRoomDto]),
+    __metadata("design:returntype", Promise)
+], RoomAdminController.prototype, "deleteById", null);
 RoomAdminController = __decorate([
     swagger_1.ApiBearerAuth(),
     swagger_1.ApiUseTags('Room'),
     common_1.Controller('rooms'),
-    __metadata("design:paramtypes", [room_service_1.RoomService])
+    __metadata("design:paramtypes", [room_service_1.RoomService,
+        message_service_1.MessageService,
+        user_service_1.UserService])
 ], RoomAdminController);
 exports.RoomAdminController = RoomAdminController;
 //# sourceMappingURL=room.admin.controller.js.map
