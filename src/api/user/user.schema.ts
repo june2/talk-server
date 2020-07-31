@@ -33,6 +33,8 @@ export const UserSchema = new Schema({
   lastLoginAt: { type: Date, default: new Date() },
   // 이미지
   images: [String],
+  // 이미지
+  thumbnails: [String],
   // 지역 
   country: { type: String, default: null },
   // 지역 

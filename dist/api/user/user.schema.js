@@ -26,6 +26,7 @@ exports.UserSchema = new mongoose_1.Schema({
     point: { type: Number, default: 50 },
     lastLoginAt: { type: Date, default: new Date() },
     images: [String],
+    thumbnails: [String],
     country: { type: String, default: null },
     location: { type: String, default: null },
     intro: { type: String },

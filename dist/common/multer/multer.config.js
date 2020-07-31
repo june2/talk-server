@@ -19,7 +19,7 @@ exports.multerOptions = (type) => {
     });
     return {
         limits: {
-            fileSize: 1 * 1024 * 1024,
+            fileSize: 5 * 1024 * 1024,
         },
         fileFilter: (req, file, cb) => {
             if (file.mimetype.match(/\/(jpg|jpeg|png|gif)$/)) {
@@ -38,8 +38,8 @@ exports.multerOptions = (type) => {
                 cb(null, `${type}/${date.getMonth() + 1}/${uuid_1.v4()}${path_1.extname(file.originalname)}`);
             },
             resize: {
-                width: 400,
-                height: 400,
+                width: 800,
+                height: 800,
             },
         }),
     };

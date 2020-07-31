@@ -24,7 +24,7 @@ export const multerOptions = (type: string) => {
   return {
     // Enable file size limits
     limits: {
-      fileSize: 1 * 1024 * 1024,
+      fileSize: 5 * 1024 * 1024,
     },
     // Check the mimetypes to allow for upload
     fileFilter: (req: any, file: any, cb: any) => {
@@ -66,8 +66,8 @@ export const multerOptions = (type: string) => {
         cb(null, `${type}/${date.getMonth() + 1}/${uuid()}${extname(file.originalname)}`)
       },
       resize: {
-        width: 400,
-        height: 400,
+        width: 800,
+        height: 800,
       },
     }),
   }
