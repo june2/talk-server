@@ -110,7 +110,7 @@ export class UserService {
       //     { state: { $ne: 'LEAVE' } },
       //   ]
       // },
-      $sample: { size: 15 }
+      $sample: { size: 10 }
     }]);
     users.forEach(async user => {
       await this.user.findByIdAndUpdate(user._id, { lastLoginAt: new Date() });

@@ -67,7 +67,6 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserAdminController.prototype, "findAll", null);
 __decorate([
-    common_1.UseGuards(passport_1.AuthGuard('jwt'), roles_guard_1.RolesGuard),
     roles_decorator_1.Roles('ADMIN'),
     common_1.Get('/update/admin'),
     __param(0, common_1.Request()),

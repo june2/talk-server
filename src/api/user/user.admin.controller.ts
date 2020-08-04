@@ -39,7 +39,7 @@ export class UserAdminController {
     return this.userService.findAll(userId, page, limit, sort, filter);
   }
 
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  // @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('ADMIN')
   @Get('/update/admin')
   async updateLastLogin(@Request() req): Promise<void> {

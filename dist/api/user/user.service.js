@@ -133,7 +133,7 @@ let UserService = class UserService {
     updateUserLastLogin() {
         return __awaiter(this, void 0, void 0, function* () {
             const users = yield this.user.aggregate([{
-                    $sample: { size: 15 }
+                    $sample: { size: 10 }
                 }]);
             users.forEach((user) => __awaiter(this, void 0, void 0, function* () {
                 yield this.user.findByIdAndUpdate(user._id, { lastLoginAt: new Date() });
