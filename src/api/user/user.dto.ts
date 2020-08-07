@@ -214,5 +214,6 @@ export class UpdateUserAdminDto {
 export class ReqRewardDto {
   @ApiModelProperty({ type: String })
   @IsString()
+  @IsOptional()
   type: string;
 }

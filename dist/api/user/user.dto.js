@@ -282,6 +282,7 @@ class ReqRewardDto {
 __decorate([
     swagger_1.ApiModelProperty({ type: String }),
     class_validator_1.IsString(),
+    class_validator_1.IsOptional(),
     __metadata("design:type", String)
 ], ReqRewardDto.prototype, "type", void 0);
 exports.ReqRewardDto = ReqRewardDto;
