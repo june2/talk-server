@@ -88,6 +88,7 @@ let UserController = class UserController {
         let reward = 10;
         if (reqRewardDto.type === 'ATT') {
             reward = 50;
+            this.userService.updateReward(req.user.id);
         }
         this.userService.updatePoint(req.user.id, (point + reward));
         return { reward: true, point: point + reward };

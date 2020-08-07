@@ -115,6 +115,11 @@ let UserService = class UserService {
             this.user.findByIdAndUpdate(id, { point: point }, { new: true }).exec();
         });
     }
+    updateReward(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.user.findByIdAndUpdate(id, { rewardAt: new Date() }, { new: true }).exec();
+        });
+    }
     addBlockUser(id, blocks) {
         return __awaiter(this, void 0, void 0, function* () {
             this.user.findByIdAndUpdate(id, { blocks: blocks }, { new: true }).exec();

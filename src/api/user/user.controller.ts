@@ -115,11 +115,12 @@ export class UserController {
 
   @UseGuards(AuthGuard('jwt'))
   @Put('/:id/updateRewardPoint')
-  updateRewardPoint(@Param('id') id: string, @Request() req, @Body() reqRewardDto: ReqRewardDto): any {
+  updateRewardPoint(@Param('id') id: string, @Request() req, @Body() reqRewardDto: ReqRewardDto): any {    
     let point = req.user.point;
     let reward = 10;
     if (reqRewardDto.type === 'ATT') {
       reward = 50;
+      this.userService.updateReward(req.user.id);
     }
     this.userService.updatePoint(req.user.id, (point + reward));
     return { reward: true, point: point + reward };

@@ -88,6 +88,10 @@ export class UserService {
     this.user.findByIdAndUpdate(id, { point: point }, { new: true }).exec();
   }
 
+  async updateReward(id: string): Promise<void> {
+    this.user.findByIdAndUpdate(id, { rewardAt: new Date() }, { new: true }).exec();
+  }
+
   async addBlockUser(id: string, blocks: any[]): Promise<void> {
     this.user.findByIdAndUpdate(id, { blocks: blocks }, { new: true }).exec();
   }
