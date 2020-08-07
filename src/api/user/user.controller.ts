@@ -20,7 +20,7 @@ import * as mongoose from 'mongoose';
 import * as moment from 'moment';
 import { UserService } from './user.service';
 import { User } from './user.interface';
-import { CreateUserDto, UpdateUserDto, UpdateUserPushTokenDto, AddBlockUserDto } from './user.dto';
+import { CreateUserDto, UpdateUserDto, UpdateUserPushTokenDto, AddBlockUserDto, ReqRewardDto } from './user.dto';
 
 @ApiBearerAuth()
 @ApiUseTags('User')
@@ -35,7 +35,7 @@ export class UserController {
   findAll(@Query('page') page: number, @Query('limit') limit: number, @Query('q') q: string, @Request() req): Promise<User[]> {
     let userId = req.user.id;
     this.userService.updateLastLogin(userId);
-    let blocks = (req.user.blocks) ? req.user.blocks : [];    
+    let blocks = (req.user.blocks) ? req.user.blocks : [];
     return this.userService.findActive(userId, blocks, page, limit, q);
   }
 
@@ -92,9 +92,9 @@ export class UserController {
 
   @UseGuards(AuthGuard('jwt'))
   @Post('/:id/block')
-  blockUser(@Request() req, @Body() addBlockUserDto: AddBlockUserDto): any {    
-    let arr = (req.user.blocks) ? req.user.blocks : [];    
-    let blocks = [...arr, ...[require('mongodb').ObjectID(addBlockUserDto.blockId)]];    
+  blockUser(@Request() req, @Body() addBlockUserDto: AddBlockUserDto): any {
+    let arr = (req.user.blocks) ? req.user.blocks : [];
+    let blocks = [...arr, ...[require('mongodb').ObjectID(addBlockUserDto.blockId)]];
     return this.userService.addBlockUser(req.user.id, blocks);
   }
 
@@ -115,10 +115,14 @@ export class UserController {
 
   @UseGuards(AuthGuard('jwt'))
   @Put('/:id/updateRewardPoint')
-  updateRewardPoint(@Param('id') id: string, @Request() req): any {
+  updateRewardPoint(@Param('id') id: string, @Request() req, @Body() reqRewardDto: ReqRewardDto): any {
     let point = req.user.point;
-    this.userService.updatePoint(req.user.id, (point + 10));
-    return { reward: true, point: point + 10 };
+    let reward = 10;
+    if (reqRewardDto.type === 'ATT') {
+      reward = 50;
+    }
+    this.userService.updatePoint(req.user.id, (point + reward));
+    return { reward: true, point: point + reward };
   }
 
   @UseGuards(AuthGuard('jwt'))

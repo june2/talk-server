@@ -31,6 +31,8 @@ export const UserSchema = new Schema({
   point: { type: Number, default: 50 },
   // 마지막 로그인 시간
   lastLoginAt: { type: Date, default: new Date() },
+  // 마지막 로그인 시간
+  rewardAt: { type: Date },
   // 이미지
   images: [String],
   // 이미지

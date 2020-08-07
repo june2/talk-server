@@ -53,3 +53,6 @@ export declare class UpdateUserAdminDto {
     isActivePush: boolean;
     point: number;
 }
+export declare class ReqRewardDto {
+    type: string;
+}

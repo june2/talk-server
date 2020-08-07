@@ -277,4 +277,12 @@ __decorate([
     __metadata("design:type", Number)
 ], UpdateUserAdminDto.prototype, "point", void 0);
 exports.UpdateUserAdminDto = UpdateUserAdminDto;
+class ReqRewardDto {
+}
+__decorate([
+    swagger_1.ApiModelProperty({ type: String }),
+    class_validator_1.IsString(),
+    __metadata("design:type", String)
+], ReqRewardDto.prototype, "type", void 0);
+exports.ReqRewardDto = ReqRewardDto;
 //# sourceMappingURL=user.dto.js.map

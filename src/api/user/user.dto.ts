@@ -210,3 +210,9 @@ export class UpdateUserAdminDto {
   @IsOptional()
   point: number;
 }
+
+export class ReqRewardDto {
+  @ApiModelProperty({ type: String })
+  @IsString()
+  type: string;
+}

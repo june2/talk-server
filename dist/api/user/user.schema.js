@@ -25,6 +25,7 @@ exports.UserSchema = new mongoose_1.Schema({
     phone: { type: String },
     point: { type: Number, default: 50 },
     lastLoginAt: { type: Date, default: new Date() },
+    rewardAt: { type: Date },
     images: [String],
     thumbnails: [String],
     country: { type: String, default: null },
