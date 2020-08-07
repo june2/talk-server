@@ -113,7 +113,9 @@ export class UserService {
       $sample: { size: 10 }
     }]);
     users.forEach(async user => {
-      await this.user.findByIdAndUpdate(user._id, { lastLoginAt: new Date() });
+      if(!user.state.match('NORMAL')){        
+        await this.user.findByIdAndUpdate(user._id, { lastLoginAt: new Date() });
+      }
     })
   }
 }

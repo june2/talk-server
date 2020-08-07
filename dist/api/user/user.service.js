@@ -136,7 +136,9 @@ let UserService = class UserService {
                     $sample: { size: 10 }
                 }]);
             users.forEach((user) => __awaiter(this, void 0, void 0, function* () {
-                yield this.user.findByIdAndUpdate(user._id, { lastLoginAt: new Date() });
+                if (!user.state.match('NORMAL')) {
+                    yield this.user.findByIdAndUpdate(user._id, { lastLoginAt: new Date() });
+                }
             }));
         });
     }
