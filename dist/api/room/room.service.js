@@ -113,6 +113,7 @@ let RoomService = class RoomService {
                                     "intro": "$$u.intro",
                                     "country": "$$u.country",
                                     "birthday": "$$u.birthday",
+                                    "lastLoginAt": "$$u.lastLoginAt",
                                 }
                             }
                         },

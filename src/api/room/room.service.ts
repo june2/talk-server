@@ -94,7 +94,8 @@ export class RoomService {
                 "gender": "$$u.gender",
                 "intro": "$$u.intro",
                 "country": "$$u.country",
-                "birthday": "$$u.birthday",                
+                "birthday": "$$u.birthday",
+                "lastLoginAt": "$$u.lastLoginAt",
               }
             }
           },
