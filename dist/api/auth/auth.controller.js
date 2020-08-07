@@ -70,6 +70,7 @@ let AuthController = class AuthController {
                 gender: user.gender,
                 birthday: user.birthday,
                 isActivePush: user.isActivePush,
+                rewardAt: user.rewardAt,
                 tabBadgeCount: yield this.notificationService.count(req.user.id)
             };
         });

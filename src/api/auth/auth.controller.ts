@@ -62,6 +62,7 @@ export class AuthController {
       gender: user.gender,
       birthday: user.birthday,
       isActivePush: user.isActivePush,
+      rewardAt: user.rewardAt,
       tabBadgeCount: await this.notificationService.count(req.user.id)
     };
   }
