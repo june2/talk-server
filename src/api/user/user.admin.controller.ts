@@ -46,6 +46,12 @@ export class UserAdminController {
     this.userService.updateUserLastLogin();
   }
 
+  @Roles('ADMIN')
+  @Get('/update/admin/user')
+  async updateLastLoginUser(@Request() req): Promise<void> {
+    this.userService.updateUserLastLoginUser();
+  }
+
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('ADMIN')
   @Get('/:id/admin')

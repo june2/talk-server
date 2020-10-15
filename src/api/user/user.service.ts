@@ -120,17 +120,21 @@ export class UserService {
       // if(!user.state.match('NORMAL')){        
       await this.user.findByIdAndUpdate(user._id, { lastLoginAt: new Date() });
       // }
-    })
+    })        
+  }
+
+  async updateUserLastLoginUser() {    
     const users: User[] = await this.user.aggregate([{
       $match: {
         $and: [
           { isActive: true },
-          { state: { $eq: 'NORMAL' } },          
+          { state: { $eq: 'NORMAL' } },
         ]
-      },
+      }
+    }, {
       $sample: { size: 3 }
     }]);
-    users.forEach(async user => {
+    users.forEach(async user => {      
       await this.user.findByIdAndUpdate(user._id, { lastLoginAt: new Date() });
     })
   }

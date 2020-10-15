@@ -143,13 +143,18 @@ let UserService = class UserService {
             bots.forEach((user) => __awaiter(this, void 0, void 0, function* () {
                 yield this.user.findByIdAndUpdate(user._id, { lastLoginAt: new Date() });
             }));
+        });
+    }
+    updateUserLastLoginUser() {
+        return __awaiter(this, void 0, void 0, function* () {
             const users = yield this.user.aggregate([{
                     $match: {
                         $and: [
                             { isActive: true },
                             { state: { $eq: 'NORMAL' } },
                         ]
-                    },
+                    }
+                }, {
                     $sample: { size: 3 }
                 }]);
             users.forEach((user) => __awaiter(this, void 0, void 0, function* () {
