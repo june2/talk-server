@@ -24,7 +24,7 @@ export const multerOptions = (type: string) => {
   return {
     // Enable file size limits
     limits: {
-      fileSize: 5 * 1024 * 1024,
+      fileSize: 10 * 1024 * 1024,
     },
     // Check the mimetypes to allow for upload
     fileFilter: (req: any, file: any, cb: any) => {

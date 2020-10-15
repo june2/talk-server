@@ -105,7 +105,7 @@ export class UserService {
   }
 
   async updateUserLastLogin() {
-    const users: User[] = await this.user.aggregate([{
+    const bots: User[] = await this.user.aggregate([{
       // $match: {
       //   $and: [
       //     { isActive: true },
@@ -114,12 +114,24 @@ export class UserService {
       //     { state: { $ne: 'LEAVE' } },
       //   ]
       // },
-      $sample: { size: 10 }
+      $sample: { size: 15 }
+    }]);
+    bots.forEach(async user => {
+      // if(!user.state.match('NORMAL')){        
+      await this.user.findByIdAndUpdate(user._id, { lastLoginAt: new Date() });
+      // }
+    })
+    const users: User[] = await this.user.aggregate([{
+      $match: {
+        $and: [
+          { isActive: true },
+          { state: { $eq: 'NORMAL' } },          
+        ]
+      },
+      $sample: { size: 3 }
     }]);
     users.forEach(async user => {
-      if(!user.state.match('NORMAL')){        
-        await this.user.findByIdAndUpdate(user._id, { lastLoginAt: new Date() });
-      }
+      await this.user.findByIdAndUpdate(user._id, { lastLoginAt: new Date() });
     })
   }
 }

@@ -137,13 +137,23 @@ let UserService = class UserService {
     }
     updateUserLastLogin() {
         return __awaiter(this, void 0, void 0, function* () {
+            const bots = yield this.user.aggregate([{
+                    $sample: { size: 15 }
+                }]);
+            bots.forEach((user) => __awaiter(this, void 0, void 0, function* () {
+                yield this.user.findByIdAndUpdate(user._id, { lastLoginAt: new Date() });
+            }));
             const users = yield this.user.aggregate([{
-                    $sample: { size: 10 }
+                    $match: {
+                        $and: [
+                            { isActive: true },
+                            { state: { $eq: 'NORMAL' } },
+                        ]
+                    },
+                    $sample: { size: 3 }
                 }]);
             users.forEach((user) => __awaiter(this, void 0, void 0, function* () {
-                if (!user.state.match('NORMAL')) {
-                    yield this.user.findByIdAndUpdate(user._id, { lastLoginAt: new Date() });
-                }
+                yield this.user.findByIdAndUpdate(user._id, { lastLoginAt: new Date() });
             }));
         });
     }
